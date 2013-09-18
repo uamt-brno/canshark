@@ -1,0 +1,4 @@
+*.user
+*.suo
+/sw/canshark-console/bin
+/sw/canshark-console/obj
