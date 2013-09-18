@@ -17,7 +17,7 @@
 ## along with this library.  If not, see <http://www.gnu.org/licenses/>.
 ##
 
-BINARY = STM32F4
+BINARY = canshark
 
 SRCS := $(wildcard src/*.c)
 

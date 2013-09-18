@@ -1,0 +1,4 @@
+[submodule "fw/canshark/lib/opencm3"]
+	path = fw/canshark/lib/opencm3
+	url = https://github.com/BuFran/libopencm3.git
+	branch = work

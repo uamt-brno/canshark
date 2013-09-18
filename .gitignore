@@ -2,3 +2,7 @@
 *.suo
 /sw/canshark-console/bin
 /sw/canshark-console/obj
+/fw/canshark/bin
+/fw/canshark/*.layout
+*.o
+*.d

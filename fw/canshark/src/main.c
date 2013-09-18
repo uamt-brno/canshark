@@ -53,7 +53,6 @@ void sys_tick_handler(void)
 
 uint64_t arp_tmr;
 uint64_t led_tmr;
-uint64_t can_tmr;
 
 #define BENCHMARK_START(a)	a = dwt_read_cycle_counter()
 #define BENCHMARK_END(a)	a = dwt_read_cycle_counter() - a;
@@ -82,8 +81,7 @@ int main(void)
 	struct ip_addr ipa = { IPADDR_ANY };
 	udp_bind(udp, &ipa, 6000);
 
-	ipa.addr = 0xFFFFFFFF;
-	msg.mobid = CAN_MOBID_STD_VAL(0x7FF);
+	IP4_ADDR(&ipa, 255, 255, 255, 255);  // the IP to send data to
 
 	while (1) {
 		LED_TGL(LED0);
