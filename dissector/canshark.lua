@@ -1,6 +1,6 @@
 /* Author: Frantisek Burian <BuFran@seznam.cz> */
 
-bcan_proto = Proto("bcan", "bxCAN")
+canshark_proto = Proto("canshark", "bxCAN")
 
 local bit = require("bit");
 local band, rshift, tobit, tohex = bit.band, bit.rshift, bit.tobit, bit.tohex
@@ -11,19 +11,19 @@ vs_port = {
 	[0x02] = "CAN2",
 }
 
-local f = bcan_proto.fields
+local f = canshark_proto.fields
 
 -- header
-f.mobid = ProtoField.uint32("bcan.mobid", "Message Object Identifier", base.HEX)
-f.mobid_ide = ProtoField.bool("bcan.mobid_ide", "IDE", 32, nil, 0x80000000)
-f.mobid_rtr = ProtoField.bool("bcan.mobid_rtr", "RTR", 32, nil, 0x40000000)
-f.mobid_err = ProtoField.bool("bcan.mobid_err", "ERR", 32, nil, 0x20000000)
-f.mobid_full = ProtoField.uint32("bcan.mobid_full", "MOB-ID", base.HEX, nil, 0x1FFFFFFF)
-f.mobid_std = ProtoField.uint32("bcan.mobid_std", "STD-ID", base.HEX, nil, 0x1FFC0000)
-f.mobid_ext = ProtoField.uint32("bcan.mobid_ext", "EXT-ID", base.HEX, nil, 0x0003FFFF)
-f.len = ProtoField.uint32("bcan.len", "Message Length", base.DEC)
-f.data = ProtoField.bytes("bcan.datas", "Data")
-f.port = ProtoField.uint8("bcan.port", "Port", base.DEC, vs_port)
+f.mobid = ProtoField.uint32("canshark.mobid", "Message Object Identifier", base.HEX)
+f.mobid_ide = ProtoField.bool("canshark.mobid_ide", "IDE", 32, nil, 0x80000000)
+f.mobid_rtr = ProtoField.bool("canshark.mobid_rtr", "RTR", 32, nil, 0x40000000)
+f.mobid_err = ProtoField.bool("canshark.mobid_err", "ERR", 32, nil, 0x20000000)
+f.mobid_full = ProtoField.uint32("canshark.mobid_full", "MOB-ID", base.HEX, nil, 0x1FFFFFFF)
+f.mobid_std = ProtoField.uint32("canshark.mobid_std", "STD-ID", base.HEX, nil, 0x1FFC0000)
+f.mobid_ext = ProtoField.uint32("canshark.mobid_ext", "EXT-ID", base.HEX, nil, 0x0003FFFF)
+f.len = ProtoField.uint32("canshark.len", "Message Length", base.DEC)
+f.data = ProtoField.bytes("canshark.datas", "Data")
+f.port = ProtoField.uint8("canshark.port", "Port", base.DEC, vs_port)
 
 
 -------------------------------------------------------------------------------
@@ -73,7 +73,7 @@ canopen = {
 	[0x100] = canopen_timestamp,
 }
 
-function bcan_proto.init()
+function canshark_proto.init()
 	for id=0x01,0x7F do 
 		canopen[0x080 + id] = canopen_emcy
 		canopen[0x580 + id] = canopen_tsdo
@@ -84,7 +84,7 @@ end
 
 
 
-function bcan_proto.dissector(buffer, pinfo, tree)
+function canshark_proto.dissector(buffer, pinfo, tree)
 	local mobid = buffer(0, 4)
 	local len =   buffer(4, 1)
 	-- bytes 5 and 6 are unused
@@ -109,7 +109,7 @@ function bcan_proto.dissector(buffer, pinfo, tree)
 		nam = nam.." Data="..tostring(datas)
 	end
 
-	t = tree:add(bcan_proto, nam, buffer())
+	t = tree:add(canshark_proto, nam, buffer())
 	
 	t:add(f.port, peripheral)
 	
@@ -146,4 +146,4 @@ function bcan_proto.dissector(buffer, pinfo, tree)
 	pinfo.cols['protocol'] = pinfo.curr_proto
 end
 
-register_postdissector(bcan_proto)
+register_postdissector(canshark_proto)
