@@ -1,0 +1,15 @@
+lib/lwip141/test/unit/lwipopts.h:3: ERROR: trailing whitespace
+lib/lwip141/test/unit/lwipopts.h:4: ERROR: trailing whitespace
+lib/lwip141/test/unit/lwipopts.h:5: ERROR: trailing whitespace
+lib/lwip141/test/unit/lwipopts.h:14: ERROR: trailing whitespace
+lib/lwip141/test/unit/lwipopts.h:16: ERROR: trailing whitespace
+lib/lwip141/test/unit/lwipopts.h:17: ERROR: trailing whitespace
+lib/lwip141/test/unit/lwipopts.h:18: ERROR: trailing whitespace
+lib/lwip141/test/unit/lwipopts.h:19: ERROR: trailing whitespace
+lib/lwip141/test/unit/lwipopts.h:20: ERROR: trailing whitespace
+lib/lwip141/test/unit/lwipopts.h:21: ERROR: trailing whitespace
+lib/lwip141/test/unit/lwipopts.h:22: ERROR: trailing whitespace
+lib/lwip141/test/unit/lwipopts.h:23: ERROR: trailing whitespace
+lib/lwip141/test/unit/lwipopts.h:24: ERROR: trailing whitespace
+lib/lwip141/test/unit/lwipopts.h:28: ERROR: trailing whitespace
+total: 14 errors, 0 warnings, 50 lines checked

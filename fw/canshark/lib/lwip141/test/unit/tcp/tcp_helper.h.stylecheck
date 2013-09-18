@@ -1,0 +1,46 @@
+lib/lwip141/test/unit/tcp/tcp_helper.h:11: WARNING: please, no spaces at the start of a line
+lib/lwip141/test/unit/tcp/tcp_helper.h:12: WARNING: please, no spaces at the start of a line
+lib/lwip141/test/unit/tcp/tcp_helper.h:13: WARNING: please, no spaces at the start of a line
+lib/lwip141/test/unit/tcp/tcp_helper.h:14: WARNING: please, no spaces at the start of a line
+lib/lwip141/test/unit/tcp/tcp_helper.h:15: WARNING: please, no spaces at the start of a line
+lib/lwip141/test/unit/tcp/tcp_helper.h:16: WARNING: please, no spaces at the start of a line
+lib/lwip141/test/unit/tcp/tcp_helper.h:17: WARNING: please, no spaces at the start of a line
+lib/lwip141/test/unit/tcp/tcp_helper.h:18: WARNING: please, no spaces at the start of a line
+lib/lwip141/test/unit/tcp/tcp_helper.h:18: ERROR: "foo* bar" should be "foo *bar"
+lib/lwip141/test/unit/tcp/tcp_helper.h:19: WARNING: please, no spaces at the start of a line
+lib/lwip141/test/unit/tcp/tcp_helper.h:23: WARNING: please, no spaces at the start of a line
+lib/lwip141/test/unit/tcp/tcp_helper.h:24: WARNING: please, no spaces at the start of a line
+lib/lwip141/test/unit/tcp/tcp_helper.h:25: WARNING: please, no spaces at the start of a line
+lib/lwip141/test/unit/tcp/tcp_helper.h:26: WARNING: please, no spaces at the start of a line
+lib/lwip141/test/unit/tcp/tcp_helper.h:32: ERROR: "foo* bar" should be "foo *bar"
+lib/lwip141/test/unit/tcp/tcp_helper.h:32: ERROR: "foo* bar" should be "foo *bar"
+lib/lwip141/test/unit/tcp/tcp_helper.h:32: ERROR: "foo* bar" should be "foo *bar"
+lib/lwip141/test/unit/tcp/tcp_helper.h:33: ERROR: code indent should use tabs where possible
+lib/lwip141/test/unit/tcp/tcp_helper.h:33: WARNING: please, no spaces at the start of a line
+lib/lwip141/test/unit/tcp/tcp_helper.h:33: ERROR: "foo* bar" should be "foo *bar"
+lib/lwip141/test/unit/tcp/tcp_helper.h:34: ERROR: code indent should use tabs where possible
+lib/lwip141/test/unit/tcp/tcp_helper.h:34: WARNING: please, no spaces at the start of a line
+lib/lwip141/test/unit/tcp/tcp_helper.h:35: ERROR: "foo* bar" should be "foo *bar"
+lib/lwip141/test/unit/tcp/tcp_helper.h:35: ERROR: "foo* bar" should be "foo *bar"
+lib/lwip141/test/unit/tcp/tcp_helper.h:35: ERROR: "foo* bar" should be "foo *bar"
+lib/lwip141/test/unit/tcp/tcp_helper.h:36: ERROR: code indent should use tabs where possible
+lib/lwip141/test/unit/tcp/tcp_helper.h:36: WARNING: please, no spaces at the start of a line
+lib/lwip141/test/unit/tcp/tcp_helper.h:37: ERROR: "foo* bar" should be "foo *bar"
+lib/lwip141/test/unit/tcp/tcp_helper.h:37: ERROR: "foo* bar" should be "foo *bar"
+lib/lwip141/test/unit/tcp/tcp_helper.h:37: ERROR: "foo* bar" should be "foo *bar"
+lib/lwip141/test/unit/tcp/tcp_helper.h:38: ERROR: code indent should use tabs where possible
+lib/lwip141/test/unit/tcp/tcp_helper.h:38: WARNING: please, no spaces at the start of a line
+lib/lwip141/test/unit/tcp/tcp_helper.h:39: ERROR: "foo* bar" should be "foo *bar"
+lib/lwip141/test/unit/tcp/tcp_helper.h:39: ERROR: "foo* bar" should be "foo *bar"
+lib/lwip141/test/unit/tcp/tcp_helper.h:40: ERROR: code indent should use tabs where possible
+lib/lwip141/test/unit/tcp/tcp_helper.h:40: WARNING: please, no spaces at the start of a line
+lib/lwip141/test/unit/tcp/tcp_helper.h:40: ERROR: "foo* bar" should be "foo *bar"
+lib/lwip141/test/unit/tcp/tcp_helper.h:41: ERROR: "foo* bar" should be "foo *bar"
+lib/lwip141/test/unit/tcp/tcp_helper.h:42: ERROR: "foo* bar" should be "foo *bar"
+lib/lwip141/test/unit/tcp/tcp_helper.h:42: ERROR: "foo* bar" should be "foo *bar"
+lib/lwip141/test/unit/tcp/tcp_helper.h:42: ERROR: "foo* bar" should be "foo *bar"
+lib/lwip141/test/unit/tcp/tcp_helper.h:44: ERROR: "foo* bar" should be "foo *bar"
+lib/lwip141/test/unit/tcp/tcp_helper.h:44: ERROR: "foo* bar" should be "foo *bar"
+lib/lwip141/test/unit/tcp/tcp_helper.h:49: ERROR: code indent should use tabs where possible
+lib/lwip141/test/unit/tcp/tcp_helper.h:49: WARNING: please, no spaces at the start of a line
+total: 26 errors, 19 warnings, 52 lines checked

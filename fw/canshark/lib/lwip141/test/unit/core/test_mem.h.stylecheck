@@ -1,0 +1,2 @@
+lib/lwip141/test/unit/core/test_mem.h:6: WARNING: Avoid CamelCase: <Suite>
+total: 0 errors, 1 warnings, 8 lines checked

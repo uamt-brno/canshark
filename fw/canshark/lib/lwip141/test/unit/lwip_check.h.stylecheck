@@ -1,0 +1,29 @@
+lib/lwip141/test/unit/lwip_check.h:10: ERROR: space required before the open parenthesis '('
+lib/lwip141/test/unit/lwip_check.h:10: WARNING: braces {} are needed for every statement block
+lib/lwip141/test/unit/lwip_check.h:12: ERROR: space required after that close brace '}'
+lib/lwip141/test/unit/lwip_check.h:12: ERROR: space required before the open parenthesis '('
+lib/lwip141/test/unit/lwip_check.h:13: ERROR: space required after that close brace '}'
+lib/lwip141/test/unit/lwip_check.h:13: ERROR: space required before the open parenthesis '('
+lib/lwip141/test/unit/lwip_check.h:17: WARNING: do not add new typedefs
+lib/lwip141/test/unit/lwip_check.h:17: ERROR: need consistent spacing around '*' (ctx:VxW)
+lib/lwip141/test/unit/lwip_check.h:17: WARNING: Avoid CamelCase: <Suite>
+lib/lwip141/test/unit/lwip_check.h:20: ERROR: "foo* bar" should be "foo *bar"
+lib/lwip141/test/unit/lwip_check.h:20: ERROR: "foo* bar" should be "foo *bar"
+lib/lwip141/test/unit/lwip_check.h:20: WARNING: Avoid CamelCase: <TFun>
+lib/lwip141/test/unit/lwip_check.h:20: WARNING: Avoid CamelCase: <SFun>
+lib/lwip141/test/unit/lwip_check.h:22: WARNING: please, no spaces at the start of a line
+lib/lwip141/test/unit/lwip_check.h:23: WARNING: please, no spaces at the start of a line
+lib/lwip141/test/unit/lwip_check.h:25: WARNING: please, no spaces at the start of a line
+lib/lwip141/test/unit/lwip_check.h:25: WARNING: suspect code indent for conditional statements (2, 4)
+lib/lwip141/test/unit/lwip_check.h:25: ERROR: space required before the open parenthesis '('
+lib/lwip141/test/unit/lwip_check.h:27: WARNING: please, no spaces at the start of a line
+lib/lwip141/test/unit/lwip_check.h:27: WARNING: Avoid CamelCase: <TCase>
+lib/lwip141/test/unit/lwip_check.h:28: WARNING: please, no spaces at the start of a line
+lib/lwip141/test/unit/lwip_check.h:28: WARNING: suspect code indent for conditional statements (4, 6)
+lib/lwip141/test/unit/lwip_check.h:29: WARNING: please, no spaces at the start of a line
+lib/lwip141/test/unit/lwip_check.h:30: WARNING: please, no spaces at the start of a line
+lib/lwip141/test/unit/lwip_check.h:31: WARNING: please, no spaces at the start of a line
+lib/lwip141/test/unit/lwip_check.h:32: WARNING: please, no spaces at the start of a line
+lib/lwip141/test/unit/lwip_check.h:33: WARNING: please, no spaces at the start of a line
+lib/lwip141/test/unit/lwip_check.h:34: WARNING: please, no spaces at the start of a line
+total: 9 errors, 19 warnings, 37 lines checked
