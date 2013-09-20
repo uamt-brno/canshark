@@ -57,6 +57,8 @@ uint64_t led_tmr;
 #define BENCHMARK_START(a)	a = dwt_read_cycle_counter()
 #define BENCHMARK_END(a)	a = dwt_read_cycle_counter() - a;
 
+struct can_message modcan_buffer[8];
+
 int main(void)
 {
 	rcc_clock_setup_hse_3v3(&myclock168);
@@ -71,10 +73,6 @@ int main(void)
 	stick_prepare(&arp_tmr, ARP_TMR_INTERVAL * STICK_HZ / 1000);
 	stick_prepare(&led_tmr, STICK_HZ);
 
-	uint32_t neti;
-	volatile uint32_t biggest = 0;
-	struct can_message msg;
-
 	struct udp_pcb *udp = udp_new();
 	udp->so_options |= SOF_BROADCAST;
 
@@ -86,23 +84,23 @@ int main(void)
 	while (1) {
 		LED_TGL(LED0);
 
-		BENCHMARK_START(neti);
 		ethf417_poll(&netif);
-		BENCHMARK_END(neti);
 
-		if (neti > biggest) {
-			biggest = neti;
+		int n = 0;
+		while (modcan_get(&modcan_buffer[n]) && (n < 8)) {
+			n++;
 		}
 
-		if (modcan_get(&msg)) {
-			struct pbuf *p = pbuf_alloc(PBUF_TRANSPORT, sizeof(struct can_message), PBUF_RAM);
+		if (n > 0) {
+			struct pbuf *p = pbuf_alloc(PBUF_TRANSPORT, n * sizeof(struct can_message), PBUF_RAM);
 			if (p == NULL) {
+				/* packets are lost ! */
 				continue;
 			}
 
 			// allocated is always single pbuf in PBUF_RAM, read the buffer into pbuf
-			memcpy(p->payload, &msg, sizeof(struct can_message));
-			p->len = sizeof(struct can_message);
+			memcpy(p->payload, modcan_buffer, n * sizeof(struct can_message));
+			p->len = n * sizeof(struct can_message);
 			udp_sendto(udp, p, &ipa, 6000);
 
 			pbuf_free(p);

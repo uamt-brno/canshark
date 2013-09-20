@@ -46,12 +46,18 @@ namespace canshark
                 // loop through entire length and write data into wireshark
                 try
                 {
+                    byte[] msg = new byte[0x20];
                     if (iar.AsyncWaitHandle.WaitOne(1000))
                     {
                         IPEndPoint ep = new IPEndPoint(0,0);
                         byte[] data = ucl.EndReceive(iar, ref ep);
                         iar = ucl.BeginReceive(null, 0);
-                        WiresharkFrame(data);
+
+                        for (int i = 0; (i + 0x20) <= data.Length; i+=0x20)
+                        {
+                            Array.Copy(data, i, msg, 0, 0x20);
+                            WiresharkFrame(msg);
+                        }
                     }
                 }
                 catch
@@ -72,7 +78,7 @@ namespace canshark
             int thiszone = 0;               // zone (unused)
             uint sigfigs = 0;               // significant figures (unused)
             uint snaplen = 16;           // snapshot length (max value)
-            uint network = 227;             // DLT_CAN_SOCKETCAN
+            uint network = 147;//227;             // DLT_CAN_SOCKETCAN
 
             try
             {
@@ -99,9 +105,9 @@ namespace canshark
             ticks |= (UInt64)candata[0x1D] << 40;
             ticks |= (UInt64)candata[0x1E] << 48;
             ticks |= (UInt64)candata[0x1F] << 56;
-            
-            sec = (long)(ticks / 1000);
-            usec = (long)(ticks % 1000) * 1000;
+
+            sec = (long)(ticks / (1000*65536));
+            usec = (long)(ticks % (1000*65536)) * 1000 / 65536;
             
             // write packet header to wireshark
             ws.Write((uint)sec);
@@ -110,24 +116,18 @@ namespace canshark
             ws.Write(16);   // len
 
             // mob-id
-            ws.Write(candata[7]);
-            ws.Write(candata[6]);
-            ws.Write(candata[5]);
-            ws.Write(candata[4]);
+            ws.Write(candata[3]);
+            ws.Write(candata[2]);
+            ws.Write(candata[1]);
+            ws.Write(candata[0]);
 
             // length
             ws.Write(candata[16]);
+            ws.Write(candata[6]);   // Source
 
-            // PAD
-            ws.Write(new byte[] {0,0} );
-
-            // last byte of PAD isn't compatible with SocketCAN
-            switch (candata[1])
-            {
-                case 0x64: ws.Write((byte)1); break;   // CAN1
-                case 0x68: ws.Write((byte)2); break;    // CAN2
-                default:  ws.Write((byte)0); break;    // unknown CAN
-            }
+            // time
+            ws.Write(candata[5]);
+            ws.Write(candata[4]);
 
             // DATA
             ws.Write(candata, 8, 8);

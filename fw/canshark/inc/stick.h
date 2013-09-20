@@ -3,7 +3,8 @@
 
 void stick_init(int32_t hz);
 
-uint64_t stick_get(void);
+uint64_t stick_get(void);	// one interrupt resolution
+uint64_t stick_get_us(void);	// 1/65536th of interrupt resolution
 
 void stick_prepare(uint64_t *when, const uint64_t period);
 bool stick_fire(uint64_t *when, const uint64_t period);

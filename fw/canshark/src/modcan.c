@@ -14,6 +14,8 @@
 uint32_t MOB_ANY = 0;
 
 struct can_message msgs[8];
+uint8_t msgs_w = 0;
+uint8_t msgs_r = 0;
 
 void modcan_init(void)
 {
@@ -82,8 +84,8 @@ void modcan_init(void)
 	nvic_set_priority(NVIC_CAN2_TX_IRQ, 1);
 
 	/* Enable CAN RX interrupt. */
-	can_enable_irq(CAN1, CAN_IER_FMPIE0 | CAN_IER_FMPIE1);
-	can_enable_irq(CAN2, CAN_IER_FMPIE0 | CAN_IER_FMPIE1);
+	can_enable_irq(CAN1, CAN_IER_FMPIE0 | CAN_IER_FMPIE1 | CAN_IER_TMEIE);
+	can_enable_irq(CAN2, CAN_IER_FMPIE0 | CAN_IER_FMPIE1 | CAN_IER_TMEIE);
 }
 
 static void can_isr_sce(uint32_t canport)
@@ -92,24 +94,56 @@ static void can_isr_sce(uint32_t canport)
 	//LED_TGL(LED2);
 }
 
+static struct can_message *canmsg_get(void)
+{
+	if (msgs[msgs_w].isthere) {
+		return NULL;
+	}
+
+	struct can_message *msg = &msgs[msgs_w];
+	msgs_w = (msgs_w + 1) & 7;
+
+	msg->ticks = stick_get_us();
+	msg->zero = 0;
+	msg->isthere = true;
+	return msg;
+}
+
 static void can_isr_tx(uint32_t canport)
 {
-	(void)canport;
-	//LED_TGL(LED3);
+	int mailbox=0;
+	if (CAN_TSR(canport) & CAN_TSR_RQCP0) {
+		mailbox = 0;
+	} else if (CAN_TSR(canport) & CAN_TSR_RQCP1) {
+		mailbox = 1;
+	} else if (CAN_TSR(canport) & CAN_TSR_RQCP2) {
+		mailbox = 2;
+	} else {
+		LED_TGL(LED3);
+		return;
+	}
+
+	CAN_TSR(canport) = CAN_TSR_RQCP(mailbox);
+
+	struct can_message *msg = canmsg_get();
+
+	if (msg == NULL) {
+		LED_TGL(LED4);
+		return;
+	}
+
+	msg->source = (mailbox << 4) | ((canport == CAN1) ? 1 : 2) | 0x08;
+	msg->mobid = can_mailbox_get_mobid(canport, mailbox);
+	msg->time = can_mailbox_get_timestamp(canport, mailbox);
+	can_mailbox_read_data(canport, mailbox, msg->data, &msg->length);
 }
+
 
 
 
 static void can_isr_rx(uint32_t canport, uint32_t fifo)
 {
-	//LED_TGL(LED4);
-	struct can_message *msg = NULL;
-	for (int i=0;i<8;i++) {
-		if (!msgs[i].isthere) {
-			msg = &msgs[i];
-			break;
-		}
-	}
+	struct can_message *msg = canmsg_get();
 
 	if (msg == NULL) {
 		LED_TGL(LED4);
@@ -117,17 +151,12 @@ static void can_isr_rx(uint32_t canport, uint32_t fifo)
 		return;
 	}
 
-	msg->ticks = stick_get();
-	msg->canport = canport;
+	msg->source = (fifo << 4) | ((canport == CAN1) ? 1 : 2);
 	msg->mobid = can_fifo_get_mobid(canport, fifo);
 	msg->time = can_fifo_get_timestamp(canport, fifo);
-	msg->isthere = true;
+
 	can_fifo_read_data(canport, fifo, msg->data, &msg->length);
 	can_fifo_release(canport, fifo);
-
-	if (can_mobid_compare(msg->mobid, COB_SYNC) && (canport == CAN1)) {
-		LED_TGL(LED5);
-	}
 }
 
 void can1_sce_isr(void) { can_isr_sce(CAN1); }
@@ -150,12 +179,13 @@ bool modcan_get(struct can_message *msg)
 {
 	CM_ATOMIC_CONTEXT();
 
-	for (int i=0;i<8;i++) {
-		if (msgs[i].isthere) {
-			memcpy(msg, &msgs[i], sizeof(struct can_message));
-			msgs[i].isthere = false;
-			return true;
-		}
+	if (!msgs[msgs_r].isthere) {
+		return false;
 	}
-	return false;
+
+	memcpy(msg, &msgs[msgs_r], sizeof(struct can_message));
+	msgs[msgs_r].isthere = false;
+
+	msgs_r = (msgs_r + 1) & 7;
+	return true;
 }

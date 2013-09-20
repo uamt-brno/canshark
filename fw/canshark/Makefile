@@ -136,6 +136,7 @@ clean:
 
 dirs:
 	@echo "  PREPARING "
+	-@mkdir -p ./bin
 	-@mkdir -p ./tmp/src
 	-@mkdir -p ./tmp/primitives
 	-@mkdir -p ./tmp/serio
