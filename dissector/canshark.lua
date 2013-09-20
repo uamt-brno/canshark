@@ -36,61 +36,10 @@ f.mbox = ProtoField.uint8("canshark.mbox", "Mailbox", base.DEC, nil, 0xF0)
 f.delay = ProtoField.uint16("canshark.delay", "Delay", base.HEX)
 
 
--------------------------------------------------------------------------------
--- CanOpen
-
-local canopen_nmt = function(buffer, pinfo, tree, msg) 
-	t = tree:add("CanOpen: NMT");
-	return "NMT"
-end 
-
-local canopen_sync = function(buffer, pinfo, tree, msg) 
-	t = tree:add("CanOpen: SYNC");
-	return "SYNC"
-end
-
-local canopen_timestamp = function(buffer, pinfo, tree, msg) 
-	t = tree:add("CanOpen: TIMESTAMP");
-	
-	if msg.data:len() == 8 then
-		return "TIMESTAMP ["..tostring(msg.data:le_uint64()).."]"
-	end
-	return "TIMESTAMP"
-end
-
-local canopen_emcy = function(buffer, pinfo, tree, msg)
-	t = tree:add("CanOpen: EMCY");
-	return "EMCY"
-end
-
-local canopen_tsdo = function(buffer, pinfo, tree, msg)
-	t = tree:add("CanOpen: TSDO");
-	return "TSDO"
-end 
-
-local canopen_rsdo = function(buffer, pinfo, tree, msg)
-	t = tree:add("CanOpen: RSDO");
-	return "RSDO"
-end 
-
-local canopen_guard = function(buffer, pinfo, tree, msg)
-	t = tree:add("CanOpen: GUARD");
-	return "GUARD"
-end 
-
-canopen = {
-	[0x000] = canopen_nmt,
-	[0x080] = canopen_sync,
-	[0x100] = canopen_timestamp,
-}
+-------------------------
 
 function canshark_proto.init()
-	for id=0x01,0x7F do 
-		canopen[0x080 + id] = canopen_emcy
-		canopen[0x580 + id] = canopen_tsdo
-		canopen[0x600 + id] = canopen_rsdo
-		canopen[0x700 + id] = canopen_guard
-	end
+	canopen_proto_init();
 end
 
 
@@ -148,18 +97,10 @@ function canshark_proto.dissector(buffer, pinfo, tree)
 	pinfo.cols.info = vs_port[periph]
 	pinfo.cols.protocol = pinfo.curr_proto
 
-	msg = {}
+	local msg = {}
 	msg.addr = addr;
 	msg.data = datas;
 
 	-- decode canopen protocol
---	local co=canopen[addr.std]
---	if co and type(co) == "function" then
---		q = tree:add("CanOpen");
---		pinfo.cols.info:append_text("CanOpen: ".. co(buffer, pinfo, q, msg))
---	end
-
-	
+	canopen_proto_dissector(buffer, pinfo, tree, msg)
 end
-
---register_postdissector(canshark_proto)
