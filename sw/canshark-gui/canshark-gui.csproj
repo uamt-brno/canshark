@@ -53,6 +53,10 @@
     <Compile Include="Forms\frmMain.Designer.cs">
       <DependentUpon>frmMain.cs</DependentUpon>
     </Compile>
+    <Compile Include="lib\CanMessage.cs" />
+    <Compile Include="lib\CanSharkBoard.cs" />
+    <Compile Include="lib\Wireshark.cs" />
+    <Compile Include="lib\WiresharkPcap.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <EmbeddedResource Include="Forms\frmMain.resx">
