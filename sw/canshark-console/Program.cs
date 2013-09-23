@@ -1,9 +1,11 @@
 ﻿using System;
 using System.Collections.Concurrent;
+using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
 using System.IO.Pipes;
 using System.Net;
+using System.Linq;
 using System.Net.Sockets;
 using System.Threading;
 using Wireshark;
@@ -54,6 +56,10 @@ namespace canshark
 
         static void Main(string[] args)
         {
+            List<WiresharkPcapProtocol> streams = new List<WiresharkPcapProtocol>();
+            NamedPipeServerStream wireshark = null;
+            FileStream file = null;
+
             /* Parse Arguments */
             for (int i = 0; i < args.Length; i++)
             {
@@ -83,53 +89,95 @@ namespace canshark
             }
 
             /* Do the job */
-            using (CanSharkBoard board = new CanSharkBoard())
+            try
             {
                 if (!string.IsNullOrEmpty(OptCanDumpFile))
                 {
-                    Console.WriteLine("DUMP: Dumping packets to \"" + OptCanDumpFile +"\" file");
+                    Console.WriteLine("DUMP: Dumping packets to \"" + OptCanDumpFile + "\" file");
 
-                    /* TODO new dumpfile */
+                    file = new FileStream(OptCanDumpFile, FileMode.Create);
 
-                    /* TODO add header to dumpfile */
-
-                    board.MessageReceived += (e, m) =>
-                    {
-                        /* TODO append to dumpfile */
-                    };
+                    streams.Add(new WiresharkPcapProtocol(file));
                 }
 
-                using (WiresharkPipe wireshark = new WiresharkPipe(OptWiresharkPipeName))
+                if (!string.IsNullOrEmpty(OptWiresharkPipeName) && (OptWiresharkPipeName != "0"))
                 {
-                    Console.WriteLine("PIPE: Waiting for connection on pipe " + OptWiresharkPipeName);
-
+                    wireshark = new NamedPipeServerStream(OptWiresharkPipeName, PipeDirection.Out);
                     Process.Start(OptWiresharkExecutable, @"-k -i \\.\pipe\" + OptWiresharkPipeName);
+
+                    Console.WriteLine("PIPE: Waiting for connection on pipe " + OptWiresharkPipeName);
 
                     wireshark.WaitForConnection();
 
                     Console.WriteLine("PIPE: Client connected.");
 
-                    wireshark.WriteHeader(WiresharkPipe.DLT_USER0, 16);
+                    streams.Add(new WiresharkPcapProtocol(wireshark));
+                }
+
+                /* Write headers */
+                foreach (var stm in streams)
+                    stm.WriteHeader(DataLinkType.DLT_USER0, 16);
+
+                Console.WriteLine("Starting the logger.");
+
+
+
+                using (CanSharkBoard board = new CanSharkBoard())
+                {
+                    int can1 = 0, can2 = 0, can1o = 0, can2o = 0;
 
                     board.MessageReceived += (e, m) =>
                     {
-                        if (wireshark.Connected)
-                            wireshark.WriteFrame(m.Sec, m.Usec, m);
+                        if ((m.Source & 0x07) == 1)
+                            can1++;
+                        else
+                            can2++;
+
+                        foreach (var stm in streams)
+                            if (stm.Connected)
+                                stm.WriteFrame(m.Sec, m.Usec, m);
                     };
 
-                    // run forever
-                    while (wireshark.Connected)
+                    /* run forever */
+
+                    Console.WriteLine("Logging data. Press any key to stop.");
+                    Console.WriteLine();
+                    Console.WriteLine("\t\tCAN1\t\tCAN2");
+                    Console.WriteLine();
+                    
+                    while (streams.All(p => p.Connected))
                     {
-                        Thread.Sleep(100);
+                        Thread.Sleep(1000);
+
+                        if (Console.KeyAvailable)
+                            break;
+
+                        can1o = can1 - can1o;
+                        can2o = can2 - can2o;
+                        Console.SetCursorPosition(0, Console.CursorTop-1);
+                        Console.WriteLine(string.Format("Total:\t{0,7} frames\t{1,7} frames", can1, can2));
+                        Console.Write(string.Format("Rate:\t{0,7} frame/s\t{1,7} frame/s", can1o, can2o));
+                        can1o = can1;
+                        can2o = can2;
                     }
                 }
+            }
+            finally
+            {
+                if (wireshark != null)
+                    wireshark.Dispose();
 
-                if (!string.IsNullOrEmpty(OptCanDumpFile))
+                if (file != null)
                 {
-                    /* TODO close dumpfile */
-                    Console.WriteLine("DUMP: Closing dumpfile \"" + OptCanDumpFile + "\"");
+                    file.Flush();
+                    file.Dispose();                    
                 }
             }
+
+            Console.WriteLine();
+            Console.WriteLine();
+            Console.WriteLine("Program cleanly exitted");
+            Console.WriteLine();
         }
     }
 }

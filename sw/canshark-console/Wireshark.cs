@@ -14,23 +14,20 @@ namespace Wireshark
         void SerializeTo(BinaryWriter bw);
     }
 
-    class WiresharkPipe : IDisposable
+    public enum DataLinkType : uint
     {
-        public const uint DLT_USER0 = 147;
+        DLT_USER0 = 147,
+    }
 
-        private NamedPipeServerStream _pipe;
-        private BinaryWriter _bw;
+    class WiresharkPcapProtocol : IDisposable
+    {
+        BinaryWriter _bw = null;
 
-        public WiresharkPipe(string pipename)
+        public bool Connected { get { return _bw != null; } }
+
+        public WiresharkPcapProtocol(Stream stm)
         {
-            try
-            {
-                _pipe = new NamedPipeServerStream(pipename, PipeDirection.Out);
-            }
-            catch
-            {
-                _pipe = null;
-            }
+            _bw = new BinaryWriter(stm);
         }
 
         public void Dispose()
@@ -38,22 +35,10 @@ namespace Wireshark
             if (_bw != null)
                 _bw.Dispose();
 
-            if (_pipe != null)
-                _pipe.Dispose();
+            _bw = null;
         }
 
-        public bool Connected { get { return _bw != null; } }
-
-        public void WaitForConnection()
-        {
-            _pipe.WaitForConnection();
-
-            // connect binary writer to pipe to write binary data into it
-            _bw = new BinaryWriter(_pipe);
-        }
-
-
-        public void WriteHeader(uint network, uint snaplen) // DLT_USER0 = 147
+        public void WriteHeader(DataLinkType network, uint snaplen) // DLT_USER0 = 147
         {
             if (_bw == null)
                 return;
@@ -68,7 +53,7 @@ namespace Wireshark
                 _bw.Write((UInt32)snaplen);
                 _bw.Write((UInt32)network);
             }
-            catch 
+            catch
             {
                 _bw.Dispose();
                 _bw = null;
@@ -91,8 +76,5 @@ namespace Wireshark
                 _bw = null;
             }
         }
-
-
-        
     }
 }
