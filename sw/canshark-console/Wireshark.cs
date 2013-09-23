@@ -21,11 +21,11 @@ namespace Wireshark
         private NamedPipeServerStream _pipe;
         private BinaryWriter _bw;
 
-        public WiresharkPipe()
+        public WiresharkPipe(string pipename)
         {
             try
             {
-                _pipe = new NamedPipeServerStream("wireshark", PipeDirection.Out);
+                _pipe = new NamedPipeServerStream(pipename, PipeDirection.Out);
             }
             catch
             {
