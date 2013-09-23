@@ -50,12 +50,13 @@ namespace canshark
             br.ReadByte(); /* zero */
             byte[] by = br.ReadBytes(8);
             msg.Data = new byte[br.ReadByte()];
-            Array.Copy(by,msg.Data, msg.Data.Length);
+            Array.Copy(by, msg.Data, msg.Data.Length);
+
             br.ReadBytes(7); /* PAD */
             UInt64 ticks = br.ReadUInt64();
 
-            msg.Sec = (UInt32)(long)(ticks / (1000 * 65536));
-            msg.Usec = (UInt32)((long)(ticks % (1000 * 65536)) * 1000 / 65536);
+            msg.Sec = (UInt32)(long)(ticks / (1000 * 1000));
+            msg.Usec = (UInt32)((long)(ticks % (1000 * 1000)));
             
             return msg;
         }

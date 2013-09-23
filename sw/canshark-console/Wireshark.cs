@@ -19,7 +19,7 @@ namespace Wireshark
         public const uint DLT_USER0 = 147;
 
         private NamedPipeServerStream _pipe;
-        static BinaryWriter _bw;
+        private BinaryWriter _bw;
 
         public WiresharkPipe()
         {
