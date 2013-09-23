@@ -6,3 +6,5 @@
 /fw/canshark/*.layout
 *.o
 *.d
+/sw/canshark-gui/bin/Debug
+/sw/canshark-gui/obj/Debug
