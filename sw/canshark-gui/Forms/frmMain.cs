@@ -1,4 +1,5 @@
 ﻿using canshark;
+using canshark.Analysis;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -26,6 +27,9 @@ namespace canshark_gui
         
         /* statistics end */
 
+        /* Analysis */
+        CanopenCycle[] Cycle = new CanopenCycle[] { new CanopenCycle(), new CanopenCycle() };
+
         public frmMain()
         {
             InitializeComponent();
@@ -45,6 +49,8 @@ namespace canshark_gui
             board.Dispose();
         }
 
+        
+
         private void timer1_Tick(object sender, EventArgs e)
         {
             for (int i = 0; i < 2; i++)
@@ -54,17 +60,46 @@ namespace canshark_gui
                 dataGridView1[4, i].Value = can_stats[i].nrx.ToString();
                 dataGridView1[5, i].Value = can_stats[i].nerrs.ToString();
             }
+
+            CanopenMsg[] cycle = Cycle[0].GetCycleSnapshot();
+
+            while (dataGridView2.RowCount < cycle.Length)
+                dataGridView2.Rows.Add();
+
+            if (cycle.Length == 0)
+                return;
+
+            for (int i = 0; i < cycle.Length; i++)
+            {
+                dataGridView2[0, i].Value = cycle[i].dir ? "TX" : "RX";
+                dataGridView2[1, i].Value = cycle[i].COBstr;
+                dataGridView2[2, i].Value = cycle[i].data;
+                dataGridView2[3, i].Value = "+"+cycle[i].delay.ToString("F3") + " ms";
+                dataGridView2[4, i].Value = cycle[i].count.ToString("D");
+            }
+
+            lperiod.Text = Cycle[0].SyncPeriod.ToString("F3") + " ms";
         }
 
-      
+        
 
         private void board_MessageReceived(object sender, CanMessage e)
         {
+            int dev = e.Source & 0x01;
+
             if ((e.Source & 0x08) != 0)
-                can_stats[e.Source & 0x01].ntx++;
+                can_stats[dev].ntx++;
             else
-                can_stats[e.Source & 0x01].nrx++;
+                can_stats[dev].nrx++;
+
+            Cycle[dev].Analyze(e);
         }
+
+        private void trackBar1_Scroll(object sender, EventArgs e)
+        {
+            timer1.Interval = trackBar1.Value;
+        }
+
 
         
     }
