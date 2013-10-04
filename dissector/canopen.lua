@@ -160,10 +160,10 @@ getdata_table = {
 }
 
 local getdata = function(d)
-	local p = getdata_table[bit.band(d(0,1):uint(), 0x0F)]
+	local p = getdata_table[bit.band(d.data(0,1):uint(), 0x0F)]
 	
 	if p then
-		return p(d)
+		return p(d.data)
 	else
 		return nil,0
 	end
@@ -190,36 +190,41 @@ local canopen_sdo = function(buffer, pinfo, tree, msg)
 	t:add(sdo.n, msg.data(0,1))
 	t:add(sdo.e, msg.data(0,1))
 	t:add(sdo.s, msg.data(0,1))
+	
 	t:add_le(sdo.index, msg.data(1,2))
 	t:add(sdo.subindex, msg.data(3,1))
 	
 	pinfo.cols.info:append(string.format(" index=[%04X:%02X]", msg.data(1,2):le_uint(), msg.data(3,1):uint()))
 
-	local cs = bit.band(msg.data(0,1):uint(),0xE0)
-	
-	if ((msg.funct == 11) and (cs == 0x40)) or      -- Response to upload (READ)
-	   ((msg.funct == 12) and (cs == 0x20)) then    -- Request download (WRITE)
-	
-		data,len = getdata(msg.data)
+	local cs = bit.bor(bit.band(msg.data(0,1):uint(), 0xE0), bit.tobit(msg.funct))
+
+	-- READ upload resp or WRITE download req
+	if (cs == 0x4B) or (cs == 0x2C) then
+
+		local p = getdata_table[bit.band(msg.data(0,1):uint(), 0x0F)]
+
+		if p then
+			data,len = p(msg)
+		else
+			data = nil
+			len = 0
+		end
 
 		t:add(sdo.datalen, len)
-		
+
 		if data then
 			t:add_le(sdo.data, data)
 			pinfo.cols.info:append(string.format(" value=0x%0X", data:le_uint()))
 		end
 
-		if len == 0 then
-			if data then 
-				pinfo.cols.info:append(" size=unspecified")
-			end
-		else
+		if data or len > 0 then
 			pinfo.cols.info:append(string.format(" size=%d", len))
 		end
 	end
 	
-	if cs == 0x80 then
-		pinfo.cols.info:append(string.format(" ABORT [%08X]",  msg.data(4,4):le_uint()))
+	-- ABORT upload or download
+	if (cs == 0x8B) or (cs == 0x8C) then
+		pinfo.cols.info:append(string.format(" ABORT [%08X]", msg.data(4,4):le_uint()))
 	end
 end 
 
