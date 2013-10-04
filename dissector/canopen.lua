@@ -148,6 +148,26 @@ sdo.index = ProtoField.uint16("sdo.index", "Index", base.HEX)
 sdo.subindex = ProtoField.uint8("sdo.subindex", "SubIndex", base.HEX)
 
 sdo.data = ProtoField.bytes("sdo.data", "Data")
+sdo.datalen = ProtoField.uint32("sdo.datalen", "Data Length", base.DEC)
+
+getdata_table = {
+	[0x01] = function(data) return nil,data(4,4):le_uint() end,
+	[0x02] = function(data) return data(4,4),0 end,
+	[0x03] = function(data) return data(4,4),4 end,
+	[0x07] = function(data) return data(4,3),3 end,
+	[0x0B] = function(data) return data(4,2),2 end,
+	[0x0F] = function(data) return data(4,1),1 end,
+}
+
+local getdata = function(d)
+	local p = getdata_table[bit.band(d(0,1):uint(), 0x0F)]
+	
+	if p then
+		return p(d)
+	else
+		return nil,0
+	end
+end
 
 local canopen_sdo = function(buffer, pinfo, tree, msg)
 	t = tree:add(co_sdo_proto)
@@ -180,29 +200,21 @@ local canopen_sdo = function(buffer, pinfo, tree, msg)
 	if ((msg.funct == 11) and (cs == 0x40)) or      -- Response to upload (READ)
 	   ((msg.funct == 12) and (cs == 0x20)) then    -- Request download (WRITE)
 	
-		local siz = bit.band(msg.data(0,1):uint(), 0x0F)
-		
-		if siz == 0x02 then
-			data = msg.data(4,4)
-		else if siz == 0x03 then
-			data = msg.data(4,4)
-		else if siz == 0x07 then
-			data = msg.data(4,3)
-		else if siz == 0x0b then
-			data = msg.data(4,2)
-		else if siz == 0x0f then
-			data = msg.data(4,1)
-		else
-			data = nil
-		end
-		end
-		end
-		end
-		end
+		data,len = getdata(msg.data)
+
+		t:add(sdo.datalen, len)
 		
 		if data then
 			t:add_le(sdo.data, data)
-			pinfo.cols.info:append(string.format(" value=%0X", data:le_uint()))
+			pinfo.cols.info:append(string.format(" value=0x%0X", data:le_uint()))
+		end
+
+		if len == 0 then
+			if data then 
+				pinfo.cols.info:append(" size=unspecified")
+			end
+		else
+			pinfo.cols.info:append(string.format(" size=%d", len))
 		end
 	end
 	
