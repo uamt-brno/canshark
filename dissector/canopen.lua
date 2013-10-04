@@ -2,33 +2,30 @@
 
 local bit = require("bit");
 
+-----------------------------------------------------------------------------------------------------------------------------------------------------
 -- CiA DS203.2
+co_nmt_proto = Proto("co_nmt", "NMT")
+
 local canopen_nmt = function(buffer, pinfo, tree, msg) 
-	t = tree:add("CanOpen: NMT")
-	
-	pinfo.cols.info:append("NMT")
+	t = tree:add(co_nmt_proto)
 end
 
+-----------------------------------------------------------------------------------------------------------------------------------------------------
 -- CiA DS204.2
-local canopen_dbt_req = function(buffer, pinfo, tree, msg)
-	t = tree:add("CanOpen: DBT Request")
-	
-	pinfo.cols.info:append("DBT Req ")
+co_dbt_proto = Proto("co_dbt", "DBT")
+
+local canopen_dbt = function(buffer, pinfo, tree, msg)
+	t = tree:add(co_dbt_proto)
 end
 
-local canopen_dbt_rsp = function(buffer, pinfo, tree, msg)
-	t = tree:add("CanOpen: DBT Response")
-	
-	pinfo.cols.info:append("DBT Rsp ")
-end
-
-
+-----------------------------------------------------------------------------------------------------------------------------------------------------
 -- CiA DS205.2 and DS205.2A for LMT, DS305 for LSS
-local canopen_lmt_req = function(buffer, pinfo, tree, msg)
-	t = tree:add("CanOpen: LMT Request")
-	
-	pinfo.cols.info:append("LMT Req ")
+co_lmt_proto = Proto("co_lmt", "LMT")
 
+local canopen_lmt = function(buffer, pinfo, tree, msg)
+	t = tree:add(co_lmt_proto)
+
+	-- request
 	-- byte0 meaning:
 	-- 0x00 - 0x3F is LMT (DS205)
 	-- 0x40 - 0x7f is LSS (DS305)
@@ -57,14 +54,9 @@ local canopen_lmt_req = function(buffer, pinfo, tree, msg)
 	-- 0x25 Inquire Product name
 	-- 0x26 Inquire Serial number
 	
-	
 	-- 0x5E Inquire node ID
-end
-
-local canopen_lmt_rsp = function(buffer, pinfo, tree, msg)
-	t = tree:add("CanOpen: LMT Response")
 	
-	pinfo.cols.info:append("LMT Rsp ")
+	-- response
 	
 	-- byte0 meaning:
 	-- 0x00 - 0x3F is LMT (DS205)
@@ -80,149 +72,216 @@ local canopen_lmt_rsp = function(buffer, pinfo, tree, msg)
 	-- 0x5E Inquire node ID (byte1=currentID)
 end
 
-
+-----------------------------------------------------------------------------------------------------------------------------------------------------
+co_sync_proto = Proto("co_sync", "SYNC")
 
 local canopen_sync = function(buffer, pinfo, tree, msg) 
-	t = tree:add("CanOpen: SYNC")
-	
-	pinfo.cols.info:append("SYNC")
+	t = tree:add(co_sync_proto)
 end
 
+-----------------------------------------------------------------------------------------------------------------------------------------------------
+
+co_emcy_proto = Proto("co_emcy", "EMCY")
+
+local canopen_emcy = function(buffer, pinfo, tree, msg)
+	t = tree:add(co_emcy_proto)
+end
+
+-----------------------------------------------------------------------------------------------------------------------------------------------------
+
+co_tstamp_proto = Proto("co_tstamp", "TIMESTAMP")
+
 local canopen_timestamp = function(buffer, pinfo, tree, msg) 
-	t = tree:add("CanOpen: TIMESTAMP")
+	t = tree:add(co_tstamp_proto)
 	
-	pinfo.cols.info:append("TIMESTAMP");
 	if msg.data:len() == 8 then
 		pinfo.cols.info:append(" ["..tostring(msg.data:le_uint64()).."]")
 	end
 end
 
-local canopen_emcy = function(buffer, pinfo, tree, msg)
-	t = tree:add("CanOpen: EMCY")
-	pinfo.cols.info:append("EMCY")
-end
+
+-----------------------------------------------------------------------------------------------------------------------------------------------------
+-- The SDO protocol (CiA DS202)
+--
+
+co_sdo_proto = Proto("sdo", "SDO")
 
 vs_tsdotype = {
-	[0] = "Download segment request",
-	[1] = "Initiate download request",
-	[2] = "Initiate upload request",
-	[3] = "Upload segment request",
-	[4] = "Abort SDO download",
-	[5] = "Block upload request",
-	[6] = "Block download request",
+	[0] = "Download segment",
+	[1] = "Initiate download",
+	[2] = "Initiate upload",
+	[3] = "Upload segment",
+	[4] = "Abort",
+	[5] = "Block upload",
+	[6] = "Block download",
 	[7] = "Block download end",
 }
 
 vs_rsdotype = {
-	[0] = "Upload segment response",
-	[1] = "Download segment response",
-	[2] = "Initiate upload response",
-	[3] = "Initiate download response",
-	[4] = "Abort SDO download",
-	[5] = "Block download response",
-	[6] = "Block upload response",
+	[0] = "Upload segment",
+	[1] = "Download segment",
+	[2] = "Initiate upload",
+	[3] = "Initiate download",
+	[4] = "Abort",
+	[5] = "Block download",
+	[6] = "Block upload",
 	[7] = "Block download end",
 }
 
-vs_dir = { [0] = "Request", [1] = "Response" }
+vs_dir = { 
+	[11] = "Response",  -- 0x580
+	[12] = "Request",   -- 0x600
+}
 
-sdo_proto = Proto("sdo", "SDO")
+local sdo = co_sdo_proto.fields
 
-local x = sdo_proto.fields
+sdo.dir = ProtoField.uint16("sdo.function", "Function", base.HEX, vs_dir, 0x780)
 
--- header
-x.dir = ProtoField.uint8("sdo.dir", "Direction", base.DEC, vs_dir)
+sdo.ccs = ProtoField.uint8("sdo.ccs", "CCS", base.DEC, vs_tsdotype, 0xE0)
+sdo.scs = ProtoField.uint8("sdo.scs", "SCS", base.DEC, vs_rsdotype, 0xE0)
 
-x.ccsr = ProtoField.uint8("sdo.ccs", "CCS", base.DEC, vs_tsdotype, 0xE0)
-x.ccst = ProtoField.uint8("sdo.ccs", "CCS", base.DEC, vs_rsdotype, 0xE0)
+sdo.n = ProtoField.uint8("sdo.n", "N", base.DEC, nil, 0x1C)
+sdo.e = ProtoField.uint8("sdo.e", "Expedited", base.DEC, nil, 0x02)
+sdo.s = ProtoField.uint8("sdo.s", "Size", base.DEC, nil, 0x01)
 
-x.n = ProtoField.uint8("sdo.n", "N", base.DEC, nil, 0x0C)
-x.e = ProtoField.uint8("sdo.e", "Expedited", base.DEC, nil, 0x02)
-x.s = ProtoField.uint8("sdo.s", "Size", base.DEC, nil, 0x01)
+sdo.index = ProtoField.uint16("sdo.index", "Index", base.HEX)
+sdo.subindex = ProtoField.uint8("sdo.subindex", "SubIndex", base.HEX)
 
+sdo.data = ProtoField.bytes("sdo.data", "Data")
 
-x.index = ProtoField.uint16("sdo.index", "Index", base.HEX)
-x.subindex = ProtoField.uint16("sdo.subindex", "SubIndex", base.HEX)
+local canopen_sdo = function(buffer, pinfo, tree, msg)
+	t = tree:add(co_sdo_proto)
 
+	t:add(sdo.dir, msg.addr.std)
 
--- CiA DS202
-local canopen_tsdo = function(buffer, pinfo, tree, msg)
-	t = tree:add("CanOpen: TSDO")
-	pinfo.cols.info:append("TSDO")
+	local str = string.format(" node=%02X", msg.nodeid) 
+
+	if msg.funct == 11 then
+		t:add(sdo.scs, msg.data(0,1))
+		str = " Resp" .. str
+	else
+		t:add(sdo.ccs, msg.data(0,1))
+		str = " Req " .. str
+	end
+
+	pinfo.cols.info = "SDO" .. str
+	t:append_text(str)
 	
-	t:add(x.dir, 1)
+	t:add(sdo.n, msg.data(0,1))
+	t:add(sdo.e, msg.data(0,1))
+	t:add(sdo.s, msg.data(0,1))
+	t:add_le(sdo.index, msg.data(1,2))
+	t:add(sdo.subindex, msg.data(3,1))
 	
-	t:add(x.ccst, msg.data(0,1))
-	t:add(x.n, msg.data(0,1))
-	t:add(x.e, msg.data(0,1))
-	t:add(x.s, msg.data(0,1))
-	t:add(x.index, msg.data(1,2))
-	t:add(x.subindex, msg.data(3,1))
+	pinfo.cols.info:append(string.format(" index=[%04X:%02X]", msg.data(1,2):le_uint(), msg.data(3,1):uint()))
+
+	local cs = bit.band(msg.data(0,1):uint(),0xE0)
 	
-	-- 0x40 Initiate upload request (write to index [byte2 byte1] subindex [byte3])
-		-- byte0 & 0x03    (bits e,s bits 1,0)
-		-- 0x00 Reserved
-		-- 0x01 Size bytes
-		-- 0x02 Expedited Unspecified bytes
-			-- [byte7 byte6 byte5 byte4]
-		-- 0x03 Expedited transfer
-			-- byte0 & 0x0C  (n, bits 3..2)
-			-- 0x00 [byte7 byte6 byte5 byte4]
-			-- 0x04 [byte6 byte5 byte4]
-			-- 0x08 [byte5 byte4]
-			-- 0x0C [byte4]
+	if ((msg.funct == 11) and (cs == 0x40)) or      -- Response to upload (READ)
+	   ((msg.funct == 12) and (cs == 0x20)) then    -- Request download (WRITE)
+	
+		local siz = bit.band(msg.data(0,1):uint(), 0x0F)
+		
+		if siz == 0x02 then
+			data = msg.data(4,4)
+		else if siz == 0x03 then
+			data = msg.data(4,4)
+		else if siz == 0x07 then
+			data = msg.data(4,3)
+		else if siz == 0x0b then
+			data = msg.data(4,2)
+		else if siz == 0x0f then
+			data = msg.data(4,1)
+		else
+			data = nil
+		end
+		end
+		end
+		end
+		end
+		
+		if data then
+			t:add_le(sdo.data, data)
+			pinfo.cols.info:append(string.format(" value=%0X", data:le_uint()))
+		end
+	end
+	
+	if cs == 0x80 then
+		pinfo.cols.info:append(string.format(" ABORT [%08X]",  msg.data(4,4):le_uint()))
+	end
 end 
 
-local canopen_rsdo = function(buffer, pinfo, tree, msg)
-	t = tree:add("CanOpen: RSDO")
-	
-	pinfo.cols.info:append("RSDO")
+-----------------------------------------------------------------------------------------------------------------------------------------------------
 
-	t:add(x.dir, 0)
-	t:add(x.ccsr, msg.data(0,1))
-	t:add(x.n, msg.data(0,1))
-	t:add(x.e, msg.data(0,1))
-	t:add(x.s, msg.data(0,1))
-	t:add(x.index, msg.data(1,2))
-	t:add(x.subindex, msg.data(3,1))
-	
-	-- pinfo.cols.info:append(" " .. tostring(fld_rsdo_ccs()))
-end 
+co_guard_proto = Proto("co_guard", "GUARD")
 
 local canopen_guard = function(buffer, pinfo, tree, msg)
-	t = tree:add("CanOpen: GUARD")
-	pinfo.cols.info:append("GUARD")
-end 
+	t = tree:add(co_guard_proto)
+end
+
+-----------------------------------------------------------------------------------------------------------------------------------------------------
+-- CanOpen DISSECTOR
+
+copen_proto = Proto("copen", "CanOpen")
+
+vs_funct = {
+	[ 0] = "NMT",		-- 0x000
+	[ 1] = "SYNC/EMCY",	-- 0x080
+	[ 2] = "TIME",		-- 0x100
+	[ 3] = "TPDO1",		-- 0x180
+	[ 4] = "RPDO1",		-- 0x200
+	[ 5] = "TPDO2",		-- 0x280
+	[ 6] = "RPDO2",		-- 0x300
+	[ 7] = "TPDO3",		-- 0x380
+	[ 8] = "RPDO3",		-- 0x400
+	[ 9] = "TPDO4",		-- 0x480
+	[10] = "RPDO4",		-- 0x500
+	[11] = "TSDO",		-- 0x580
+	[12] = "RSDO",		-- 0x600
+	[13] = "reserved",	-- 0x680
+	[14] = "GUARD",		-- 0x700
+	[15] = "NMT/LMT/DBT"	-- 0x780
+}
 
 canopen = {
 	[0x000] = canopen_nmt,
 	[0x080] = canopen_sync,
 	[0x100] = canopen_timestamp,
-	[0x7E4] = canopen_lmt_rsp,
-	[0x7E5] = canopen_lmt_req,
-	[0x7E7] = canopen_dbt_req,
-	[0x7E8] = canopen_dbt_rsp,
+	[0x700] = canopen_guard,
+	[0x7E4] = canopen_lmt,		-- rsp
+	[0x7E5] = canopen_lmt,		-- req
+	[0x7E7] = canopen_dbt,		-- req
+	[0x7E8] = canopen_dbt,		-- response
 }
 
 function canopen_proto_init()
 	for id=0x01,0x7F do 
 		canopen[0x080 + id] = canopen_emcy
-		canopen[0x580 + id] = canopen_tsdo
-		canopen[0x600 + id] = canopen_rsdo
+		canopen[0x580 + id] = canopen_sdo
+		canopen[0x600 + id] = canopen_sdo
 		canopen[0x700 + id] = canopen_guard
 	end
 end
 
+local copen = copen_proto.fields
+
+copen.funct = ProtoField.uint16("copen.funct", "Function", base.HEX, vs_funct, 0x780)
+copen.nodeid = ProtoField.uint16("copen.nodeid", "Node", base.HEX, nil, 0x07F)
+
 function canopen_proto_dissector(buffer, pinfo, tree, msg)
 	local co = canopen[msg.addr.std]
 	if co and type(co) == "function" then
-		id = bit.band(msg.addr.std, 0x7F)
-		
-		if id > 0 then
-			pinfo.cols.info = "CanOpen["..tostring(id).."]: "
-		else
-			pinfo.cols.info = "CanOpen: "
-		end
+		msg.nodeid   = bit.band(msg.addr.std, 0x07F)
+		msg.funct = bit.rshift(bit.band(msg.addr.std, 0x780), 7)
+
+		t = tree:add(copen_proto);
+		t:add(copen.nodeid, msg.addr.std)
+		t:add(copen.funct, msg.addr.std)
+
+		local str = string.format(" nodeid=%02X function=%s", msg.nodeid, vs_funct[msg.funct]) 
+		pinfo.cols.info = "CanOpen: " .. str
+		t:append_text(str)
+
 		co(buffer, pinfo, tree, msg)
 	end
 end
