@@ -68,19 +68,43 @@ namespace canshark_gui
 
             lperiod.Text = Cycle[0].SyncPeriod.ToString("F3") + " ms";
 
-            if (cycle.Length == 0)
-                return;
-
-            int basecount = (int)cycle[0].count;
-
-            for (int i = 0; i < cycle.Length; i++)
+            if (cycle.Length > 0)
             {
-                dataGridView2[0, i].Value = cycle[i].dir ? "TX" : "RX";
-                dataGridView2[1, i].Value = cycle[i].COBstr;
-                dataGridView2[2, i].Value = cycle[i].data;
-                dataGridView2[3, i].Value = "+" + cycle[i].delay.ToString("F3") + " ms";
-                dataGridView2[4, i].Value = "+" + cycle[i].length.ToString("F3") + " ms";
-                dataGridView2[5, i].Value = (cycle[i].count - basecount).ToString("D");
+
+                int basecount = (int)cycle[0].count;
+
+                for (int i = 0; i < cycle.Length; i++)
+                {
+                    dataGridView2[0, i].Value = cycle[i].dir ? "TX" : "RX";
+                    dataGridView2[1, i].Value = cycle[i].COBstr;
+                    dataGridView2[2, i].Value = cycle[i].data;
+                    dataGridView2[3, i].Value = "+" + cycle[i].delay.ToString("F3") + " ms";
+                    dataGridView2[4, i].Value = "+" + cycle[i].length.ToString("F3") + " ms";
+                    dataGridView2[5, i].Value = (cycle[i].count - basecount).ToString("D");
+                }
+            }
+
+            cycle = Cycle[1].GetCycleSnapshot();
+
+            while (dataGridView3.RowCount < cycle.Length)
+                dataGridView3.Rows.Add();
+
+            lperiod2.Text = Cycle[1].SyncPeriod.ToString("F3") + " ms";
+
+            if (cycle.Length > 0)
+            {
+
+                int basecount = (int)cycle[0].count;
+
+                for (int i = 0; i < cycle.Length; i++)
+                {
+                    dataGridView3[0, i].Value = cycle[i].dir ? "TX" : "RX";
+                    dataGridView3[1, i].Value = cycle[i].COBstr;
+                    dataGridView3[2, i].Value = cycle[i].data;
+                    dataGridView3[3, i].Value = "+" + cycle[i].delay.ToString("F3") + " ms";
+                    dataGridView3[4, i].Value = "+" + cycle[i].length.ToString("F3") + " ms";
+                    dataGridView3[5, i].Value = (cycle[i].count - basecount).ToString("D");
+                }
             }
         }
 
