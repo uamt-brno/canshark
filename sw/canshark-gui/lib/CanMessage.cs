@@ -81,5 +81,19 @@ namespace canshark
         {
             return (COB >> 18) & 0x7FF;
         }
+
+        public UInt16 GetMinFrameLength()
+        {
+            UInt16 len = (UInt16)(Data.Length * 8);
+            if ((COB & 0x80000000) != 0)
+                len += 64;
+            else
+                len += 44;
+
+            //len += (UInt16)(len / 5); // bit stuffing
+
+            len += 3;
+            return (UInt16)(len * 2);
+        }
     }
 }
