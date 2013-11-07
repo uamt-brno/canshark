@@ -66,19 +66,22 @@ namespace canshark_gui
             while (dataGridView2.RowCount < cycle.Length)
                 dataGridView2.Rows.Add();
 
+            lperiod.Text = Cycle[0].SyncPeriod.ToString("F3") + " ms";
+
             if (cycle.Length == 0)
                 return;
+
+            int basecount = (int)cycle[0].count;
 
             for (int i = 0; i < cycle.Length; i++)
             {
                 dataGridView2[0, i].Value = cycle[i].dir ? "TX" : "RX";
                 dataGridView2[1, i].Value = cycle[i].COBstr;
                 dataGridView2[2, i].Value = cycle[i].data;
-                dataGridView2[3, i].Value = "+"+cycle[i].delay.ToString("F3") + " ms";
-                dataGridView2[4, i].Value = cycle[i].count.ToString("D");
+                dataGridView2[3, i].Value = "+" + cycle[i].delay.ToString("F3") + " ms";
+                dataGridView2[4, i].Value = "+" + cycle[i].length.ToString("F3") + " ms";
+                dataGridView2[5, i].Value = (cycle[i].count - basecount).ToString("D");
             }
-
-            lperiod.Text = Cycle[0].SyncPeriod.ToString("F3") + " ms";
         }
 
         
