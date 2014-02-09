@@ -60,5 +60,40 @@ namespace canshark
             
             return msg;
         }
+
+        public string GetAddrString()
+        {
+            if ((COB & 0x80000000) != 0)
+                return string.Format("{0:X3}.{1:X5}", ((COB >> 18) & 0x7FF), COB & 0x3FFFF);
+            else
+                return string.Format("{0:X3}", ((COB >> 18) & 0x7FF));
+        }
+
+        public static string GetAddrString(UInt32 COB)
+        {
+            if ((COB & 0x80000000) != 0)
+                return string.Format("{0:X3}.{1:X5}", ((COB >> 18) & 0x7FF), COB & 0x3FFFF);
+            else
+                return string.Format("{0:X3}", ((COB >> 18) & 0x7FF));
+        }
+
+        public uint GetStdId()
+        {
+            return (COB >> 18) & 0x7FF;
+        }
+
+        public UInt16 GetMinFrameLength()
+        {
+            UInt16 len = (UInt16)(Data.Length * 8);
+            if ((COB & 0x80000000) != 0)
+                len += 64;
+            else
+                len += 44;
+
+            //len += (UInt16)(len / 5); // bit stuffing
+
+            len += 3;
+            return (UInt16)(len * 2);
+        }
     }
 }

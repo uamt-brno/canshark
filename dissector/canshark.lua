@@ -1,6 +1,6 @@
 -- Author: Frantisek Burian <BuFran@seznam.cz>
 
-canshark_proto = Proto("canshark", "bxCAN")
+canshark_proto = Proto("canshark", "CAN")
 
 local bit = require("bit");
 local band, rshift, tobit, tohex = bit.band, bit.rshift, bit.tobit, bit.tohex
@@ -33,7 +33,7 @@ f.data = ProtoField.bytes("canshark.datas", "Data")
 f.port = ProtoField.uint8("canshark.port", "Port", base.DEC, vs_port, 0x07)
 f.dir = ProtoField.uint8("canshark.dir", "Direction", base.DEC, vs_dir, 0x08)
 f.mbox = ProtoField.uint8("canshark.mbox", "Mailbox", base.DEC, nil, 0xF0)
-f.delay = ProtoField.uint16("canshark.delay", "Delay", base.HEX)
+f.timestamp = ProtoField.uint16("canshark.timestamp", "Time", base.HEX)
 
 
 -------------------------
@@ -50,14 +50,14 @@ function canshark_proto.dissector(buffer, pinfo, tree)
 	local peripheral = buffer(5, 1)
 	local timestamp = buffer(6, 2)
 	local datas = buffer(8, len:uint())
-	
+
 	local addr = {};
 	addr.ide = rshift(band(mobid:uint(), tobit(0x80000000)), 31)
 	addr.rtr = rshift(band(mobid:uint(), tobit(0x40000000)), 30)
 	addr.err = rshift(band(mobid:uint(), tobit(0x20000000)), 29)
 	addr.std = rshift(band(mobid:uint(), tobit(0x1FFC0000)), 18)
 	addr.ext = rshift(band(mobid:uint(), tobit(0x0003FFFF)), 0)
-	
+
 	local dir    = rshift(band(peripheral:uint(), 0x08), 3)
 	local periph = rshift(band(peripheral:uint(), 0x07), 0)
 
@@ -66,17 +66,17 @@ function canshark_proto.dissector(buffer, pinfo, tree)
 	else
 		addr.str = tohex(addr.std, 3)
 	end
-	
+
 	t = tree:add(canshark_proto, vs_port[periph] .. "(".. vs_dir[dir] ..")".." COB-ID="..addr.str, buffer())
 	if len:uint() > 0 then
 		 tree:append_text(" data="..tostring(datas))
 	end
-	
+
 	t:add(f.port, peripheral)
 	t:add(f.dir, peripheral)
 	t:add(f.mbox, peripheral)
-	t:add(f.delay, timestamp)
-	
+	t:add_le(f.timestamp, timestamp)
+
 	if addr.err == 0 then
 		q = t:add(f.mobid, addr.str)
 		q:add(f.mobid_ide, mobid)

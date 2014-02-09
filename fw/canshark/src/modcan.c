@@ -36,7 +36,7 @@ void modcan_init(void)
 	can_leave_sleep_mode(CAN2);
 
 	struct can_timing ct;
-	can_timing_init(&ct, CAN_FREQ_1M, CAN_SAMPLE_75);
+	can_timing_init(&ct, CAN_FREQ_500K, CAN_SAMPLE_75);
 
 	//uint32_t canfreq = can_timing_getfreq(&ct);
 

@@ -33,16 +33,16 @@ uint64_t stick_get(void)
 uint64_t stick_get_us(void)
 {
 	CM_ATOMIC_CONTEXT();
+	uint32_t rld = systick_get_reload() + 1;
 
-	uint32_t ss = systick_get_value() >> 8;
-	uint64_t t = ticks * 65536; // ms->us
+	uint64_t ss = (rld-systick_get_value()) * 1000 / rld;
 
-	if (nvic_get_pending_irq(NVIC_SYSTICK_IRQ) && (ss < 0x7FFFFF)) {
+	if (nvic_get_pending_irq(NVIC_SYSTICK_IRQ) && (ss < 500)) {
 		// overflow between atomic and get value?
-		t += 65536;
+		ss += 1000;
 	}
 
-	return t + ss;
+	return ticks * 1000 + ss;
 }
 
 void stick_prepare(uint64_t *when, const uint64_t period)

@@ -45,10 +45,10 @@ void sys_tick_handler(void)
 	stick_update();
 
 	canopen_sync(CAN1);
-	canopen_sync(CAN2);
+	//canopen_sync(CAN2);
 
-	uint64_t ticks = stick_get();
-	can_transmit(CAN1, CAN_ID_STDID(0x100), (uint8_t*)&ticks, 8);
+	//uint64_t ticks = stick_get();
+	//can_transmit(CAN2, CAN_ID_STDID(0x100), (uint8_t*)&ticks, 8);
 }
 
 uint64_t arp_tmr;
