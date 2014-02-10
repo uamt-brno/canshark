@@ -1,7 +1,7 @@
 #ifndef LEDS_H_INCLUDED
 #define LEDS_H_INCLUDED
 
-void modled_init();
+void modled_init(void);
 
 #define LED0    GPIO2
 #define LED1    GPIO3

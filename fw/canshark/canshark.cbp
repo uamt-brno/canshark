@@ -102,6 +102,7 @@
 			<Option target="Release" />
 		</Unit>
 		<Unit filename="armv7m-vectstate.gdb" />
+		<Unit filename="common.mk" />
 		<Unit filename="inc/can_canopen.h" />
 		<Unit filename="inc/eth_f417.h" />
 		<Unit filename="inc/modcan.h" />
@@ -2444,6 +2445,11 @@
 			<Option compilerVar="CC" />
 		</Unit>
 		<Unit filename="lib/opencm3/locm3.sublime-project" />
+		<Unit filename="lib/opencm3/mk/README" />
+		<Unit filename="lib/opencm3/mk/gcc-config.mk" />
+		<Unit filename="lib/opencm3/mk/gcc-rules.mk" />
+		<Unit filename="lib/opencm3/mk/genlink-config.mk" />
+		<Unit filename="lib/opencm3/mk/genlink-rules.mk" />
 		<Unit filename="lib/opencm3/scripts/black_magic_probe_debug.scr" />
 		<Unit filename="lib/opencm3/scripts/black_magic_probe_flash.scr" />
 		<Unit filename="lib/opencm3/scripts/checkpatch.pl" />
@@ -2472,6 +2478,8 @@
 		<Unit filename="lib/opencm3/scripts/genlinktest.sh" />
 		<Unit filename="lib/opencm3/scripts/irq2nvic_h" />
 		<Unit filename="lib/opencm3/scripts/lpcvtcksum" />
+		<Unit filename="liblwip141.mk" />
+		<Unit filename="libopencm3.mk" />
 		<Unit filename="src/eth_f417.c">
 			<Option compilerVar="CC" />
 		</Unit>
@@ -2501,11 +2509,11 @@
 				<remote_debugging>
 					<options conn_type="0" serial_baud="115200" ip_address="localhost" ip_port="3333" extended_remote="1" />
 				</remote_debugging>
-				<remote_debugging target="Debug">
-					<options conn_type="2" serial_port="COM3" serial_baud="115200" ip_address="localhost" ip_port="3333" additional_cmds="monitor connect_srst true&#x0A;monitor swdp_scan&#x0A;attach 1&#x0A;load&#x0A;b main&#x0A;run" additional_cmds_before="source armv7m-vectstate.gdb" extended_remote="1" />
-				</remote_debugging>
 				<remote_debugging target="Release">
 					<options conn_type="2" serial_port="COM3" serial_baud="115200" ip_address="localhost" ip_port="3333" additional_cmds="monitor swdp_scan&#x0A;attach 1&#x0A;load&#x0A;b main&#x0A;run" additional_cmds_before="source armv7m-vectstate.gdb" extended_remote="1" />
+				</remote_debugging>
+				<remote_debugging target="Debug">
+					<options conn_type="2" serial_port="COM3" serial_baud="115200" ip_address="localhost" ip_port="3333" additional_cmds="monitor connect_srst true&#x0A;monitor swdp_scan&#x0A;attach 1&#x0A;load&#x0A;b main&#x0A;run" additional_cmds_before="source armv7m-vectstate.gdb" extended_remote="1" />
 				</remote_debugging>
 			</debugger>
 			<lib_finder disable_auto="1" />

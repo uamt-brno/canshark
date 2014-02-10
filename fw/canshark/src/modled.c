@@ -3,7 +3,7 @@
 
 #include "modled.h"
 
-void modled_init()
+void modled_init(void)
 {
 	rcc_periph_clock_enable(RCC_GPIOG);
 
