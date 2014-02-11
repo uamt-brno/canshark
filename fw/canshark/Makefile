@@ -17,9 +17,11 @@
 
 BINARY = canshark
 
-Q := @
-
 DEVICE = stm32f407vgt6
+
+OPENCM3_DIR	= lib/opencm3/
+LWIP141_DIR	= lib/opencm3/
+INTERMEDIATE_DIR= tmp/
 
 
 SRCS := $(patsubst src/%,%,$(wildcard src/*.c))
@@ -56,13 +58,6 @@ HDRS := $(shell find inc -name '*.h')
 HDRS += $(shell find lib/lwip141/src -name '*.h')
 HDRS += $(shell find lib/lwip141/port -name '*.h')
 
-
-STYLECHECKFLAGS := --no-tree -f --terse --mailback --max-line-length=200
-STYLECHECKFILES := $(HDRS) $(SRCS)
-
-OPENCM3_DIR := lib/opencm3
-LWIP141_DIR := lib/lwip141
-
 VPATH += src
 VPATH += lib/stm/src
 VPATH += lib/lwip141/src
@@ -70,62 +65,94 @@ VPATH += lib/lwip141/src/core
 VPATH += lib/lwip141/src/core/ipv4
 VPATH += lib/lwip141/src/netif
 
-include libopencm3.mk
-include liblwip141.mk
-include common.mk
-include $(OPENCM3_DIR)/mk/gcc-config.mk
-include $(OPENCM3_DIR)/mk/genlink-config.mk
+Q := @
+MAKEFLAGS += --no-print-directory
 
-OBJS   := $(patsubst %.c,%.o, $(filter %.c,$(SRCS))) \
-          $(patsubst %.s,%.o, $(filter %.s,$(SRCS))) \
-	  $(patsubst %.cpp,%.o, $(filter %.cpp,$(SRCS))) \
-	  $(patsubst %.cxx,%.o, $(filter %.cxx,$(SRCS))) \
-	  $(OBJS)
+OBJS   := $(addprefix $(INTERMEDIATE_DIR), 			\
+	      $(patsubst %.c,%.o, $(filter %.c,$(SRCS)))	\
+	      $(OBJS))
 
-.SUFFIXES: .elf .bin .hex .list
+###############################################################################
+###############################################################################
+# GENERAL CONFIG
+
+include $(OPENCM3_DIR)mk/gcc-config.mk
+include $(OPENCM3_DIR)mk/genlink-config.mk
+include $(OPENCM3_DIR)mk/stylecheck-config.mk
+
+# this must be included after genlink !
+include libopencm3-config.mk
+include liblwip141-config.mk
+include stylecheck-config.mk
+
+###############################################################################
+# C flags
+
+CFLAGS	+= -O0 -g
+CFLAGS	+= -Wextra -Wshadow -Wimplicit-function-declaration
+CFLAGS	+= -Wredundant-decls -Wmissing-prototypes -Wstrict-prototypes
+CFLAGS	+= -ffunction-sections -fdata-sections -ffast-math -fno-common
+#additional warnings
+CFLAGS	+= -Wmissing-declarations -Wmissing-include-dirs -Wunreachable-code
+CFLAGS  += -std=gnu99
+
+###############################################################################
+# C & C++ preprocessor common flags
+
+CPPFLAGS+= -MD -MP -MF $(INTERMEDIATE_DIR)$(*F).d
+CPPFLAGS+= -Wall -Wundef
+CPPFLAGS+= $(INCS)
+CPPFLAGS+= $(DEFS)
+#additional warnings
+CPPFLAGS+= -Winline -Winit-self -Wuninitialized -Wfloat-equal -Wcast-qual
+CPPFLAGS+= -Wswitch-enum -Wswitch-default -Wformat=2 -Wcast-align
+
+###############################################################################
+# Linker flags
+
+LDFLAGS	+= --static -nostartfiles
+LDFLAGS	+= -Wl,--gc-sections
+LDFLAGS += --specs=nano.specs
+
+###############################################################################
+# Linker libraries to be built with
+
+LDLIBS	+= -Wl,--start-group -lc -lgcc -lnosys -Wl,--end-group
+
+###############################################################################
+# RULES
+
+.SUFFIXES: .elf .bin .hex .list .map .images
 .SECONDARY:
 .SECONDEXPANSION:
 
-all: $(LIBDEPS) tmp bin bin/$(BINARY).elf
+all: images
 
-include $(OPENCM3_DIR)/mk/gcc-rules.mk
-include $(OPENCM3_DIR)/mk/genlink-rules.mk
+.PHONY: images
+images: $(LIBDEPS) $(INTERMEDIATE_DEP) bin bin/$(BINARY).images
 
-$(OPENCM3_LIBDEP):
-	$(MAKE) -C $(OPENCM3_DIR) lib
-
-#$(LWIP141_LIBDEP):
-#	$(MAKE) -C $(LWIP141_DIR) lib
-
+.PHONY: clean
 clean:
-	@$(PRINTF) "  CLEAN\n"
-	$(Q)$(RM) -rf bin tmp
-	-$(Q)rm -rf *.o *.d
+	@$(PRINTF) "  CLEAN   $(BINARY)\n"
+	$(Q)$(RM) -rf bin
 
-bin:
-	@$(PRINTF) "  DIR   bin\n"
-	-@mkdir -p bin
+.PHONY: cleanall
+cleanall: clean
+	@$(PRINTF) "  CLEAN   all\n"
+	$(Q)$(MAKE) -C $(OPENCM3_DIR) clean
 
-tmp:
-	@$(PRINTF) "  DIR   tmp\n"
-	-@mkdir -p tmp
+$(INTERMEDIATE_DEP) bin:
+	@$(PRINTF) "  DIR     $@\n"
+	-@mkdir -p $@
 
-stylecheck: $(STYLECHECKFILES:=.stylecheck)
-styleclean: $(STYLECHECKFILES:=.styleclean)
+include $(OPENCM3_DIR)mk/gcc-rules.mk
+include $(OPENCM3_DIR)mk/genlink-rules.mk
+include $(OPENCM3_DIR)mk/stylecheck-rules.mk
 
-%.stylecheck:
-	$(Q)scripts/checkpatch.pl $(STYLECHECKFLAGS) $* > $*.stylecheck; \
-	if [ -s $*.stylecheck ]; then \
-		cat $*.stylecheck; \
-	else \
-		rm -f $*.stylecheck; \
-	fi; \
+include libopencm3-rules.mk
+include liblwip141-rules.mk
 
-
-%.styleclean:
-	$(Q)rm -f $*.stylecheck;
-
-
-.PHONY: clean stylecheck styleclean
+%.images: %.elf %.list %.size
+	@# empty rule
 
 -include $(OBJS:.o=.d)

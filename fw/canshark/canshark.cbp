@@ -21,12 +21,12 @@
 					<Add option="-g" />
 				</Linker>
 				<MakeCommands>
-					<Build command="$make -j 5 -f $makefile all" />
-					<CompileFile command="$make -j 5 -f $makefile $file" />
-					<Clean command="$make -j 5 -f $makefile clean" />
+					<Build command="$make -j8 -f $makefile all" />
+					<CompileFile command="$make -j8 -f $makefile $file" />
+					<Clean command="$make -j8 -f $makefile clean" />
 					<DistClean command="$make -f $makefile distclean$target" />
-					<AskRebuildNeeded command="$make -j 5 -q -f $makefile $target" />
-					<SilentBuild command="$make -j 5 -f $makefile all &gt; $(CMD_NULL)" />
+					<AskRebuildNeeded command="$make  -q -f $makefile $target" />
+					<SilentBuild command="$make -j8 -f $makefile all &gt; $(CMD_NULL)" />
 				</MakeCommands>
 			</Target>
 			<Target title="Release">
@@ -102,7 +102,6 @@
 			<Option target="Release" />
 		</Unit>
 		<Unit filename="armv7m-vectstate.gdb" />
-		<Unit filename="common.mk" />
 		<Unit filename="inc/can_canopen.h" />
 		<Unit filename="inc/eth_f417.h" />
 		<Unit filename="inc/modcan.h" />
@@ -2450,6 +2449,8 @@
 		<Unit filename="lib/opencm3/mk/gcc-rules.mk" />
 		<Unit filename="lib/opencm3/mk/genlink-config.mk" />
 		<Unit filename="lib/opencm3/mk/genlink-rules.mk" />
+		<Unit filename="lib/opencm3/mk/stylecheck-config.mk" />
+		<Unit filename="lib/opencm3/mk/stylecheck-rules.mk" />
 		<Unit filename="lib/opencm3/scripts/black_magic_probe_debug.scr" />
 		<Unit filename="lib/opencm3/scripts/black_magic_probe_flash.scr" />
 		<Unit filename="lib/opencm3/scripts/checkpatch.pl" />
@@ -2478,8 +2479,11 @@
 		<Unit filename="lib/opencm3/scripts/genlinktest.sh" />
 		<Unit filename="lib/opencm3/scripts/irq2nvic_h" />
 		<Unit filename="lib/opencm3/scripts/lpcvtcksum" />
-		<Unit filename="liblwip141.mk" />
-		<Unit filename="libopencm3.mk" />
+		<Unit filename="liblwip141-config.mk" />
+		<Unit filename="liblwip141-rules.mk" />
+		<Unit filename="libopencm3-config.mk" />
+		<Unit filename="libopencm3-rules.mk" />
+		<Unit filename="scripts/checkpatch.pl" />
 		<Unit filename="src/eth_f417.c">
 			<Option compilerVar="CC" />
 		</Unit>
@@ -2502,6 +2506,7 @@
 		<Unit filename="src/stick.c">
 			<Option compilerVar="CC" />
 		</Unit>
+		<Unit filename="stylecheck-config.mk" />
 		<Extensions>
 			<code_completion />
 			<envvars />
