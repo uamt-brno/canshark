@@ -115,6 +115,8 @@
 			<Option target="Debug" />
 			<Option target="Release" />
 		</Unit>
+		<Unit filename="lib/lwip141/Makefile" />
+		<Unit filename="lib/lwip141/Makefile.gcc" />
 		<Unit filename="lib/lwip141/apps/chargen/chargen.c">
 			<Option compilerVar="CC" />
 			<Option target="Debug" />

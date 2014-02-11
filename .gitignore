@@ -9,3 +9,4 @@
 /sw/canshark-gui/bin/Debug
 /sw/canshark-gui/obj/Debug
 /fw/canshark/tmp
+/fw/canshark/lib/lwip141/bin

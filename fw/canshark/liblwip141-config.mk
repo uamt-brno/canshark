@@ -14,3 +14,10 @@
 ## You should have received a copy of the GNU Lesser General Public License
 ## along with this library.  If not, see <http://www.gnu.org/licenses/>.
 ##
+LWIP141_LIBNAME = lwip141
+
+CPPFLAGS	+= $(addprefix -I$(LWIP141_DIR),src/include src/include/ipv4 port)
+LDFLAGS		+= -L$(LWIP141_DIR)bin
+LWIP141_LIBDEP	:= $(LWIP141_DIR)bin/lib$(LWIP141_LIBNAME).a
+LIBDEPS		+= $(LWIP141_LIBDEP)
+LDLIBS		+= -l$(LWIP141_LIBNAME)

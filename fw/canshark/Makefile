@@ -20,50 +20,17 @@ BINARY = canshark
 DEVICE = stm32f407vgt6
 
 OPENCM3_DIR	= lib/opencm3/
-LWIP141_DIR	= lib/opencm3/
+LWIP141_DIR	= lib/lwip141/
 INTERMEDIATE_DIR= tmp/
 
 
 SRCS := $(patsubst src/%,%,$(wildcard src/*.c))
 
-#lwIP libraries
-SRCS += etharp.c
-SRCS += def.c
-SRCS += init.c
-SRCS += mem.c
-SRCS += memp.c
-SRCS += netif.c
-SRCS += pbuf.c
-SRCS += raw.c
-#SRCS += tcp.c
-#SRCS += tcp_in.c
-#SRCS += tcp_out.c
-SRCS += timers.c
-SRCS += udp.c
-SRCS += autoip.c
-SRCS += icmp.c
-#SRCS += igmp.c
-SRCS += inet.c
-SRCS += inet_chksum.c
-SRCS += ip.c
-SRCS += ip_addr.c
-#SRCS += ip_frag.c
-
-INCS += -Ilib/lwip141/src/include
-INCS += -Ilib/lwip141/src/include/ipv4
-INCS += -Ilib/lwip141/port
 INCS += -Iinc
 
 HDRS := $(shell find inc -name '*.h')
-HDRS += $(shell find lib/lwip141/src -name '*.h')
-HDRS += $(shell find lib/lwip141/port -name '*.h')
 
 VPATH += src
-VPATH += lib/stm/src
-VPATH += lib/lwip141/src
-VPATH += lib/lwip141/src/core
-VPATH += lib/lwip141/src/core/ipv4
-VPATH += lib/lwip141/src/netif
 
 Q := @
 MAKEFLAGS += --no-print-directory
@@ -122,7 +89,7 @@ LDLIBS	+= -Wl,--start-group -lc -lgcc -lnosys -Wl,--end-group
 ###############################################################################
 # RULES
 
-.SUFFIXES: .elf .bin .hex .list .map .images
+.SUFFIXES: .elf .bin .hex .map .list .srec .images
 .SECONDARY:
 .SECONDEXPANSION:
 
@@ -152,7 +119,7 @@ include $(OPENCM3_DIR)mk/stylecheck-rules.mk
 include libopencm3-rules.mk
 include liblwip141-rules.mk
 
-%.images: %.elf %.list %.size
+%.images: %.elf %.size
 	@# empty rule
 
 -include $(OBJS:.o=.d)

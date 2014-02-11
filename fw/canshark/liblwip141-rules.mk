@@ -15,6 +15,6 @@
 ## along with this library.  If not, see <http://www.gnu.org/licenses/>.
 ##
 
-#$(LWIP141_LIBDEP):
-#	$(MAKE) -C $(LWIP141_DIR) lib
+$(LWIP141_LIBDEP):
+	$(MAKE) -C $(LWIP141_DIR) all
 
