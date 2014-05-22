@@ -81,10 +81,18 @@
             this.dataGridViewTextBoxColumn10 = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.label3 = new System.Windows.Forms.Label();
             this.lperiod2 = new System.Windows.Forms.Label();
+            this.tabControl1 = new System.Windows.Forms.TabControl();
+            this.tabPage1 = new System.Windows.Forms.TabPage();
+            this.tabPage2 = new System.Windows.Forms.TabPage();
+            this.CAN2_histogram = new canshark.Histogram();
+            this.CAN1_histogram = new canshark.Histogram();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView2)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.trackBar1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView3)).BeginInit();
+            this.tabControl1.SuspendLayout();
+            this.tabPage1.SuspendLayout();
+            this.tabPage2.SuspendLayout();
             this.SuspendLayout();
             // 
             // timer1
@@ -207,7 +215,7 @@
             // 
             this.label2.AutoSize = true;
             this.label2.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
-            this.label2.Location = new System.Drawing.Point(12, 139);
+            this.label2.Location = new System.Drawing.Point(6, 3);
             this.label2.Name = "label2";
             this.label2.Size = new System.Drawing.Size(167, 13);
             this.label2.TabIndex = 5;
@@ -239,7 +247,7 @@
             this.dataGridViewTextBoxColumn3,
             this.Length,
             this.dataGridViewTextBoxColumn4});
-            this.dataGridView2.Location = new System.Drawing.Point(15, 155);
+            this.dataGridView2.Location = new System.Drawing.Point(6, 19);
             this.dataGridView2.MultiSelect = false;
             this.dataGridView2.Name = "dataGridView2";
             this.dataGridView2.ReadOnly = true;
@@ -256,7 +264,7 @@
             this.dataGridView2.RowTemplate.Height = 18;
             this.dataGridView2.ScrollBars = System.Windows.Forms.ScrollBars.None;
             this.dataGridView2.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
-            this.dataGridView2.Size = new System.Drawing.Size(613, 297);
+            this.dataGridView2.Size = new System.Drawing.Size(613, 445);
             this.dataGridView2.TabIndex = 4;
             // 
             // dir
@@ -326,7 +334,7 @@
             this.trackBar1.Maximum = 1000;
             this.trackBar1.Minimum = 10;
             this.trackBar1.Name = "trackBar1";
-            this.trackBar1.Size = new System.Drawing.Size(613, 42);
+            this.trackBar1.Size = new System.Drawing.Size(613, 45);
             this.trackBar1.SmallChange = 10;
             this.trackBar1.TabIndex = 6;
             this.trackBar1.TickFrequency = 20;
@@ -337,7 +345,7 @@
             // 
             this.lperiod.AutoSize = true;
             this.lperiod.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
-            this.lperiod.Location = new System.Drawing.Point(279, 139);
+            this.lperiod.Location = new System.Drawing.Point(221, 3);
             this.lperiod.Name = "lperiod";
             this.lperiod.Size = new System.Drawing.Size(33, 13);
             this.lperiod.TabIndex = 7;
@@ -369,7 +377,7 @@
             this.dataGridViewTextBoxColumn8,
             this.dataGridViewTextBoxColumn9,
             this.dataGridViewTextBoxColumn10});
-            this.dataGridView3.Location = new System.Drawing.Point(647, 155);
+            this.dataGridView3.Location = new System.Drawing.Point(632, 19);
             this.dataGridView3.MultiSelect = false;
             this.dataGridView3.Name = "dataGridView3";
             this.dataGridView3.ReadOnly = true;
@@ -386,7 +394,7 @@
             this.dataGridView3.RowTemplate.Height = 18;
             this.dataGridView3.ScrollBars = System.Windows.Forms.ScrollBars.None;
             this.dataGridView3.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
-            this.dataGridView3.Size = new System.Drawing.Size(613, 297);
+            this.dataGridView3.Size = new System.Drawing.Size(613, 445);
             this.dataGridView3.TabIndex = 8;
             // 
             // dataGridViewTextBoxColumn5
@@ -453,7 +461,7 @@
             // 
             this.label3.AutoSize = true;
             this.label3.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
-            this.label3.Location = new System.Drawing.Point(644, 139);
+            this.label3.Location = new System.Drawing.Point(629, 3);
             this.label3.Name = "label3";
             this.label3.Size = new System.Drawing.Size(167, 13);
             this.label3.TabIndex = 9;
@@ -463,24 +471,94 @@
             // 
             this.lperiod2.AutoSize = true;
             this.lperiod2.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
-            this.lperiod2.Location = new System.Drawing.Point(877, 139);
+            this.lperiod2.Location = new System.Drawing.Point(849, 3);
             this.lperiod2.Name = "lperiod2";
-            this.lperiod2.Size = new System.Drawing.Size(33, 13);
+            this.lperiod2.Size = new System.Drawing.Size(15, 13);
             this.lperiod2.TabIndex = 10;
-            this.lperiod2.Text = "0 ms";
+            this.lperiod2.Text = "T";
+            // 
+            // tabControl1
+            // 
+            this.tabControl1.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.tabControl1.Controls.Add(this.tabPage1);
+            this.tabControl1.Controls.Add(this.tabPage2);
+            this.tabControl1.Location = new System.Drawing.Point(12, 130);
+            this.tabControl1.Name = "tabControl1";
+            this.tabControl1.SelectedIndex = 0;
+            this.tabControl1.Size = new System.Drawing.Size(1259, 503);
+            this.tabControl1.TabIndex = 11;
+            // 
+            // tabPage1
+            // 
+            this.tabPage1.Controls.Add(this.CAN2_histogram);
+            this.tabPage1.Controls.Add(this.CAN1_histogram);
+            this.tabPage1.Location = new System.Drawing.Point(4, 22);
+            this.tabPage1.Name = "tabPage1";
+            this.tabPage1.Padding = new System.Windows.Forms.Padding(3);
+            this.tabPage1.Size = new System.Drawing.Size(1251, 477);
+            this.tabPage1.TabIndex = 0;
+            this.tabPage1.Text = "CAN bus";
+            this.tabPage1.UseVisualStyleBackColor = true;
+            // 
+            // tabPage2
+            // 
+            this.tabPage2.Controls.Add(this.dataGridView3);
+            this.tabPage2.Controls.Add(this.lperiod);
+            this.tabPage2.Controls.Add(this.dataGridView2);
+            this.tabPage2.Controls.Add(this.label3);
+            this.tabPage2.Controls.Add(this.lperiod2);
+            this.tabPage2.Controls.Add(this.label2);
+            this.tabPage2.Location = new System.Drawing.Point(4, 22);
+            this.tabPage2.Name = "tabPage2";
+            this.tabPage2.Padding = new System.Windows.Forms.Padding(3);
+            this.tabPage2.Size = new System.Drawing.Size(1251, 477);
+            this.tabPage2.TabIndex = 1;
+            this.tabPage2.Text = "Canopen";
+            this.tabPage2.UseVisualStyleBackColor = true;
+            // 
+            // CAN2_histogram
+            // 
+            this.CAN2_histogram.AutoScroll = true;
+            this.CAN2_histogram.AutoSize = true;
+            this.CAN2_histogram.Dock = System.Windows.Forms.DockStyle.Right;
+            this.CAN2_histogram.ExtColumns = 10;
+            this.CAN2_histogram.ExtRows = 10;
+            this.CAN2_histogram.Location = new System.Drawing.Point(621, 3);
+            this.CAN2_histogram.Name = "CAN2_histogram";
+            this.CAN2_histogram.Name_text = "CAN2";
+            this.CAN2_histogram.ShowHex = true;
+            this.CAN2_histogram.Size = new System.Drawing.Size(627, 471);
+            this.CAN2_histogram.StdColumns = 50;
+            this.CAN2_histogram.StdRows = 41;
+            this.CAN2_histogram.TabIndex = 1;
+            this.CAN2_histogram.Zoomable = false;
+            // 
+            // CAN1_histogram
+            // 
+            this.CAN1_histogram.AutoScroll = true;
+            this.CAN1_histogram.AutoSize = true;
+            this.CAN1_histogram.Dock = System.Windows.Forms.DockStyle.Left;
+            this.CAN1_histogram.ExtColumns = 10;
+            this.CAN1_histogram.ExtRows = 10;
+            this.CAN1_histogram.Location = new System.Drawing.Point(3, 3);
+            this.CAN1_histogram.Name = "CAN1_histogram";
+            this.CAN1_histogram.Name_text = "CAN1";
+            this.CAN1_histogram.ShowHex = true;
+            this.CAN1_histogram.Size = new System.Drawing.Size(606, 471);
+            this.CAN1_histogram.StdColumns = 50;
+            this.CAN1_histogram.StdRows = 41;
+            this.CAN1_histogram.TabIndex = 0;
+            this.CAN1_histogram.Zoomable = true;
             // 
             // frmMain
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(1369, 464);
-            this.Controls.Add(this.lperiod2);
-            this.Controls.Add(this.label3);
-            this.Controls.Add(this.dataGridView3);
-            this.Controls.Add(this.lperiod);
+            this.ClientSize = new System.Drawing.Size(1283, 645);
+            this.Controls.Add(this.tabControl1);
             this.Controls.Add(this.trackBar1);
-            this.Controls.Add(this.label2);
-            this.Controls.Add(this.dataGridView2);
             this.Controls.Add(this.label1);
             this.Controls.Add(this.dataGridView1);
             this.Name = "frmMain";
@@ -491,6 +569,11 @@
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView2)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.trackBar1)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView3)).EndInit();
+            this.tabControl1.ResumeLayout(false);
+            this.tabPage1.ResumeLayout(false);
+            this.tabPage1.PerformLayout();
+            this.tabPage2.ResumeLayout(false);
+            this.tabPage2.PerformLayout();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -526,6 +609,11 @@
         private System.Windows.Forms.DataGridViewTextBoxColumn dataGridViewTextBoxColumn10;
         private System.Windows.Forms.Label label3;
         private System.Windows.Forms.Label lperiod2;
+        private System.Windows.Forms.TabControl tabControl1;
+        private System.Windows.Forms.TabPage tabPage1;
+        private System.Windows.Forms.TabPage tabPage2;
+        private canshark.Histogram CAN1_histogram;
+        private canshark.Histogram CAN2_histogram;
     }
 }
 
