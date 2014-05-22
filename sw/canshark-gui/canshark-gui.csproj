@@ -49,6 +49,10 @@
   <ItemGroup>
     <Compile Include="Analysis\CanBusHistogram.cs" />
     <Compile Include="Analysis\CanopenCycle.cs" />
+    <Compile Include="Components\Histogram.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Components\Histogram.Designer.cs" />
     <Compile Include="Forms\frmMain.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -85,9 +89,7 @@
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
     </Compile>
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Components\" />
-  </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
