@@ -24,11 +24,13 @@ namespace canshark_gui
         }
 
         can_stat[] can_stats = new can_stat[2];
+
         
         /* statistics end */
 
         /* Analysis */
         CanopenCycle[] Cycle = new CanopenCycle[] { new CanopenCycle(), new CanopenCycle() };
+        CanBusHistogram[] HistogramData = new CanBusHistogram[2] { new CanBusHistogram(), new CanBusHistogram() };
 
         public frmMain()
         {
@@ -42,6 +44,11 @@ namespace canshark_gui
 
             board = new CanSharkBoard();
             board.MessageReceived += board_MessageReceived;
+
+            this.CAN1_histogram.InitializeGraphics();
+            this.CAN1_histogram.SetHistogramDataSource(this.HistogramData[0]);
+            this.CAN2_histogram.InitializeGraphics();
+            this.CAN2_histogram.SetHistogramDataSource(this.HistogramData[1]);
         }
 
         private void frmMain_FormClosed(object sender, FormClosedEventArgs e)
@@ -106,6 +113,9 @@ namespace canshark_gui
                     dataGridView3[5, i].Value = (cycle[i].count - basecount).ToString("D");
                 }
             }
+
+            this.CAN1_histogram.Refresh();
+            this.CAN2_histogram.Refresh();
         }
 
         
@@ -117,7 +127,10 @@ namespace canshark_gui
             if ((e.Source & 0x08) != 0)
                 can_stats[dev].ntx++;
             else
+            {
                 can_stats[dev].nrx++;
+                HistogramData[dev].ReceivedMessage(e);
+            }
 
             Cycle[dev].Analyze(e);
         }
@@ -126,6 +139,8 @@ namespace canshark_gui
         {
             timer1.Interval = trackBar1.Value;
         }
+
+
 
 
         
