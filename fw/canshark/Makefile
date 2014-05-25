@@ -119,7 +119,7 @@ include $(OPENCM3_DIR)mk/stylecheck-rules.mk
 include libopencm3-rules.mk
 include liblwip141-rules.mk
 
-%.images: %.elf %.size
+%.images: %.elf %.size %.hex
 	@# empty rule
 
 -include $(OBJS:.o=.d)

@@ -455,6 +455,9 @@ void netif_set_up(struct netif *netif)
 			}
 #endif /* LWIP_IGMP */
 		}
+
+
+        }
 	}
 }
 

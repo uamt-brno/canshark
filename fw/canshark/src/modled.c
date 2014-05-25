@@ -5,8 +5,8 @@
 
 void modled_init(void)
 {
-	rcc_periph_clock_enable(RCC_GPIOG);
+	rcc_periph_clock_enable(RCC_GPIOD);
 
-	gpio_mode_setup(GPIOG, GPIO_MODE_OUTPUT, GPIO_PUPD_NONE, GPIO2 | GPIO3 | GPIO4 | GPIO5 | GPIO6 | GPIO7 | GPIO8);
-	gpio_set(GPIOG, GPIO2 | GPIO3 | GPIO4 | GPIO5 | GPIO6 | GPIO7 | GPIO8); /* turn off all leds */
+	gpio_mode_setup(GPIOD, GPIO_MODE_OUTPUT, GPIO_PUPD_NONE, GPIO2 | GPIO4 | GPIO10 );
+	gpio_set(GPIOD, GPIO2 | GPIO4 | GPIO10); /* turn off all leds */
 }

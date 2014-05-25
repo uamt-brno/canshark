@@ -40,17 +40,15 @@ void ethf417_gpio_init(void)
 	rcc_periph_clock_enable(RCC_ETHMACTX);
 
 	/* init pins for MII and SMI */
-	gpio_mode_setup(GPIOA, GPIO_MODE_AF, GPIO_PUPD_NONE, GPIO1 | GPIO2 | GPIO7);
-	gpio_mode_setup(GPIOB, GPIO_MODE_AF, GPIO_PUPD_NONE, GPIO12 | GPIO13 | GPIO11 | GPIO0 | GPIO1 | GPIO10);
-	gpio_mode_setup(GPIOC, GPIO_MODE_AF, GPIO_PUPD_NONE, GPIO1 | GPIO2 | GPIO3 | GPIO4 | GPIO5);
-	gpio_mode_setup(GPIOE, GPIO_MODE_AF, GPIO_PUPD_NONE, GPIO2);
-	gpio_mode_setup(GPIOH, GPIO_MODE_AF, GPIO_PUPD_NONE, GPIO2 | GPIO3);
+	gpio_mode_setup(GPIOA, GPIO_MODE_AF, GPIO_PUPD_NONE, GPIO0 | GPIO1 | GPIO2 | GPIO3 | GPIO7);//0 a 3
+	gpio_mode_setup(GPIOB, GPIO_MODE_AF, GPIO_PUPD_NONE, GPIO12 | GPIO13 | GPIO11 | GPIO0 | GPIO1 | GPIO10);//
+	gpio_mode_setup(GPIOC, GPIO_MODE_AF, GPIO_PUPD_NONE, GPIO1 | GPIO2 | GPIO3 | GPIO4 | GPIO5);//
+	gpio_mode_setup(GPIOE, GPIO_MODE_AF, GPIO_PUPD_NONE, GPIO2);//
 
-	gpio_set_af(GPIOA, GPIO_AF11, GPIO1 | GPIO2 | GPIO7);
+	gpio_set_af(GPIOA, GPIO_AF11, GPIO0 | GPIO1 | GPIO2 | GPIO3 | GPIO7);
 	gpio_set_af(GPIOB, GPIO_AF11, GPIO12 | GPIO13 | GPIO11 | GPIO0 | GPIO1 | GPIO10);
 	gpio_set_af(GPIOC, GPIO_AF11, GPIO1 | GPIO2 | GPIO3 | GPIO4 | GPIO5);
-	gpio_set_af(GPIOE, GPIO_AF11, GPIO2);
-	gpio_set_af(GPIOH, GPIO_AF11, GPIO2 | GPIO3);
+	gpio_set_af(GPIOE, GPIO_AF11, GPIO2);//
 
 	gpio_set_output_options(GPIOA, GPIO_OTYPE_PP, GPIO_OSPEED_50MHZ, GPIO2);
 	gpio_set_output_options(GPIOB, GPIO_OTYPE_PP, GPIO_OSPEED_50MHZ, GPIO12 | GPIO13 | GPIO11);

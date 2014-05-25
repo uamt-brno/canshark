@@ -82,7 +82,6 @@ int main(void)
 	IP4_ADDR(&ipa, 255, 255, 255, 255);  // the IP to send data to
 
 	while (1) {
-		LED_TGL(LED0);
 
 		ethf417_poll(&netif);
 
@@ -111,7 +110,7 @@ int main(void)
 		}
 
 		if (stick_fire(&led_tmr, STICK_HZ)) {
-			LED_TGL(LED6);
+			LED_TGL(LED0);
 		}
 	}
 

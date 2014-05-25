@@ -10,7 +10,7 @@
 		<Option compiler="armgcc_eb" />
 		<Build>
 			<Target title="Debug">
-				<Option output="bin\Debug\canshark.elf" />
+				<Option output="bin\canshark.elf" />
 				<Option object_output="obj\Debug\" />
 				<Option type="0" />
 				<Option compiler="armgcc_eb" />
@@ -21,28 +21,8 @@
 					<Clean command="$make -j8 -f $makefile clean$target" />
 					<DistClean command="$make -f $makefile distclean$target" />
 					<AskRebuildNeeded command="$make -q -f $makefile $target" />
-					<SilentBuild command="$make -s -f $makefile all" />
+					<SilentBuild command="$make -j8 -f $makefile all" />
 				</MakeCommands>
-			</Target>
-			<Target title="Release">
-				<Option output="bin\Release\canshark.elf" />
-				<Option object_output="obj\Release\" />
-				<Option type="0" />
-				<Option create_hex="1" />
-				<Option compiler="armgcc_eb" />
-				<Option projectDeviceOptionsRelation="0" />
-				<Compiler>
-					<Add option="-O2" />
-					<Add option="-g2" />
-					<Add option="-fdata-sections" />
-					<Add option="-ffunction-sections" />
-				</Compiler>
-				<Assembler>
-					<Add option="-Wa,--no-warn" />
-				</Assembler>
-				<Linker>
-					<Add option="-Wl,--gc-sections" />
-				</Linker>
 			</Target>
 		</Build>
 		<Device>
@@ -71,10 +51,7 @@
 		<Unit filename="Makefile" />
 		<Unit filename="README" />
 		<Unit filename="armv7m-vectstate.gdb" />
-		<Unit filename="bin\canshark.elf" />
-		<Unit filename="bin\canshark.map" />
 		<Unit filename="canshark.ebp" />
-		<Unit filename="canshark.layout" />
 		<Unit filename="inc\can_canopen.h" />
 		<Unit filename="inc\eth_f417.h" />
 		<Unit filename="inc\modcan.h" />
@@ -2299,23 +2276,6 @@
 			<code_completion />
 			<debugger>
 				<target_debugging_settings target="Debug" active_interface="ST-link">
-					<debug_interface interface_id="ST-link" ip_address="localhost" ip_port="4242" path="${EMBLOCKS}\share\contrib" executable="STLinkGDB.exe" description="" dont_start_server="false" backoff_time="1000" options="0" active_family="STMicroelectronics">
-						<family_options family_id="STMicroelectronics">
-							<option opt_id="ID_JTAG_SWD" opt_value="swd" />
-							<option opt_id="ID_VECTOR_START" opt_value="0x08000000" />
-							<option opt_id="ID_RESET_TYPE" opt_value="System" />
-							<option opt_id="ID_LOAD_PROGRAM" opt_value="1" />
-							<option opt_id="ID_SEMIHOST_CHECK" opt_value="0" />
-							<option opt_id="ID_RAM_EXEC" opt_value="0" />
-							<option opt_id="ID_VEC_TABLE" opt_value="1" />
-							<option opt_id="ID_DONT_CONN_RESET" opt_value="0" />
-							<option opt_id="ID_ALL_MODE_DEBUG" opt_value="0" />
-							<option opt_id="ID_DEV_ADDR" opt_value="" />
-							<option opt_id="ID_VERBOSE_LEVEL" opt_value="3" />
-						</family_options>
-					</debug_interface>
-				</target_debugging_settings>
-				<target_debugging_settings target="Release" active_interface="ST-link">
 					<debug_interface interface_id="ST-link" ip_address="localhost" ip_port="4242" path="${EMBLOCKS}\share\contrib" executable="STLinkGDB.exe" description="" dont_start_server="false" backoff_time="1000" options="0" active_family="STMicroelectronics">
 						<family_options family_id="STMicroelectronics">
 							<option opt_id="ID_JTAG_SWD" opt_value="swd" />
