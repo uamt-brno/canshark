@@ -7,7 +7,7 @@ using Wireshark;
 
 namespace canshark
 {
-    class CanMessage : ISerializer
+    public class CanMessage : ISerializer
     {
         public UInt32 Sec;
         public UInt32 Usec;
