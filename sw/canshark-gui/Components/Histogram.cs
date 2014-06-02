@@ -69,6 +69,13 @@ namespace canshark
 
         void ReinitPenList()
         {
+            if (_pens != null)
+            {
+                foreach (Pen p in _pens)
+                    p.Dispose();
+
+                _pens = null;
+            }
             this._pens = new Pen[this._color_resolution];
             this._pens[0] = new Pen(Color.LightGray, this._Row_pixel_size);
             this._pens[1] = new Pen(Color.LightYellow, this._Row_pixel_size);
@@ -77,9 +84,7 @@ namespace canshark
             this._pens[4] = new Pen(Color.DarkOrange, this._Row_pixel_size);
             this._pens[5] = new Pen(Color.OrangeRed, this._Row_pixel_size);
             this._pens[6] = new Pen(Color.Red, this._Row_pixel_size);
-            this._pens[7] = new Pen(Color.DarkRed, this._Row_pixel_size);
-
-            
+            this._pens[7] = new Pen(Color.DarkRed, this._Row_pixel_size);            
         }
 
         void ReinitCompareValues()
