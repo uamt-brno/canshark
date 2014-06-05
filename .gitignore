@@ -11,3 +11,5 @@
 /fw/canshark/tmp
 /fw/canshark/lib/lwip141/bin
 *.elay
+*.s#*
+*.b#*
