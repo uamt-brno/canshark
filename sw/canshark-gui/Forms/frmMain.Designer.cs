@@ -84,6 +84,8 @@
             this.tabControl1 = new System.Windows.Forms.TabControl();
             this.tabPage1 = new System.Windows.Forms.TabPage();
             this.tabPage2 = new System.Windows.Forms.TabPage();
+            this.button1 = new System.Windows.Forms.Button();
+            this.button2 = new System.Windows.Forms.Button();
             this.CAN2_histogram = new canshark.Histogram();
             this.CAN1_histogram = new canshark.Histogram();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).BeginInit();
@@ -334,7 +336,7 @@
             this.trackBar1.Maximum = 1000;
             this.trackBar1.Minimum = 10;
             this.trackBar1.Name = "trackBar1";
-            this.trackBar1.Size = new System.Drawing.Size(613, 45);
+            this.trackBar1.Size = new System.Drawing.Size(613, 42);
             this.trackBar1.SmallChange = 10;
             this.trackBar1.TabIndex = 6;
             this.trackBar1.TickFrequency = 20;
@@ -518,6 +520,26 @@
             this.tabPage2.Text = "Canopen";
             this.tabPage2.UseVisualStyleBackColor = true;
             // 
+            // button1
+            // 
+            this.button1.Location = new System.Drawing.Point(771, 33);
+            this.button1.Name = "button1";
+            this.button1.Size = new System.Drawing.Size(102, 23);
+            this.button1.TabIndex = 12;
+            this.button1.Text = "Properties CAN1";
+            this.button1.UseVisualStyleBackColor = true;
+            this.button1.Click += new System.EventHandler(this.button1_Click);
+            // 
+            // button2
+            // 
+            this.button2.Location = new System.Drawing.Point(771, 66);
+            this.button2.Name = "button2";
+            this.button2.Size = new System.Drawing.Size(102, 23);
+            this.button2.TabIndex = 13;
+            this.button2.Text = "Properties CAN2";
+            this.button2.UseVisualStyleBackColor = true;
+            this.button2.Click += new System.EventHandler(this.button2_Click);
+            // 
             // CAN2_histogram
             // 
             this.CAN2_histogram.AutoScroll = true;
@@ -557,6 +579,8 @@
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(1283, 645);
+            this.Controls.Add(this.button2);
+            this.Controls.Add(this.button1);
             this.Controls.Add(this.tabControl1);
             this.Controls.Add(this.trackBar1);
             this.Controls.Add(this.label1);
@@ -614,6 +638,8 @@
         private System.Windows.Forms.TabPage tabPage2;
         private canshark.Histogram CAN1_histogram;
         private canshark.Histogram CAN2_histogram;
+        private System.Windows.Forms.Button button1;
+        private System.Windows.Forms.Button button2;
     }
 }
 

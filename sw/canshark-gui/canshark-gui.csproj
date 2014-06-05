@@ -49,6 +49,12 @@
   <ItemGroup>
     <Compile Include="Analysis\CanBusHistogram.cs" />
     <Compile Include="Analysis\CanopenCycle.cs" />
+    <Compile Include="Forms\frmChannelProperties.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\frmChannelProperties.Designer.cs">
+      <DependentUpon>frmChannelProperties.cs</DependentUpon>
+    </Compile>
     <Compile Include="Forms\frmMain.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -67,6 +73,9 @@
     <Compile Include="lib\WiresharkPcap.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <EmbeddedResource Include="Forms\frmChannelProperties.resx">
+      <DependentUpon>frmChannelProperties.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Forms\frmMain.resx">
       <DependentUpon>frmMain.cs</DependentUpon>
     </EmbeddedResource>

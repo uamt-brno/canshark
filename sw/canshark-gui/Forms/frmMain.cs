@@ -1,5 +1,6 @@
 ﻿using canshark;
 using canshark.Analysis;
+using canshark.Forms;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -138,6 +139,16 @@ namespace canshark_gui
         private void trackBar1_Scroll(object sender, EventArgs e)
         {
             timer1.Interval = trackBar1.Value;
+        }
+
+        private void button1_Click(object sender, EventArgs e)
+        {
+            frmChannelProperties.Execute();
+        }
+
+        private void button2_Click(object sender, EventArgs e)
+        {
+            frmChannelProperties.Execute();
         }
 
 
