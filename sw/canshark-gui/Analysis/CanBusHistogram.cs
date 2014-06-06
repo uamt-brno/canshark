@@ -10,10 +10,35 @@ namespace Analysis
 {
     public class CanBusHistogram : IAnalyzer
     {
-        #region Private properties
-        Dictionary<uint, List<int>> ExtIDDictionaryAD = new Dictionary<uint, List<int>>();
+        private class OneCounter
+        {
+            public int Value = 1;
+            public ConcurrentQueue<int> History = new ConcurrentQueue<int>();
 
-        ConcurrentDictionary<uint, int> ExtIDDictionaryND = new ConcurrentDictionary<uint, int>();
+            public OneCounter Count()
+            {
+                Value++;
+                return this;
+            }
+
+            public int sum()
+            {
+                return Value + History.Sum();
+            }
+
+            public void Pack(uint maxcount)
+            {
+                History.Enqueue(Value);
+                Value = 0;
+                int res = 0;
+                if (History.Count > maxcount)
+                    History.TryDequeue(out res);
+            }
+        }
+
+        #region Private properties
+        ConcurrentDictionary<uint, OneCounter> StatsAutoDelete = new ConcurrentDictionary<uint, OneCounter>();
+        ConcurrentDictionary<uint, int> StatsTotal = new ConcurrentDictionary<uint, int>();
 
         uint TimeResolution = 100;
         uint AutoDeleteTime = 2000;
@@ -22,16 +47,15 @@ namespace Analysis
         Timer DeleteTimer = new Timer();
         int _bus;
         #endregion
-
-        #region Public properties
-
-
-        #endregion
-
+        
         #region Public methods
         public CanBusHistogram(int bus)
         {
-            this.DeleteTimer.Elapsed += IntervalTimer_Elapsed;
+            DeleteTimer.Elapsed += (e, a) =>
+            {
+                foreach (var kvp in StatsAutoDelete)
+                    kvp.Value.Pack(Diference);
+            };
             _bus = bus;
         }
 
@@ -45,82 +69,38 @@ namespace Analysis
                 if ((msg.Source & 0x01) != _bus)
                     continue;
 
-                if (!this.AutoDeleteEnable)
-                    ExtIDDictionaryND.AddOrUpdate(msg.COB, 1, (qid, val) => val + 1);
+                if (!AutoDeleteEnable)
+                    StatsTotal.AddOrUpdate(msg.COB, 1, (qid, val) => val + 1);
                 else
-                {
-                    lock (ExtIDDictionaryAD)
-                    {
-                        if (!this.ExtIDDictionaryAD.ContainsKey(msg.COB))
-                        {
-                            List<int> MsgCountList = new List<int>();
-                            for (int i = 0; i < Diference; i++)
-                                MsgCountList.Add(0);
-                            MsgCountList.Add(1);
-                            this.ExtIDDictionaryAD.Add(msg.COB, MsgCountList);
-                        }
-                        else
-                        {
-                            this.ExtIDDictionaryAD[msg.COB][(int)this.Diference]++;
-                        }
-                    }
-                }
+                    StatsAutoDelete.AddOrUpdate(msg.COB, new OneCounter(), (qid, val) => val.Count() ); 
             }
         }
 
         public Dictionary<uint, int> GetChanges()
         {
-            
-            if (this.AutoDeleteEnable)
-            {
-                Dictionary<uint, int> Changes = new Dictionary<uint, int>();
-                lock (ExtIDDictionaryAD)
-                {
-                    foreach (uint ID in this.ExtIDDictionaryAD.Keys)
-                        Changes.Add(ID, this.ExtIDDictionaryAD[ID].Sum());
-                }
+            if (AutoDeleteEnable)
+                return StatsAutoDelete.ToArray().ToDictionary(x => x.Key, x => x.Value.sum());
 
-                return Changes;
-            }
-
-            return ExtIDDictionaryND.ToArray().ToDictionary((a) => a.Key, (a) => a.Value);
+            return StatsTotal.ToArray().ToDictionary((a) => a.Key, (a) => a.Value);
         }
 
         public void ChangeAutoDeleteMode(bool new_state, uint Delete_time, uint StepTime) //times in ms
         {
-
-            this.AutoDeleteEnable = new_state;
-            this.AutoDeleteTime = Delete_time;
-            this.TimeResolution = StepTime;
-            this.Diference = this.AutoDeleteTime / this.TimeResolution;
-            this.DeleteTimer.Interval = StepTime;
-            this.DeleteTimer.Enabled = new_state;
-            this.ResetCounters();
+            AutoDeleteEnable = new_state;
+            AutoDeleteTime = Delete_time;
+            TimeResolution = StepTime;
+            Diference = AutoDeleteTime / TimeResolution;
+            DeleteTimer.Interval = StepTime;
+            DeleteTimer.Enabled = new_state;
+            ResetCounters();
         }
 
         public void ResetCounters()
         {
-            ExtIDDictionaryND.Clear();
-            lock (ExtIDDictionaryAD) this.ExtIDDictionaryAD.Clear();
-
+            StatsTotal.Clear();
+            StatsAutoDelete.Clear();
         }
-        #endregion
-
-        #region Private methods
-        void IntervalTimer_Elapsed(object sender, ElapsedEventArgs e)
-        {
-            lock (ExtIDDictionaryAD)
-            {
-                foreach (uint ID in this.ExtIDDictionaryAD.Keys)
-                {
-                    this.ExtIDDictionaryAD[ID].RemoveAt(0);
-                    this.ExtIDDictionaryAD[ID].Add(0);
-                }
-            }
-        }
-        #endregion
-
-        
+        #endregion        
     }
 
 

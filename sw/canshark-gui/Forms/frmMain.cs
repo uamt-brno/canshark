@@ -88,5 +88,21 @@ namespace canshark_gui
         {
             frmChannelProperties.Execute();
         }
+
+        private void button3_Click(object sender, EventArgs e)
+        {
+            Random r = new Random();
+            for (int i = 0; i < 1000; i++)
+            {
+                CanMessage cm = new CanMessage();
+                cm.COB = (uint)(r.Next(0x7FF) << 18);
+                cm.Data = new byte[0];
+                cm.Source = 0;
+                cm.Time = (ushort)i;
+                cm.Usec = (ushort)i;
+
+                CanSharkCore.InputQueue.Enqueue(cm);
+            }
+        }
     }
 }
