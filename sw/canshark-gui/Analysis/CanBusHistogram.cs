@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -11,20 +12,19 @@ namespace canshark.Analysis
     {
 
         #region Private properties
-        Dictionary<uint, List<int>> StdIDDictionaryAD = new Dictionary<uint,List<int>>();
+        Dictionary<uint, List<int>> StdIDDictionaryAD = new Dictionary<uint, List<int>>();
         Dictionary<uint, List<int>> ExtIDDictionaryAD = new Dictionary<uint, List<int>>();
 
-        Dictionary<uint, int> StdIDDictionaryND = new Dictionary<uint, int>();
-        Dictionary<uint, int> ExtIDDictionaryND = new Dictionary<uint, int>();
+        ConcurrentDictionary<uint, int> StdIDDictionaryND = new ConcurrentDictionary<uint, int>();
+        ConcurrentDictionary<uint, int> ExtIDDictionaryND = new ConcurrentDictionary<uint, int>();
 
         uint TimeResolution = 100;
         uint AutoDeleteTime = 2000;
         bool AutoDeleteEnable = false;
         uint Diference = 10;
         Timer DeleteTimer = new Timer();
-
-
         #endregion
+
         #region Public properties
 
 
@@ -34,14 +34,15 @@ namespace canshark.Analysis
         public CanBusHistogram()
         {
             this.DeleteTimer.Elapsed += IntervalTimer_Elapsed;
-
         }
 
         public void ReceivedMessage(CanMessage msg)
         {
             if (CanBusHistogram.IsExtID(msg.COB))
             {
-                if (this.AutoDeleteEnable)
+                if (!this.AutoDeleteEnable)
+                    ExtIDDictionaryND.AddOrUpdate(msg.COB, 1, (qid, val) => val + 1);
+                else
                 {
                     lock (ExtIDDictionaryAD)
                     {
@@ -59,25 +60,13 @@ namespace canshark.Analysis
                         }
                     }
                 }
-                else
-                {
-                    lock (ExtIDDictionaryND)
-                    {
-                        if (!this.ExtIDDictionaryND.ContainsKey(msg.COB))
-                        {
-                            this.ExtIDDictionaryND.Add(msg.COB, 1);
-                        }
-                        else
-                        {
-                            this.ExtIDDictionaryND[msg.COB]++;
-                        }
-                    }
-                }
             }
             else
             {
                 uint id = msg.GetStdId();
-                if (this.AutoDeleteEnable)
+                if (!this.AutoDeleteEnable)
+                    StdIDDictionaryND.AddOrUpdate(id, 1, (qid, val) => val + 1);
+                else
                 {
                     lock (StdIDDictionaryAD)
                     {
@@ -95,71 +84,43 @@ namespace canshark.Analysis
                         }
                     }
                 }
-                else
-                {
-                    lock (StdIDDictionaryND)
-                    {
-                        if (!this.StdIDDictionaryND.ContainsKey(id))
-                        {
-                            this.StdIDDictionaryND.Add(id, 1);
-                        }
-                        else
-                        {
-                            this.StdIDDictionaryND[id]++;
-                        }
-                    }
-                }
             }
         }
 
         public Dictionary<uint, int> GetExtIDChanges()
         {
-            Dictionary<uint, int> Changes;
+            
             if (this.AutoDeleteEnable)
             {
-                Changes = new Dictionary<uint, int>();
+                Dictionary<uint, int> Changes = new Dictionary<uint, int>();
                 lock (ExtIDDictionaryAD)
                 {
                     foreach (uint ID in this.ExtIDDictionaryAD.Keys)
-                    {
                         Changes.Add(ID, this.ExtIDDictionaryAD[ID].Sum());
-                    }
                 }
-            }
-            else
-            {
-                lock (ExtIDDictionaryND)
-                {
-                    Changes = new Dictionary<uint, int>(this.ExtIDDictionaryND);
-                }
+
+                return Changes;
             }
 
-            return Changes;
+            return ExtIDDictionaryND.ToArray().ToDictionary((a) => a.Key, (a) => a.Value);
         }
 
         public Dictionary<uint, int> GetStdIDChanges()
         {
-            Dictionary<uint, int> Changes;
             if (this.AutoDeleteEnable)
             {
-                Changes = new Dictionary<uint, int>();
+                Dictionary<uint, int> Changes = new Dictionary<uint, int>();
                 lock (StdIDDictionaryAD)
                 {
                     foreach (uint ID in this.StdIDDictionaryAD.Keys)
-                    {
                         Changes.Add(ID, this.StdIDDictionaryAD[ID].Sum());
-                    }
                 }
-            }
-            else
-            {
-                lock (StdIDDictionaryND)
-                {
-                    Changes = new Dictionary<uint, int>(this.StdIDDictionaryND);
-                }
-            }
 
-            return Changes;
+                return Changes;
+            }
+            
+
+            return StdIDDictionaryND.ToArray().ToDictionary((a) => a.Key, (a) => a.Value);
         }
 
         public void ChangeAutoDeleteMode(bool new_state, uint Delete_time, uint StepTime) //times in ms
@@ -172,27 +133,13 @@ namespace canshark.Analysis
             this.DeleteTimer.Interval = StepTime;
             this.DeleteTimer.Enabled = new_state;
             this.ResetCounters();
-            //if (new_state)
-            //{
-            //}
-            //else
-            //{
-            //    foreach (uint ID in this.StdIDDictionaryAD.Keys)
-            //    {
-            //        this.StdIDDictionaryND.Add(ID, this.StdIDDictionaryAD[ID].Sum());
-            //    }
-            //    foreach (uint ID in this.ExtIDDictionaryAD.Keys)
-            //    {
-            //        this.ExtIDDictionaryND.Add(ID, this.ExtIDDictionaryAD[ID].Sum());
-            //    }
-            //}
         }
 
         public void ResetCounters()
         {
             lock (StdIDDictionaryAD) this.StdIDDictionaryAD.Clear();
-            lock (StdIDDictionaryND) this.StdIDDictionaryND.Clear();
-            lock (ExtIDDictionaryND) this.ExtIDDictionaryND.Clear();
+            StdIDDictionaryND.Clear();
+            ExtIDDictionaryND.Clear();
             lock (ExtIDDictionaryAD) this.ExtIDDictionaryAD.Clear();
 
         }
