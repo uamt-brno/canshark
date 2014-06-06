@@ -6,11 +6,10 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Timers;
 
-namespace canshark.Analysis
+namespace Analysis
 {
-    public class CanBusHistogram
+    public class CanBusHistogram : IAnalyzer
     {
-
         #region Private properties
         Dictionary<uint, List<int>> ExtIDDictionaryAD = new Dictionary<uint, List<int>>();
 
@@ -21,6 +20,7 @@ namespace canshark.Analysis
         bool AutoDeleteEnable = false;
         uint Diference = 10;
         Timer DeleteTimer = new Timer();
+        int _bus;
         #endregion
 
         #region Public properties
@@ -29,30 +29,40 @@ namespace canshark.Analysis
         #endregion
 
         #region Public methods
-        public CanBusHistogram()
+        public CanBusHistogram(int bus)
         {
             this.DeleteTimer.Elapsed += IntervalTimer_Elapsed;
+            _bus = bus;
         }
 
-        public void ReceivedMessage(CanMessage msg)
+        
+        public bool IsRunning { get { return false; } }
+
+        public void Analyze(CanMessage[] msgs)
         {
-            if (!this.AutoDeleteEnable)
-                ExtIDDictionaryND.AddOrUpdate(msg.COB, 1, (qid, val) => val + 1);
-            else
+            foreach (CanMessage msg in msgs)
             {
-                lock (ExtIDDictionaryAD)
+                if ((msg.Source & 0x01) != _bus)
+                    continue;
+
+                if (!this.AutoDeleteEnable)
+                    ExtIDDictionaryND.AddOrUpdate(msg.COB, 1, (qid, val) => val + 1);
+                else
                 {
-                    if (!this.ExtIDDictionaryAD.ContainsKey(msg.COB))
+                    lock (ExtIDDictionaryAD)
                     {
-                        List<int> MsgCountList = new List<int>();
-                        for (int i = 0; i < Diference; i++)
-                            MsgCountList.Add(0);
-                        MsgCountList.Add(1);
-                        this.ExtIDDictionaryAD.Add(msg.COB, MsgCountList);
-                    }
-                    else
-                    {
-                        this.ExtIDDictionaryAD[msg.COB][(int)this.Diference]++;
+                        if (!this.ExtIDDictionaryAD.ContainsKey(msg.COB))
+                        {
+                            List<int> MsgCountList = new List<int>();
+                            for (int i = 0; i < Diference; i++)
+                                MsgCountList.Add(0);
+                            MsgCountList.Add(1);
+                            this.ExtIDDictionaryAD.Add(msg.COB, MsgCountList);
+                        }
+                        else
+                        {
+                            this.ExtIDDictionaryAD[msg.COB][(int)this.Diference]++;
+                        }
                     }
                 }
             }
@@ -97,9 +107,6 @@ namespace canshark.Analysis
         #endregion
 
         #region Private methods
-
-
-
         void IntervalTimer_Elapsed(object sender, ElapsedEventArgs e)
         {
             lock (ExtIDDictionaryAD)
@@ -112,21 +119,8 @@ namespace canshark.Analysis
             }
         }
         #endregion
-        #region Static Methods
 
-        public static bool IsExtID(uint COBID)
-        {
-            if ((COBID & 0x80000000) != 0)
-            {
-                return true;
-            }
-            else
-            {
-                return false;
-            }
-        }
-
-        #endregion
+        
     }
 
 

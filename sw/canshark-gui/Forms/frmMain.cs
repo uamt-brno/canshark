@@ -1,6 +1,5 @@
 ﻿using Analysis;
 using canshark;
-using canshark.Analysis;
 using canshark.Forms;
 using System;
 using System.Collections.Generic;
@@ -32,7 +31,7 @@ namespace canshark_gui
 
         /* Analysis */
         CanopenCycle[] Cycle = new CanopenCycle[] { new CanopenCycle(0), new CanopenCycle(1) };
-        CanBusHistogram[] HistogramData = new CanBusHistogram[2] { new CanBusHistogram(), new CanBusHistogram() };
+        CanBusHistogram[] HistogramData = new CanBusHistogram[2] { new CanBusHistogram(0), new CanBusHistogram(1) };
 
         public frmMain()
         {
@@ -49,6 +48,8 @@ namespace canshark_gui
 
             CanSharkCore.Analyzers.Add(Cycle[0]);
             CanSharkCore.Analyzers.Add(Cycle[1]);
+            CanSharkCore.Analyzers.Add(HistogramData[0]);
+            CanSharkCore.Analyzers.Add(HistogramData[1]);
 
             CAN1_histogram.InitializeGraphics();
             CAN1_histogram.SetHistogramDataSource(HistogramData[0]);
@@ -86,7 +87,7 @@ namespace canshark_gui
         }
 
         
-
+        // TODO be removed in next commit
         private void board_MessageReceived(object sender, CanMessage e)
         {
             int dev = e.Source & 0x01;
@@ -94,10 +95,7 @@ namespace canshark_gui
             if ((e.Source & 0x08) != 0)
                 can_stats[dev].ntx++;
             else
-            {
                 can_stats[dev].nrx++;
-                HistogramData[dev].ReceivedMessage(e);
-            }
         }
 
         private void trackBar1_Scroll(object sender, EventArgs e)
