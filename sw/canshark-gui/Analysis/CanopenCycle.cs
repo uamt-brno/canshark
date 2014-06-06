@@ -51,7 +51,7 @@ namespace Analysis
                 if ((m.Source & 0x01) != _bus)
                     continue;
 
-                if (m.GetStdId() == 0x80)        // std ID 0x80 = SYNC
+                if (m.COB.IdStd == 0x80)        // std ID 0x80 = SYNC
                 {
                     oldsynctime = synctime;
                     synctime = m.Time;
@@ -65,7 +65,7 @@ namespace Analysis
                     {
                         CanopenMsg msg = new CanopenMsg();
                         msg.COB = id;
-                        msg.COBstr = CanMessage.GetAddrString(id);
+                        msg.COBstr = msg.COB.ToString();
                         msg.count = 1;
                         msg.delay = TimeDiff(synctime, m.Time) / 1000.0f;
                         msg.length = m.GetMinFrameLength() / 1000.0f;

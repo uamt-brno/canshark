@@ -37,8 +37,8 @@ namespace Analysis
         }
 
         #region Private properties
-        ConcurrentDictionary<uint, OneCounter> StatsAutoDelete = new ConcurrentDictionary<uint, OneCounter>();
-        ConcurrentDictionary<uint, int> StatsTotal = new ConcurrentDictionary<uint, int>();
+        ConcurrentDictionary<CanObjectId, OneCounter> StatsAutoDelete = new ConcurrentDictionary<CanObjectId, OneCounter>();
+        ConcurrentDictionary<CanObjectId, int> StatsTotal = new ConcurrentDictionary<CanObjectId, int>();
 
         uint TimeResolution = 100;
         uint AutoDeleteTime = 2000;
@@ -76,7 +76,7 @@ namespace Analysis
             }
         }
 
-        public Dictionary<uint, int> GetChanges()
+        public Dictionary<CanObjectId, int> GetChanges()
         {
             if (AutoDeleteEnable)
                 return StatsAutoDelete.ToArray().ToDictionary(x => x.Key, x => x.Value.sum());

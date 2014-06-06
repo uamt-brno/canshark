@@ -92,10 +92,10 @@ namespace canshark_gui
         private void button3_Click(object sender, EventArgs e)
         {
             Random r = new Random();
-            for (int i = 0; i < 1000; i++)
+            for (int i = 0; i < 10000; i++)
             {
                 CanMessage cm = new CanMessage();
-                cm.COB = (uint)(r.Next(0x7FF) << 18);
+                cm.COB = CanObjectId.Std((uint)r.Next(0x7FF));
                 cm.Data = new byte[0];
                 cm.Source = 0;
                 cm.Time = (ushort)i;

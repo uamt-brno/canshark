@@ -6,11 +6,13 @@ using System.Text;
 using Wireshark;
 
 
+    
+
     public class CanMessage : ISerializer
     {
         public UInt32 Sec;
         public UInt32 Usec;
-        public UInt32 COB;
+        public CanObjectId COB;
         public byte[] Data = new byte[8];
         public UInt16 Time;
         public byte Source;
@@ -60,26 +62,6 @@ using Wireshark;
             return msg;
         }
 
-        public string GetAddrString()
-        {
-            if ((COB & 0x80000000) != 0)
-                return string.Format("{0:X3}.{1:X5}", ((COB >> 18) & 0x7FF), COB & 0x3FFFF);
-            else
-                return string.Format("{0:X3}", ((COB >> 18) & 0x7FF));
-        }
-
-        public static string GetAddrString(UInt32 COB)
-        {
-            if ((COB & 0x80000000) != 0)
-                return string.Format("{0:X3}.{1:X5}", ((COB >> 18) & 0x7FF), COB & 0x3FFFF);
-            else
-                return string.Format("{0:X3}", ((COB >> 18) & 0x7FF));
-        }
-
-        public uint GetStdId()
-        {
-            return (COB >> 18) & 0x7FF;
-        }
 
         public UInt16 GetMinFrameLength()
         {

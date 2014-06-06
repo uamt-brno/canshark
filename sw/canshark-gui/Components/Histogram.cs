@@ -20,7 +20,7 @@ namespace canshark
         private CanBusHistogram _Data;
         private Bitmap bmp;
         private Graphics gr;
-        private Dictionary<uint, int> LastHistogramData;
+        private Dictionary<CanObjectId, int> LastHistogramData;
 
         private int _color_resolution = 8;
         private Pen[] _pens;
@@ -47,10 +47,10 @@ namespace canshark
         }
 
 
-        void ChangePointValue(uint ID, Pen pen)
+        void ChangePointValue(CanObjectId ID, Pen pen)
         {
-            int y =(int) ID / _Columns;
-            int x =(int) ID % _Columns;
+            int y = (int)ID.IdStd / _Columns;
+            int x = (int)ID.IdStd % _Columns;
             ChangePointValue(x, y, pen);
         }
 
@@ -128,15 +128,6 @@ namespace canshark
             get { return _Columns; }
         }
 
-        [PropertyTab("ShowHexadecimal")]
-        [Browsable(true)]
-        [Description("Show numbers as hexadecimal"), Category("HistogramSettings")]
-        public bool ShowHex
-        {
-            set;
-            get;
-        }
-
         #endregion
         #region Public Methods
         public Histogram()
@@ -184,19 +175,12 @@ namespace canshark
             RecomputeMousePosition();
         }
 
-        public void ChangeGraphics(Dictionary<uint,int> PointsToChange)
+        public void ChangeGraphics(Dictionary<CanObjectId, int> PointsToChange)
         {
             LastHistogramData = PointsToChange;
             foreach (var pt in PointsToChange)
-            {
-                bool isext = (pt.Key & 0x80000000) != 0;
-                Pen p = GetPen(pt.Value);
-
-                if (_extID && isext)
-                    ChangePointValue(pt.Key, p);
-                else if (!_extID && !isext)
-                    ChangePointValue((pt.Key >> 18) & 0x7FF, p);
-            }
+                if (_extID == pt.Key.IdIsExt)
+                    ChangePointValue(pt.Key, GetPen(pt.Value));
 
             pictureBox1.Refresh();
         }
@@ -215,15 +199,15 @@ namespace canshark
 
             if (pictureBox1.ClientRectangle.Contains(p) && (Col < _Columns) && (Row < _Rows))
             {
-                int ID = Row * _Columns + Col;
+                CanObjectId ID = CanObjectId.Std((uint)(Row * _Columns + Col));
 
-                tstb_NodeID.Text = ShowHex ? ID.ToString("X") : ID.ToString();
+                tstb_NodeID.Text = ID.ToString();
 
                 int val;
-                if (LastHistogramData.TryGetValue((uint)ID, out val))
-                    tstb_counOfFrames.Text = ShowHex ? val.ToString("X") : val.ToString();
+                if (LastHistogramData.TryGetValue(ID, out val))
+                    tstb_counOfFrames.Text = val.ToString();
                 else
-                    tstb_counOfFrames.Text = "0";
+                    tstb_counOfFrames.Text = "---";
             }
             else
             {
