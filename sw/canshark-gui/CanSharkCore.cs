@@ -10,6 +10,7 @@ using System.Threading.Tasks;
 
 public static class CanSharkCore
 {
+    public static BlockingCollection<IDisposable> Boards = new BlockingCollection<IDisposable>();
     public static ConcurrentQueue<CanMessage> InputQueue = new ConcurrentQueue<CanMessage>();
     public static ConcurrentBag<IAnalyzer> Analyzers = new ConcurrentBag<IAnalyzer>();
 

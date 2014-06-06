@@ -14,9 +14,6 @@ namespace canshark_gui
 {
     public partial class frmMain : Form
     {
-        CanSharkBoard board;
-
-        /* Analysis */
         CanopenCycle[] Cycle = new CanopenCycle[] { new CanopenCycle(0), new CanopenCycle(1) };
         CanBusHistogram[] HistogramData = new CanBusHistogram[] { new CanBusHistogram(0), new CanBusHistogram(1) };
         PortStatistics[] PortStats = new PortStatistics[] { new PortStatistics(0), new PortStatistics(1) };
@@ -31,7 +28,7 @@ namespace canshark_gui
             dataGridView1.Rows.Insert(0, "CAN1", "0.00 %", "1000 kbps, 75%, 1-10-4", "0", "0", "0");
             dataGridView1.Rows.Insert(1, "CAN2", "0.00 %", "1000 kbps, 75%, 1-10-4", "0", "0", "0");
 
-            board = new CanSharkBoard();
+            CanSharkCore.Boards.Add(new CanSharkBoard());
 
             CanSharkCore.Analyzers.Add(Cycle[0]);
             CanSharkCore.Analyzers.Add(Cycle[1]);
@@ -48,7 +45,8 @@ namespace canshark_gui
 
         private void frmMain_FormClosed(object sender, FormClosedEventArgs e)
         {
-            board.Dispose();
+            foreach (IDisposable board in CanSharkCore.Boards)
+                board.Dispose();
         }
 
         
