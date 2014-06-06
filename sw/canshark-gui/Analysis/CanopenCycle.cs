@@ -1,12 +1,14 @@
 ﻿using System;
+using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 
-namespace canshark.Analysis
+namespace Analysis
 {
-    class CanopenMsg
+    public class CanopenMsg
     {
         public UInt32 COB;
         public string COBstr;
@@ -17,18 +19,18 @@ namespace canshark.Analysis
         public bool dir;
     }
 
-    class CanopenCycle
+    class CanopenCycle : IAnalyzer
     {
-        private List<CanopenMsg> _temp = new List<CanopenMsg>();
+        public ConcurrentDictionary<uint,CanopenMsg> CycleLog = new ConcurrentDictionary<uint,CanopenMsg>();
 
-        public CanopenMsg[] GetCycleSnapshot()
-        {
-            lock (_temp)
-                return _temp.ToArray();
-        }
-
+        private int _bus = 0;
         private UInt16 synctime = 0;
         private UInt16 oldsynctime = 0;
+
+        public CanopenCycle(int bus)
+        {
+            _bus = bus;
+        }        
 
         public int TimeDiff(UInt16 old, UInt16 time1)
         {
@@ -40,43 +42,47 @@ namespace canshark.Analysis
 
         public float SyncPeriod { get { return TimeDiff(oldsynctime, synctime) / 1000.0f; } }
 
-        public void Analyze(CanMessage m)
+        public bool IsRunning { get { return false; } }
+
+        public void Analyze(CanMessage[] msgs)
         {
-            if (m.GetStdId() == 0x80)        // std ID 0x80 = SYNC
+            foreach (CanMessage m in msgs)
             {
-                oldsynctime = synctime;
-                synctime = m.Time;
+                if ((m.Source & 0x01) != _bus)
+                    continue;
+
+                if (m.GetStdId() == 0x80)        // std ID 0x80 = SYNC
+                {
+                    oldsynctime = synctime;
+                    synctime = m.Time;
+                }
+                else
+                    if (CycleLog.Count == 0)       // make the cycle entire from the beginning
+                        return;
+
+                CycleLog.AddOrUpdate(m.COB,
+                    (id) => // add new
+                    {
+                        CanopenMsg msg = new CanopenMsg();
+                        msg.COB = id;
+                        msg.COBstr = CanMessage.GetAddrString(id);
+                        msg.count = 1;
+                        msg.delay = TimeDiff(synctime, m.Time) / 1000.0f;
+                        msg.length = m.GetMinFrameLength() / 1000.0f;
+                        msg.dir = ((m.Source & 0x08) != 0);
+                        msg.data = BitConverter.ToString(m.Data);
+                        return msg;
+                    },
+                    (id, msg) => // update
+                    {
+                        msg.data = BitConverter.ToString(m.Data);
+                        msg.count++;
+                        msg.delay = TimeDiff(synctime, m.Time) / 1000.0f;
+                        msg.length = m.GetMinFrameLength() / 1000.0f;
+                        msg.dir = ((m.Source & 0x08) != 0);
+                        return msg;
+                    });
             }
-            else
-                if (_temp.Count == 0)       // make the cycle entire from the beginning
-                    return;
-
-            CanopenMsg msg = GetOrNew(m.COB);
-            msg.data = BitConverter.ToString(m.Data);
-            msg.count++;
-            msg.delay = TimeDiff(synctime, m.Time) / 1000.0f;
-            msg.length = m.GetMinFrameLength() / 1000.0f;
-            msg.dir = ((m.Source & 0x08) != 0);            
         }
-
-        private CanopenMsg GetOrNew(UInt32 ID)
-        {
-            lock (_temp)
-            {
-                foreach (var p in _temp)
-                    if (p.COB == ID)
-                        return p;
-                    
-                // notfound
-                CanopenMsg msg = new CanopenMsg();
-                msg.COB = ID;
-                msg.COBstr = CanMessage.GetAddrString(ID);
-                msg.count = 0;
-                msg.delay = 0;
-                _temp.Add(msg);
-                return msg;
-            }
-        }
-
     }
 }

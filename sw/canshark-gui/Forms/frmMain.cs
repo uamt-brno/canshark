@@ -1,4 +1,5 @@
-﻿using canshark;
+﻿using Analysis;
+using canshark;
 using canshark.Analysis;
 using canshark.Forms;
 using System;
@@ -30,7 +31,7 @@ namespace canshark_gui
         /* statistics end */
 
         /* Analysis */
-        CanopenCycle[] Cycle = new CanopenCycle[] { new CanopenCycle(), new CanopenCycle() };
+        CanopenCycle[] Cycle = new CanopenCycle[] { new CanopenCycle(0), new CanopenCycle(1) };
         CanBusHistogram[] HistogramData = new CanBusHistogram[2] { new CanBusHistogram(), new CanBusHistogram() };
 
         public frmMain()
@@ -46,10 +47,13 @@ namespace canshark_gui
             board = new CanSharkBoard();
             board.MessageReceived += board_MessageReceived;
 
-            this.CAN1_histogram.InitializeGraphics();
-            this.CAN1_histogram.SetHistogramDataSource(this.HistogramData[0]);
-            this.CAN2_histogram.InitializeGraphics();
-            this.CAN2_histogram.SetHistogramDataSource(this.HistogramData[1]);
+            CanSharkCore.Analyzers.Add(Cycle[0]);
+            CanSharkCore.Analyzers.Add(Cycle[1]);
+
+            CAN1_histogram.InitializeGraphics();
+            CAN1_histogram.SetHistogramDataSource(HistogramData[0]);
+            CAN2_histogram.InitializeGraphics();
+            CAN2_histogram.SetHistogramDataSource(HistogramData[1]);
         }
 
         private void frmMain_FormClosed(object sender, FormClosedEventArgs e)
@@ -69,54 +73,16 @@ namespace canshark_gui
                 dataGridView1[5, i].Value = can_stats[i].nerrs.ToString();
             }
 
-            CanopenMsg[] cycle = Cycle[0].GetCycleSnapshot();
-
-            while (dataGridView2.RowCount < cycle.Length)
-                dataGridView2.Rows.Add();
-
             lperiod.Text = Cycle[0].SyncPeriod.ToString("F3") + " ms";
-
-            if (cycle.Length > 0)
-            {
-
-                int basecount = (int)cycle[0].count;
-
-                for (int i = 0; i < cycle.Length; i++)
-                {
-                    dataGridView2[0, i].Value = cycle[i].dir ? "TX" : "RX";
-                    dataGridView2[1, i].Value = cycle[i].COBstr;
-                    dataGridView2[2, i].Value = cycle[i].data;
-                    dataGridView2[3, i].Value = "+" + cycle[i].delay.ToString("F3") + " ms";
-                    dataGridView2[4, i].Value = "+" + cycle[i].length.ToString("F3") + " ms";
-                    dataGridView2[5, i].Value = (cycle[i].count - basecount).ToString("D");
-                }
-            }
-
-            cycle = Cycle[1].GetCycleSnapshot();
-
-            while (dataGridView3.RowCount < cycle.Length)
-                dataGridView3.Rows.Add();
-
             lperiod2.Text = Cycle[1].SyncPeriod.ToString("F3") + " ms";
 
-            if (cycle.Length > 0)
-            {
-
-                int basecount = (int)cycle[0].count;
-
-                for (int i = 0; i < cycle.Length; i++)
-                {
-                    dataGridView3[0, i].Value = cycle[i].dir ? "TX" : "RX";
-                    dataGridView3[1, i].Value = cycle[i].COBstr;
-                    dataGridView3[2, i].Value = cycle[i].data;
-                    dataGridView3[3, i].Value = "+" + cycle[i].delay.ToString("F3") + " ms";
-                    dataGridView3[4, i].Value = "+" + cycle[i].length.ToString("F3") + " ms";
-                    dataGridView3[5, i].Value = (cycle[i].count - basecount).ToString("D");
-                }
-            }
+            viewCanopenCycle1.UpdateData(Cycle[0].CycleLog.Values.OrderBy((x) => x.delay).ToArray());
+            viewCanopenCycle2.UpdateData(Cycle[1].CycleLog.Values.OrderBy((x) => x.delay).ToArray());
 
             this.CAN1_histogram.Refresh();
             this.CAN2_histogram.Refresh();
+
+            CanSharkCore.Analyze();
         }
 
         
@@ -132,8 +98,6 @@ namespace canshark_gui
                 can_stats[dev].nrx++;
                 HistogramData[dev].ReceivedMessage(e);
             }
-
-            Cycle[dev].Analyze(e);
         }
 
         private void trackBar1_Scroll(object sender, EventArgs e)

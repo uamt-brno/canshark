@@ -12,7 +12,7 @@ namespace canshark
     class CanSharkBoard : IDisposable
     {
         private bool exit;
-        public event  EventHandler<CanMessage> MessageReceived;
+        public event  EventHandler<CanMessage> MessageReceived;     // TODO remove
 
         public CanSharkBoard()
         {
@@ -41,6 +41,9 @@ namespace canshark
                     {
                         CanMessage m = CanMessage.DeserializeFrom(br);
 
+                        CanSharkCore.InputQueue.Enqueue(m);
+
+                        // TODO remove
                         if (MessageReceived != null)
                             MessageReceived(this, m);
                     }                    

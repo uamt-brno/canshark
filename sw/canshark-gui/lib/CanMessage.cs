@@ -5,8 +5,7 @@ using System.Linq;
 using System.Text;
 using Wireshark;
 
-namespace canshark
-{
+
     public class CanMessage : ISerializer
     {
         public UInt32 Sec;
@@ -96,4 +95,4 @@ namespace canshark
             return (UInt16)(len * 2);
         }
     }
-}
+

@@ -76,21 +76,22 @@ namespace canshark.Analysis
             }
             else
             {
+                uint id = msg.GetStdId();
                 if (this.AutoDeleteEnable)
                 {
                     lock (StdIDDictionaryAD)
                     {
-                        if (!this.StdIDDictionaryAD.ContainsKey(msg.COB))
+                        if (!this.StdIDDictionaryAD.ContainsKey(id))
                         {
                             List<int> MsgCountList = new List<int>();
                             for (int i = 0; i < Diference; i++)
                                 MsgCountList.Add(0);
                             MsgCountList.Add(1);
-                            this.StdIDDictionaryAD.Add(msg.COB, MsgCountList);
+                            this.StdIDDictionaryAD.Add(id, MsgCountList);
                         }
                         else
                         {
-                            this.StdIDDictionaryAD[msg.COB][(int)this.Diference]++;
+                            this.StdIDDictionaryAD[id][(int)this.Diference]++;
                         }
                     }
                 }
@@ -98,13 +99,13 @@ namespace canshark.Analysis
                 {
                     lock (StdIDDictionaryND)
                     {
-                        if (!this.StdIDDictionaryND.ContainsKey(msg.COB))
+                        if (!this.StdIDDictionaryND.ContainsKey(id))
                         {
-                            this.StdIDDictionaryND.Add(msg.COB, 1);
+                            this.StdIDDictionaryND.Add(id, 1);
                         }
                         else
                         {
-                            this.StdIDDictionaryND[msg.COB]++;
+                            this.StdIDDictionaryND[id]++;
                         }
                     }
                 }
