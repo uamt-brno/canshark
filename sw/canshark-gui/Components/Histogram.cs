@@ -335,14 +335,7 @@ namespace canshark
             }
             if (this.histogramData != null)
             {
-                if (this._extID)
-                {
-                    this.ChangeGraphics(this.histogramData.GetExtIDChanges());
-                }
-                else
-                {
-                    this.ChangeGraphics(this.histogramData.GetStdIDChanges());
-                }
+                this.ChangeGraphics(this.histogramData.GetChanges());
             }
             this.RecomputeMousePosition();
         }
@@ -350,9 +343,14 @@ namespace canshark
         public void ChangeGraphics(Dictionary<uint,int> PointsToChange)
         {
             this.LastHistogramData = PointsToChange;
-            foreach (uint ID in PointsToChange.Keys)
+            foreach (var pt in PointsToChange)
             {
-                ChangePointValue(ID, this.GetPen(PointsToChange[ID]));
+                bool isext = (pt.Key & 0x80000000) != 0;
+
+                if (_extID && isext)
+                    ChangePointValue(pt.Key, this.GetPen(pt.Value));
+                else if (!_extID && !isext)
+                    ChangePointValue((pt.Key >> 18) & 0x7FF, this.GetPen(pt.Value));
             }
 
             this.pictureBox1.Refresh();
