@@ -37,14 +37,14 @@
             System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle5 = new System.Windows.Forms.DataGridViewCellStyle();
             System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle6 = new System.Windows.Forms.DataGridViewCellStyle();
             System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle7 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle9 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle10 = new System.Windows.Forms.DataGridViewCellStyle();
             System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle11 = new System.Windows.Forms.DataGridViewCellStyle();
             System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle12 = new System.Windows.Forms.DataGridViewCellStyle();
             System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle13 = new System.Windows.Forms.DataGridViewCellStyle();
             System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle14 = new System.Windows.Forms.DataGridViewCellStyle();
             System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle15 = new System.Windows.Forms.DataGridViewCellStyle();
             System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle16 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle9 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle10 = new System.Windows.Forms.DataGridViewCellStyle();
             this.timer1 = new System.Windows.Forms.Timer(this.components);
             this.dataGridView1 = new System.Windows.Forms.DataGridView();
             this.channel = new System.Windows.Forms.DataGridViewTextBoxColumn();
@@ -61,11 +61,7 @@
             this.lperiod2 = new System.Windows.Forms.Label();
             this.tabControl1 = new System.Windows.Forms.TabControl();
             this.tabPage1 = new System.Windows.Forms.TabPage();
-            this.CAN2_histogram = new canshark.Histogram();
-            this.CAN1_histogram = new canshark.Histogram();
             this.tabPage2 = new System.Windows.Forms.TabPage();
-            this.viewCanopenCycle2 = new Components.Data.ViewCanopenCycle();
-            this.viewCanopenCycle1 = new Components.Data.ViewCanopenCycle();
             this.button1 = new System.Windows.Forms.Button();
             this.button2 = new System.Windows.Forms.Button();
             this.dataGridViewTextBoxColumn11 = new System.Windows.Forms.DataGridViewTextBoxColumn();
@@ -74,6 +70,10 @@
             this.dataGridViewTextBoxColumn14 = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.dataGridViewTextBoxColumn15 = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.dataGridViewTextBoxColumn16 = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.CAN2_histogram = new canshark.Histogram();
+            this.CAN1_histogram = new canshark.Histogram();
+            this.viewCanopenCycle2 = new Components.Data.ViewCanopenCycle();
+            this.viewCanopenCycle1 = new Components.Data.ViewCanopenCycle();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.trackBar1)).BeginInit();
             this.tabControl1.SuspendLayout();
@@ -278,40 +278,6 @@
             this.tabPage1.Text = "CAN bus";
             this.tabPage1.UseVisualStyleBackColor = true;
             // 
-            // CAN2_histogram
-            // 
-            this.CAN2_histogram.AutoScroll = true;
-            this.CAN2_histogram.AutoSize = true;
-            this.CAN2_histogram.Dock = System.Windows.Forms.DockStyle.Right;
-            this.CAN2_histogram.ExtColumns = 10;
-            this.CAN2_histogram.ExtRows = 10;
-            this.CAN2_histogram.Location = new System.Drawing.Point(621, 3);
-            this.CAN2_histogram.Name = "CAN2_histogram";
-            this.CAN2_histogram.Name_text = "CAN2";
-            this.CAN2_histogram.ShowHex = true;
-            this.CAN2_histogram.Size = new System.Drawing.Size(627, 471);
-            this.CAN2_histogram.StdColumns = 50;
-            this.CAN2_histogram.StdRows = 41;
-            this.CAN2_histogram.TabIndex = 1;
-            this.CAN2_histogram.Zoomable = false;
-            // 
-            // CAN1_histogram
-            // 
-            this.CAN1_histogram.AutoScroll = true;
-            this.CAN1_histogram.AutoSize = true;
-            this.CAN1_histogram.Dock = System.Windows.Forms.DockStyle.Left;
-            this.CAN1_histogram.ExtColumns = 10;
-            this.CAN1_histogram.ExtRows = 10;
-            this.CAN1_histogram.Location = new System.Drawing.Point(3, 3);
-            this.CAN1_histogram.Name = "CAN1_histogram";
-            this.CAN1_histogram.Name_text = "CAN1";
-            this.CAN1_histogram.ShowHex = true;
-            this.CAN1_histogram.Size = new System.Drawing.Size(606, 471);
-            this.CAN1_histogram.StdColumns = 50;
-            this.CAN1_histogram.StdRows = 41;
-            this.CAN1_histogram.TabIndex = 0;
-            this.CAN1_histogram.Zoomable = true;
-            // 
             // tabPage2
             // 
             this.tabPage2.Controls.Add(this.viewCanopenCycle2);
@@ -327,62 +293,6 @@
             this.tabPage2.TabIndex = 1;
             this.tabPage2.Text = "Canopen";
             this.tabPage2.UseVisualStyleBackColor = true;
-            // 
-            // viewCanopenCycle2
-            // 
-            this.viewCanopenCycle2.AllowUserToAddRows = false;
-            this.viewCanopenCycle2.AllowUserToDeleteRows = false;
-            this.viewCanopenCycle2.AllowUserToOrderColumns = true;
-            this.viewCanopenCycle2.AllowUserToResizeRows = false;
-            this.viewCanopenCycle2.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.AllCells;
-            this.viewCanopenCycle2.AutoSizeRowsMode = System.Windows.Forms.DataGridViewAutoSizeRowsMode.DisplayedCells;
-            dataGridViewCellStyle9.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
-            dataGridViewCellStyle9.BackColor = System.Drawing.SystemColors.Control;
-            dataGridViewCellStyle9.ForeColor = System.Drawing.SystemColors.WindowText;
-            dataGridViewCellStyle9.SelectionBackColor = System.Drawing.SystemColors.Highlight;
-            dataGridViewCellStyle9.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
-            dataGridViewCellStyle9.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
-            this.viewCanopenCycle2.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle9;
-            this.viewCanopenCycle2.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.viewCanopenCycle2.Location = new System.Drawing.Point(632, 19);
-            this.viewCanopenCycle2.MultiSelect = false;
-            this.viewCanopenCycle2.Name = "viewCanopenCycle2";
-            this.viewCanopenCycle2.ReadOnly = true;
-            this.viewCanopenCycle2.RowHeadersVisible = false;
-            this.viewCanopenCycle2.RowHeadersWidthSizeMode = System.Windows.Forms.DataGridViewRowHeadersWidthSizeMode.DisableResizing;
-            this.viewCanopenCycle2.ScrollBars = System.Windows.Forms.ScrollBars.None;
-            this.viewCanopenCycle2.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
-            this.viewCanopenCycle2.Size = new System.Drawing.Size(613, 445);
-            this.viewCanopenCycle2.TabIndex = 11;
-            this.viewCanopenCycle2.VirtualMode = true;
-            // 
-            // viewCanopenCycle1
-            // 
-            this.viewCanopenCycle1.AllowUserToAddRows = false;
-            this.viewCanopenCycle1.AllowUserToDeleteRows = false;
-            this.viewCanopenCycle1.AllowUserToOrderColumns = true;
-            this.viewCanopenCycle1.AllowUserToResizeRows = false;
-            this.viewCanopenCycle1.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.AllCells;
-            this.viewCanopenCycle1.AutoSizeRowsMode = System.Windows.Forms.DataGridViewAutoSizeRowsMode.DisplayedCells;
-            dataGridViewCellStyle10.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
-            dataGridViewCellStyle10.BackColor = System.Drawing.SystemColors.Control;
-            dataGridViewCellStyle10.ForeColor = System.Drawing.SystemColors.WindowText;
-            dataGridViewCellStyle10.SelectionBackColor = System.Drawing.SystemColors.Highlight;
-            dataGridViewCellStyle10.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
-            dataGridViewCellStyle10.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
-            this.viewCanopenCycle1.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle10;
-            this.viewCanopenCycle1.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.viewCanopenCycle1.Location = new System.Drawing.Point(6, 19);
-            this.viewCanopenCycle1.MultiSelect = false;
-            this.viewCanopenCycle1.Name = "viewCanopenCycle1";
-            this.viewCanopenCycle1.ReadOnly = true;
-            this.viewCanopenCycle1.RowHeadersVisible = false;
-            this.viewCanopenCycle1.RowHeadersWidthSizeMode = System.Windows.Forms.DataGridViewRowHeadersWidthSizeMode.DisableResizing;
-            this.viewCanopenCycle1.ScrollBars = System.Windows.Forms.ScrollBars.Vertical;
-            this.viewCanopenCycle1.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
-            this.viewCanopenCycle1.Size = new System.Drawing.Size(613, 445);
-            this.viewCanopenCycle1.TabIndex = 0;
-            this.viewCanopenCycle1.VirtualMode = true;
             // 
             // button1
             // 
@@ -462,6 +372,90 @@
             this.dataGridViewTextBoxColumn16.Name = "dataGridViewTextBoxColumn16";
             this.dataGridViewTextBoxColumn16.ReadOnly = true;
             this.dataGridViewTextBoxColumn16.Width = 69;
+            // 
+            // CAN2_histogram
+            // 
+            this.CAN2_histogram.AutoScroll = true;
+            this.CAN2_histogram.AutoSize = true;
+            this.CAN2_histogram.Dock = System.Windows.Forms.DockStyle.Right;
+            this.CAN2_histogram.Location = new System.Drawing.Point(621, 3);
+            this.CAN2_histogram.Name = "CAN2_histogram";
+            this.CAN2_histogram.Name_text = "CAN2";
+            this.CAN2_histogram.ShowHex = true;
+            this.CAN2_histogram.Size = new System.Drawing.Size(627, 471);
+            this.CAN2_histogram.Columns = 50;
+            this.CAN2_histogram.Rows = 41;
+            this.CAN2_histogram.TabIndex = 1;
+            // 
+            // CAN1_histogram
+            // 
+            this.CAN1_histogram.AutoScroll = true;
+            this.CAN1_histogram.AutoSize = true;
+            this.CAN1_histogram.Dock = System.Windows.Forms.DockStyle.Left;
+            this.CAN1_histogram.Location = new System.Drawing.Point(3, 3);
+            this.CAN1_histogram.Name = "CAN1_histogram";
+            this.CAN1_histogram.Name_text = "CAN1";
+            this.CAN1_histogram.ShowHex = true;
+            this.CAN1_histogram.Size = new System.Drawing.Size(606, 471);
+            this.CAN1_histogram.Columns = 32;
+            this.CAN1_histogram.Rows = 32;
+            this.CAN1_histogram.TabIndex = 0;
+            // 
+            // viewCanopenCycle2
+            // 
+            this.viewCanopenCycle2.AllowUserToAddRows = false;
+            this.viewCanopenCycle2.AllowUserToDeleteRows = false;
+            this.viewCanopenCycle2.AllowUserToOrderColumns = true;
+            this.viewCanopenCycle2.AllowUserToResizeRows = false;
+            this.viewCanopenCycle2.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.AllCells;
+            this.viewCanopenCycle2.AutoSizeRowsMode = System.Windows.Forms.DataGridViewAutoSizeRowsMode.DisplayedCells;
+            dataGridViewCellStyle9.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
+            dataGridViewCellStyle9.BackColor = System.Drawing.SystemColors.Control;
+            dataGridViewCellStyle9.ForeColor = System.Drawing.SystemColors.WindowText;
+            dataGridViewCellStyle9.SelectionBackColor = System.Drawing.SystemColors.Highlight;
+            dataGridViewCellStyle9.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
+            dataGridViewCellStyle9.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
+            this.viewCanopenCycle2.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle9;
+            this.viewCanopenCycle2.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            this.viewCanopenCycle2.Location = new System.Drawing.Point(632, 19);
+            this.viewCanopenCycle2.MultiSelect = false;
+            this.viewCanopenCycle2.Name = "viewCanopenCycle2";
+            this.viewCanopenCycle2.ReadOnly = true;
+            this.viewCanopenCycle2.RowHeadersVisible = false;
+            this.viewCanopenCycle2.RowHeadersWidthSizeMode = System.Windows.Forms.DataGridViewRowHeadersWidthSizeMode.DisableResizing;
+            this.viewCanopenCycle2.ScrollBars = System.Windows.Forms.ScrollBars.None;
+            this.viewCanopenCycle2.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
+            this.viewCanopenCycle2.Size = new System.Drawing.Size(613, 445);
+            this.viewCanopenCycle2.TabIndex = 11;
+            this.viewCanopenCycle2.VirtualMode = true;
+            // 
+            // viewCanopenCycle1
+            // 
+            this.viewCanopenCycle1.AllowUserToAddRows = false;
+            this.viewCanopenCycle1.AllowUserToDeleteRows = false;
+            this.viewCanopenCycle1.AllowUserToOrderColumns = true;
+            this.viewCanopenCycle1.AllowUserToResizeRows = false;
+            this.viewCanopenCycle1.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.AllCells;
+            this.viewCanopenCycle1.AutoSizeRowsMode = System.Windows.Forms.DataGridViewAutoSizeRowsMode.DisplayedCells;
+            dataGridViewCellStyle10.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
+            dataGridViewCellStyle10.BackColor = System.Drawing.SystemColors.Control;
+            dataGridViewCellStyle10.ForeColor = System.Drawing.SystemColors.WindowText;
+            dataGridViewCellStyle10.SelectionBackColor = System.Drawing.SystemColors.Highlight;
+            dataGridViewCellStyle10.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
+            dataGridViewCellStyle10.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
+            this.viewCanopenCycle1.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle10;
+            this.viewCanopenCycle1.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            this.viewCanopenCycle1.Location = new System.Drawing.Point(6, 19);
+            this.viewCanopenCycle1.MultiSelect = false;
+            this.viewCanopenCycle1.Name = "viewCanopenCycle1";
+            this.viewCanopenCycle1.ReadOnly = true;
+            this.viewCanopenCycle1.RowHeadersVisible = false;
+            this.viewCanopenCycle1.RowHeadersWidthSizeMode = System.Windows.Forms.DataGridViewRowHeadersWidthSizeMode.DisableResizing;
+            this.viewCanopenCycle1.ScrollBars = System.Windows.Forms.ScrollBars.Vertical;
+            this.viewCanopenCycle1.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
+            this.viewCanopenCycle1.Size = new System.Drawing.Size(613, 445);
+            this.viewCanopenCycle1.TabIndex = 0;
+            this.viewCanopenCycle1.VirtualMode = true;
             // 
             // frmMain
             // 

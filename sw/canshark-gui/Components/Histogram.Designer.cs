@@ -30,9 +30,9 @@
         {
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Histogram));
             this.pictureBox1 = new System.Windows.Forms.PictureBox();
-            this.lbl_00 = new System.Windows.Forms.Label();
-            this.lbl_row_max = new System.Windows.Forms.Label();
             this.toolStrip1 = new System.Windows.Forms.ToolStrip();
+            this.tslbl_name = new System.Windows.Forms.ToolStripLabel();
+            this.toolStripSeparator1 = new System.Windows.Forms.ToolStripSeparator();
             this.toolStripLabel2 = new System.Windows.Forms.ToolStripLabel();
             this.toolStripLabel1 = new System.Windows.Forms.ToolStripLabel();
             this.tstb_NodeID = new System.Windows.Forms.ToolStripTextBox();
@@ -44,8 +44,6 @@
             this.deleteAftermsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.tstb_deleteTime = new System.Windows.Forms.ToolStripTextBox();
             this.tscb_ID_mode = new System.Windows.Forms.ToolStripComboBox();
-            this.tslbl_name = new System.Windows.Forms.ToolStripLabel();
-            this.toolStripSeparator1 = new System.Windows.Forms.ToolStripSeparator();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
             this.toolStrip1.SuspendLayout();
             this.SuspendLayout();
@@ -61,29 +59,7 @@
             this.pictureBox1.Size = new System.Drawing.Size(533, 376);
             this.pictureBox1.TabIndex = 0;
             this.pictureBox1.TabStop = false;
-            this.pictureBox1.MouseEnter += new System.EventHandler(this.pictureBox1_MouseEnter);
-            this.pictureBox1.MouseLeave += new System.EventHandler(this.pictureBox1_MouseLeave);
             this.pictureBox1.Resize += new System.EventHandler(this.pictureBox1_Resize);
-            // 
-            // lbl_00
-            // 
-            this.lbl_00.AutoSize = true;
-            this.lbl_00.Location = new System.Drawing.Point(25, 28);
-            this.lbl_00.Name = "lbl_00";
-            this.lbl_00.Size = new System.Drawing.Size(13, 13);
-            this.lbl_00.TabIndex = 1;
-            this.lbl_00.Text = "0";
-            this.lbl_00.Visible = false;
-            // 
-            // lbl_row_max
-            // 
-            this.lbl_row_max.AutoSize = true;
-            this.lbl_row_max.Location = new System.Drawing.Point(11, 391);
-            this.lbl_row_max.Name = "lbl_row_max";
-            this.lbl_row_max.Size = new System.Drawing.Size(27, 13);
-            this.lbl_row_max.TabIndex = 2;
-            this.lbl_row_max.Text = "Max";
-            this.lbl_row_max.Visible = false;
             // 
             // toolStrip1
             // 
@@ -103,16 +79,27 @@
             this.toolStrip1.TabIndex = 3;
             this.toolStrip1.Text = "toolStrip1";
             // 
+            // tslbl_name
+            // 
+            this.tslbl_name.Name = "tslbl_name";
+            this.tslbl_name.Size = new System.Drawing.Size(34, 22);
+            this.tslbl_name.Text = "Name";
+            // 
+            // toolStripSeparator1
+            // 
+            this.toolStripSeparator1.Name = "toolStripSeparator1";
+            this.toolStripSeparator1.Size = new System.Drawing.Size(6, 25);
+            // 
             // toolStripLabel2
             // 
             this.toolStripLabel2.Name = "toolStripLabel2";
-            this.toolStripLabel2.Size = new System.Drawing.Size(126, 22);
+            this.toolStripLabel2.Size = new System.Drawing.Size(114, 22);
             this.toolStripLabel2.Text = "Actual cursor position:";
             // 
             // toolStripLabel1
             // 
             this.toolStripLabel1.Name = "toolStripLabel1";
-            this.toolStripLabel1.Size = new System.Drawing.Size(50, 22);
+            this.toolStripLabel1.Size = new System.Drawing.Size(47, 22);
             this.toolStripLabel1.Text = "NodeID:";
             // 
             // tstb_NodeID
@@ -125,7 +112,7 @@
             // toolStripLabel3
             // 
             this.toolStripLabel3.Name = "toolStripLabel3";
-            this.toolStripLabel3.Size = new System.Drawing.Size(93, 22);
+            this.toolStripLabel3.Size = new System.Drawing.Size(85, 22);
             this.toolStripLabel3.Text = "Count of frames";
             // 
             // tstb_counOfFrames
@@ -140,7 +127,7 @@
             this.tsbtn_reset.Image = ((System.Drawing.Image)(resources.GetObject("tsbtn_reset.Image")));
             this.tsbtn_reset.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.tsbtn_reset.Name = "tsbtn_reset";
-            this.tsbtn_reset.Size = new System.Drawing.Size(88, 22);
+            this.tsbtn_reset.Size = new System.Drawing.Size(84, 22);
             this.tsbtn_reset.Text = "Reset counters";
             this.tsbtn_reset.Click += new System.EventHandler(this.tsbtn_reset_Click);
             // 
@@ -154,7 +141,7 @@
             this.tssbtn_show_options.Image = ((System.Drawing.Image)(resources.GetObject("tssbtn_show_options.Image")));
             this.tssbtn_show_options.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.tssbtn_show_options.Name = "tssbtn_show_options";
-            this.tssbtn_show_options.Size = new System.Drawing.Size(65, 19);
+            this.tssbtn_show_options.Size = new System.Drawing.Size(60, 17);
             this.tssbtn_show_options.Text = "Options";
             // 
             // tscb_enable_auto_delete
@@ -164,7 +151,7 @@
             "Delete older frames",
             "Show all frames"});
             this.tscb_enable_auto_delete.Name = "tscb_enable_auto_delete";
-            this.tscb_enable_auto_delete.Size = new System.Drawing.Size(121, 23);
+            this.tscb_enable_auto_delete.Size = new System.Drawing.Size(121, 21);
             this.tscb_enable_auto_delete.Tag = "DeleteEnable";
             this.tscb_enable_auto_delete.SelectedIndexChanged += new System.EventHandler(this.tscb_enable_auto_delete_SelectedIndexChanged);
             // 
@@ -180,7 +167,7 @@
             // 
             this.tstb_deleteTime.Name = "tstb_deleteTime";
             this.tstb_deleteTime.ReadOnly = true;
-            this.tstb_deleteTime.Size = new System.Drawing.Size(100, 23);
+            this.tstb_deleteTime.Size = new System.Drawing.Size(100, 21);
             this.tstb_deleteTime.Tag = "DeleteTime";
             this.tstb_deleteTime.Text = "5";
             this.tstb_deleteTime.TextChanged += new System.EventHandler(this.tstb_deleteTime_TextChanged);
@@ -192,28 +179,15 @@
             "Show StdID",
             "Show ExtID"});
             this.tscb_ID_mode.Name = "tscb_ID_mode";
-            this.tscb_ID_mode.Size = new System.Drawing.Size(121, 23);
+            this.tscb_ID_mode.Size = new System.Drawing.Size(121, 21);
             this.tscb_ID_mode.Visible = false;
             this.tscb_ID_mode.SelectedIndexChanged += new System.EventHandler(this.tscb_ID_mode_SelectedIndexChanged);
-            // 
-            // tslbl_name
-            // 
-            this.tslbl_name.Name = "tslbl_name";
-            this.tslbl_name.Size = new System.Drawing.Size(39, 22);
-            this.tslbl_name.Text = "Name";
-            // 
-            // toolStripSeparator1
-            // 
-            this.toolStripSeparator1.Name = "toolStripSeparator1";
-            this.toolStripSeparator1.Size = new System.Drawing.Size(6, 25);
             // 
             // Histogram
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.Controls.Add(this.toolStrip1);
-            this.Controls.Add(this.lbl_row_max);
-            this.Controls.Add(this.lbl_00);
             this.Controls.Add(this.pictureBox1);
             this.Name = "Histogram";
             this.Size = new System.Drawing.Size(542, 407);
@@ -229,8 +203,6 @@
         #endregion
 
         private System.Windows.Forms.PictureBox pictureBox1;
-        private System.Windows.Forms.Label lbl_00;
-        private System.Windows.Forms.Label lbl_row_max;
         private System.Windows.Forms.ToolStrip toolStrip1;
         private System.Windows.Forms.ToolStripLabel toolStripLabel2;
         private System.Windows.Forms.ToolStripLabel toolStripLabel1;
