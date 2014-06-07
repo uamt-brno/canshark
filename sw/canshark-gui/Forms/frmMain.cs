@@ -95,7 +95,7 @@ namespace canshark_gui
             for (int i = 0; i < 10000; i++)
             {
                 CanMessage cm = new CanMessage();
-                cm.COB = CanObjectId.Std((uint)r.Next(0x7FF));
+                cm.COB = CanObjectId.Std((uint)r.Next(0x800));
                 cm.Data = new byte[0];
                 cm.Source = 0;
                 cm.Time = (ushort)i;

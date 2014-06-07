@@ -388,12 +388,12 @@
             // 
             this.CAN2_histogram.AutoScroll = true;
             this.CAN2_histogram.AutoSize = true;
-            this.CAN2_histogram.Columns = 32;
+            this.CAN2_histogram.Columns = 64;
             this.CAN2_histogram.Dock = System.Windows.Forms.DockStyle.Right;
             this.CAN2_histogram.Location = new System.Drawing.Point(621, 3);
             this.CAN2_histogram.Name = "CAN2_histogram";
             this.CAN2_histogram.Name_text = "CAN2";
-            this.CAN2_histogram.Rows = 64;
+            this.CAN2_histogram.Rows = 32;
             this.CAN2_histogram.Size = new System.Drawing.Size(627, 471);
             this.CAN2_histogram.TabIndex = 1;
             // 
@@ -401,12 +401,12 @@
             // 
             this.CAN1_histogram.AutoScroll = true;
             this.CAN1_histogram.AutoSize = true;
-            this.CAN1_histogram.Columns = 32;
+            this.CAN1_histogram.Columns = 64;
             this.CAN1_histogram.Dock = System.Windows.Forms.DockStyle.Left;
             this.CAN1_histogram.Location = new System.Drawing.Point(3, 3);
             this.CAN1_histogram.Name = "CAN1_histogram";
             this.CAN1_histogram.Name_text = "CAN1";
-            this.CAN1_histogram.Rows = 64;
+            this.CAN1_histogram.Rows = 32;
             this.CAN1_histogram.Size = new System.Drawing.Size(606, 471);
             this.CAN1_histogram.TabIndex = 0;
             // 
