@@ -12,6 +12,7 @@ namespace Boards
     class EthBoard : IDisposable
     {
         private bool exit;
+        private AutoResetEvent evt = new AutoResetEvent(false);
 
         public EthBoard()
         {
@@ -26,8 +27,10 @@ namespace Boards
 
                 while (!exit)
                 {
-                    if (!iar.AsyncWaitHandle.WaitOne(1000))
-                        continue;
+                    WaitHandle.WaitAny(new [] { evt, iar.AsyncWaitHandle });
+
+                    if (exit)
+                        break;
 
                     IPEndPoint ep = new IPEndPoint(0, 0);
                     byte[] data = ucl.EndReceive(iar, ref ep);
@@ -50,6 +53,7 @@ namespace Boards
         public void Dispose()
         {
             exit = true;
+            evt.Set();
         }
     }
 }
