@@ -15,33 +15,36 @@ namespace canshark
 
         public CanSharkBoard()
         {
-            new Thread(thread).Start();
+            new Thread(thread) {  Priority = ThreadPriority.AboveNormal }.Start();
         }
 
         private void thread()
         {
-            UdpClient ucl = new UdpClient(6000);
-            IAsyncResult iar = ucl.BeginReceive(null, null);
-
-            while (!exit)
+            using (UdpClient ucl = new UdpClient(6000))
             {
-                if (!iar.AsyncWaitHandle.WaitOne(1000))
-                    continue;
+                IAsyncResult iar = ucl.BeginReceive(null, null);
 
-                IPEndPoint ep = new IPEndPoint(0, 0);
-                byte[] data = ucl.EndReceive(iar, ref ep);
-                iar = ucl.BeginReceive(null, 0);
-
-                using (MemoryStream ms = new MemoryStream(data))
+                while (!exit)
                 {
-                    BinaryReader br = new BinaryReader(ms);
-                    
-                    while (ms.Position < ms.Length)
-                        CanSharkCore.InputQueue.Enqueue(CanMessage.DeserializeFrom(br));
-                }
-            }
+                    if (!iar.AsyncWaitHandle.WaitOne(1000))
+                        continue;
 
-            ucl.Close();
+                    IPEndPoint ep = new IPEndPoint(0, 0);
+                    byte[] data = ucl.EndReceive(iar, ref ep);
+
+                    iar = ucl.BeginReceive(null, 0);
+
+                    using (MemoryStream ms = new MemoryStream(data))
+                    {
+                        BinaryReader br = new BinaryReader(ms);
+
+                        while (ms.Position < ms.Length)
+                            CanSharkCore.InputQueue.Enqueue(CanMessage.DeserializeFrom(br));
+                    }
+                }
+
+                ucl.Close();
+            }
         }
 
         public void Dispose()
