@@ -77,7 +77,7 @@
     </Compile>
     <Compile Include="lib\CanMessage.cs" />
     <Compile Include="lib\CanObjectId.cs" />
-    <Compile Include="lib\CanSharkBoard.cs" />
+    <Compile Include="Boards\EthBoard.cs" />
     <Compile Include="lib\CanSourceId.cs" />
     <Compile Include="lib\Wireshark.cs" />
     <Compile Include="lib\WiresharkPcap.cs" />

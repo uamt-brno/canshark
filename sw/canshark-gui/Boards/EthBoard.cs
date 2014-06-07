@@ -7,13 +7,13 @@ using System.Net.Sockets;
 using System.Text;
 using System.Threading;
 
-namespace canshark
+namespace Boards
 {
-    class CanSharkBoard : IDisposable
+    class EthBoard : IDisposable
     {
         private bool exit;
 
-        public CanSharkBoard()
+        public EthBoard()
         {
             new Thread(thread) {  Priority = ThreadPriority.AboveNormal }.Start();
         }

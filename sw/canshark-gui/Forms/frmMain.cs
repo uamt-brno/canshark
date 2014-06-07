@@ -1,4 +1,5 @@
 ﻿using Analysis;
+using Boards;
 using canshark;
 using canshark.Forms;
 using System;
@@ -28,7 +29,7 @@ namespace canshark_gui
             dataGridView1.Rows.Insert(0, "CAN1", "0.00 %", "1000 kbps, 75%, 1-10-4", "0", "0", "0");
             dataGridView1.Rows.Insert(1, "CAN2", "0.00 %", "1000 kbps, 75%, 1-10-4", "0", "0", "0");
 
-            CanSharkCore.Boards.Add(new CanSharkBoard());
+            CanSharkCore.Boards.Add(new EthBoard());
 
             CanSharkCore.Analyzers.Add(Cycle[0]);
             CanSharkCore.Analyzers.Add(Cycle[1]);
