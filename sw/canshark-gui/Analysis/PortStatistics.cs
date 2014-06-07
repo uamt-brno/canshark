@@ -8,26 +8,26 @@ namespace Analysis
 {
     class PortStatistics : IAnalyzer
     {
-        private int _bus;
+        private CanSourceId _Source;
 
         public int nRx = 0;
         public int nTx = 0;
         public int nErrs = 0;
 
 
-        public PortStatistics(int bus)
+        public PortStatistics(CanSourceId bus)
         {
-            _bus = bus;
+            _Source = bus;
         }
 
         public void Analyze(CanMessage[] msgs)
         {
             foreach (CanMessage msg in msgs)
             {
-                if ((msg.Source & 1) != _bus)
+                if (!msg.Source.IsSamePort(_Source))
                     continue;
 
-                if ((msg.Source & 0x08) != 0)
+                if (msg.Source.IsTx)
                     nTx++;
                 else
                     nRx++;

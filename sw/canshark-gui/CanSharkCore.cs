@@ -10,9 +10,11 @@ using System.Threading.Tasks;
 
 public static class CanSharkCore
 {
-    public static BlockingCollection<IDisposable> Boards = new BlockingCollection<IDisposable>();
-    public static ConcurrentQueue<CanMessage> InputQueue = new ConcurrentQueue<CanMessage>();
-    public static ConcurrentBag<IAnalyzer> Analyzers = new ConcurrentBag<IAnalyzer>();
+    public static BlockingCollection<IDisposable> Boards = new BlockingCollection<IDisposable>();       // List of all available boards to sniff CAN
+    public static BlockingCollection<CanSourceId> Sources = new BlockingCollection<CanSourceId>();      // List of all CAN ports
+    
+    public static ConcurrentQueue<CanMessage> InputQueue = new ConcurrentQueue<CanMessage>();           // Queue of unprocessed packets
+    public static ConcurrentBag<IAnalyzer> Analyzers = new ConcurrentBag<IAnalyzer>();                  // List of all analyzers
 
     public static void Analyze()
     {

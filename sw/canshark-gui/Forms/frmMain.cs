@@ -97,7 +97,7 @@ namespace canshark_gui
                 CanMessage cm = new CanMessage();
                 cm.COB = CanObjectId.Std((uint)r.Next(0x800));
                 cm.Data = new byte[0];
-                cm.Source = 0;
+                cm.Source = CanSourceId.Source(0, (uint)r.Next(0,2), false);
                 cm.Time = (ushort)i;
                 cm.Usec = (ushort)i;
 

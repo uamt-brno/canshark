@@ -10,13 +10,16 @@ using Wireshark;
 
     public class CanMessage : ISerializer
     {
+        public CanSourceId Source;
+        public CanObjectId COB;
+
         public UInt32 Sec;
         public UInt32 Usec;
-        public CanObjectId COB;
         public byte[] Data = new byte[8];
         public UInt16 Time;
-        public byte Source;
+        
 
+        #region Serializing
         public int SerializeLen()
         {
             return 8 + Data.Length;
@@ -61,6 +64,7 @@ using Wireshark;
             
             return msg;
         }
+        #endregion
 
 
         public UInt16 GetMinFrameLength()

@@ -16,20 +16,20 @@ namespace Analysis
         public UInt32 count;
         public double delay;
         public double length; 
-        public bool dir;
+        public bool IsTx;
     }
 
     class CanopenCycle : IAnalyzer
     {
         public ConcurrentDictionary<uint,CanopenMsg> CycleLog = new ConcurrentDictionary<uint,CanopenMsg>();
 
-        private int _bus = 0;
+        private CanSourceId _Source = 0;
         private UInt16 synctime = 0;
         private UInt16 oldsynctime = 0;
 
-        public CanopenCycle(int bus)
+        public CanopenCycle(CanSourceId bus)
         {
-            _bus = bus;
+            _Source = bus;
         }        
 
         public int TimeDiff(UInt16 old, UInt16 time1)
@@ -48,7 +48,7 @@ namespace Analysis
         {
             foreach (CanMessage m in msgs)
             {
-                if ((m.Source & 0x01) != _bus)
+                if (!m.Source.IsSamePort(_Source))
                     continue;
 
                 if (m.COB.IdStd == 0x80)        // std ID 0x80 = SYNC
@@ -69,7 +69,7 @@ namespace Analysis
                         msg.count = 1;
                         msg.delay = TimeDiff(synctime, m.Time) / 1000.0f;
                         msg.length = m.GetMinFrameLength() / 1000.0f;
-                        msg.dir = ((m.Source & 0x08) != 0);
+                        msg.IsTx = m.Source.IsTx;
                         msg.data = BitConverter.ToString(m.Data);
                         return msg;
                     },
@@ -79,7 +79,7 @@ namespace Analysis
                         msg.count++;
                         msg.delay = TimeDiff(synctime, m.Time) / 1000.0f;
                         msg.length = m.GetMinFrameLength() / 1000.0f;
-                        msg.dir = ((m.Source & 0x08) != 0);
+                        msg.IsTx = m.Source.IsTx;
                         return msg;
                     });
             }

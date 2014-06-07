@@ -118,7 +118,7 @@ namespace Components.Data
 
             switch (e.ColumnIndex)
             {
-                case 0: e.Value = msg.dir ? "TX" : "RX"; break;
+                case 0: e.Value = msg.IsTx ? "TX" : "RX"; break;
                 case 1: e.Value = msg.COBstr; break;
                 case 2: e.Value = msg.data; break;
                 case 3: e.Value = "+" + msg.delay.ToString("F3") + " ms"; break;

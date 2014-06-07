@@ -45,18 +45,18 @@ namespace Analysis
         bool AutoDeleteEnable = false;
         uint Diference = 10;
         Timer DeleteTimer = new Timer();
-        int _bus;
+        CanSourceId _Source;
         #endregion
         
         #region Public methods
-        public CanBusHistogram(int bus)
+        public CanBusHistogram(CanSourceId bus)
         {
             DeleteTimer.Elapsed += (e, a) =>
             {
                 foreach (var kvp in StatsAutoDelete)
                     kvp.Value.Pack(Diference);
             };
-            _bus = bus;
+            _Source = bus;
         }
 
         
@@ -66,7 +66,7 @@ namespace Analysis
         {
             foreach (CanMessage msg in msgs)
             {
-                if ((msg.Source & 0x01) != _bus)
+                if (!msg.Source.IsSamePort(_Source))
                     continue;
 
                 if (!AutoDeleteEnable)
