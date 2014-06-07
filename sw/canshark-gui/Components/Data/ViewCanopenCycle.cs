@@ -102,7 +102,18 @@ namespace Components.Data
         }
         #endregion
 
+        protected override void OnCellFormatting(DataGridViewCellFormattingEventArgs e)
+        {
+            base.OnCellFormatting(e);
 
+            if ((e.RowIndex < 0) || (e.RowIndex > _Data.Length))
+                return;
+
+            CanopenMsg msg = _Data[e.RowIndex];
+
+            if (msg.IsTx)
+                e.CellStyle.BackColor = Color.NavajoWhite;
+        }
 
         protected override void OnCellValueNeeded(DataGridViewCellValueEventArgs e)
         {
@@ -116,10 +127,12 @@ namespace Components.Data
 
             CanopenMsg msg = _Data[e.RowIndex];
 
+            
+
             switch (e.ColumnIndex)
             {
                 case 0: e.Value = msg.IsTx ? "TX" : "RX"; break;
-                case 1: e.Value = msg.COBstr; break;
+                case 1: e.Value = msg.COB.ToString(); break;
                 case 2: e.Value = msg.data; break;
                 case 3: e.Value = "+" + msg.delay.ToString("F3") + " ms"; break;
                 case 4: e.Value = "+" + msg.length.ToString("F3") + " ms"; break;

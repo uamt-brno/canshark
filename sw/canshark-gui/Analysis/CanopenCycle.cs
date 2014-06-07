@@ -10,8 +10,7 @@ namespace Analysis
 {
     public class CanopenMsg
     {
-        public UInt32 COB;
-        public string COBstr;
+        public CanObjectId COB;
         public string data;
         public UInt32 count;
         public double delay;
@@ -65,7 +64,6 @@ namespace Analysis
                     {
                         CanopenMsg msg = new CanopenMsg();
                         msg.COB = id;
-                        msg.COBstr = msg.COB.ToString();
                         msg.count = 1;
                         msg.delay = TimeDiff(synctime, m.Time) / 1000.0f;
                         msg.length = m.GetMinFrameLength() / 1000.0f;
