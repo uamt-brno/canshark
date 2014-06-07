@@ -22,7 +22,7 @@ namespace Analysis
     {
         public ConcurrentDictionary<uint,CanopenMsg> CycleLog = new ConcurrentDictionary<uint,CanopenMsg>();
 
-        private CanSourceId _Source = 0;
+        private CanSourceId _Source;
         private UInt16 synctime = 0;
         private UInt16 oldsynctime = 0;
 

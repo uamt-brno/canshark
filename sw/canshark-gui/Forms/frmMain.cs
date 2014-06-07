@@ -2,6 +2,7 @@
 using Boards;
 using canshark;
 using canshark.Forms;
+using Core;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -15,9 +16,9 @@ namespace canshark_gui
 {
     public partial class frmMain : Form
     {
-        CanopenCycle[] Cycle = new CanopenCycle[] { new CanopenCycle(0), new CanopenCycle(1) };
-        CanBusHistogram[] HistogramData = new CanBusHistogram[] { new CanBusHistogram(0), new CanBusHistogram(1) };
-        PortStatistics[] PortStats = new PortStatistics[] { new PortStatistics(0), new PortStatistics(1) };
+        CanopenCycle[] Cycle = new CanopenCycle[] { new CanopenCycle(CanSourceId.Source(0, 0)), new CanopenCycle(CanSourceId.Source(0, 1)) };
+        CanBusHistogram[] HistogramData = new CanBusHistogram[] { new CanBusHistogram(CanSourceId.Source(0, 0)), new CanBusHistogram(CanSourceId.Source(0, 1)) };
+        PortStatistics[] PortStats = new PortStatistics[] { new PortStatistics(CanSourceId.Source(0, 0)), new PortStatistics(CanSourceId.Source(0, 1)) };
 
         public frmMain()
         {
@@ -94,14 +95,14 @@ namespace canshark_gui
         {
             Random r = new Random();
 
-            CanMessage cm1 = new CanMessage();
-            cm1.COB = CanObjectId.Std(0x80);
-            cm1.Data = new byte[0];
-            cm1.Source = CanSourceId.Source(0, 0, true);
-            cm1.Time = (ushort)0;
-            cm1.Usec = (ushort)0;
-
-            CanSharkCore.InputQueue.Enqueue(cm1);
+            CanSharkCore.InputQueue.Enqueue(
+                new CanMessage(
+                    CanSourceId.Source(0, 0),
+                    CanObjectId.Std(0x80))
+                    {
+                        Time = 0,
+                        Usec = 0
+                    });
 
             for (int i = 0; i < 10000; i++)
             {
@@ -109,14 +110,14 @@ namespace canshark_gui
                 while (id == 0x80)
                     id = (uint)r.Next(0x800);
 
-                CanMessage cm = new CanMessage();
-                cm.COB = CanObjectId.Std(id);
-                cm.Data = new byte[0];
-                cm.Source = CanSourceId.Source(0, (uint)r.Next(0,2), false);
-                cm.Time = (ushort)i;
-                cm.Usec = (ushort)i;
-
-                CanSharkCore.InputQueue.Enqueue(cm);
+                CanSharkCore.InputQueue.Enqueue(
+                    new CanMessage(
+                        CanSourceId.Source(0, (byte)r.Next(0,2)),
+                        CanObjectId.Std(id))
+                        {
+                            Time = (ushort)i,
+                            Usec = (ushort)i
+                        });
             }
         }
     }

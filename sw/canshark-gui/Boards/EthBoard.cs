@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Core;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -42,7 +43,7 @@ namespace Boards
                         BinaryReader br = new BinaryReader(ms);
 
                         while (ms.Position < ms.Length)
-                            CanSharkCore.InputQueue.Enqueue(CanMessage.DeserializeFrom(br));
+                            CanSharkCore.InputQueue.Enqueue(UnpackCanMessage(0, br));
                     }
                 }
 
@@ -54,6 +55,29 @@ namespace Boards
         {
             exit = true;
             evt.Set();
+        }
+
+        public static CanMessage UnpackCanMessage(byte board, BinaryReader br)
+        {
+            UInt32 cob = br.ReadUInt32();
+            UInt16 tim = br.ReadUInt16();
+            byte src = br.ReadByte();
+            byte rs1 = br.ReadByte(); /* zero */
+            byte[] d = br.ReadBytes(8);
+            byte dlen = br.ReadByte();
+            byte[] p = br.ReadBytes(7); /* PAD */
+            UInt64 t = br.ReadUInt64();
+
+
+            Array.Resize(ref d, dlen);
+
+            return new CanMessage(
+                CanSourceId.Full(board, (byte)((src & 7) | ((src << 4) & 0x80)), (byte)(src >> 4)), cob, d)
+                {
+                    Time = tim,
+                    Sec =  (UInt32)(long)(t / (1000 * 1000)),
+                    Usec = (UInt32)((long)(t % (1000 * 1000)))
+                };
         }
     }
 }

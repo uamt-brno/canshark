@@ -53,7 +53,7 @@
     <Compile Include="Analysis\CanopenCycle.cs" />
     <Compile Include="Analysis\IAnalyzer.cs" />
     <Compile Include="Analysis\PortStatistics.cs" />
-    <Compile Include="CanSharkCore.cs" />
+    <Compile Include="Core\CanSharkCore.cs" />
     <Compile Include="Components\Data\ViewCanopenCycle.cs">
       <SubType>Component</SubType>
     </Compile>
@@ -75,12 +75,12 @@
     <Compile Include="Components\Histogram.Designer.cs">
       <DependentUpon>Histogram.cs</DependentUpon>
     </Compile>
-    <Compile Include="lib\CanMessage.cs" />
-    <Compile Include="lib\CanObjectId.cs" />
+    <Compile Include="Core\CanBus\CanMessage.cs" />
+    <Compile Include="Core\CanBus\CanObjectId.cs" />
     <Compile Include="Boards\EthBoard.cs" />
-    <Compile Include="lib\CanSourceId.cs" />
-    <Compile Include="lib\Wireshark.cs" />
-    <Compile Include="lib\WiresharkPcap.cs" />
+    <Compile Include="Core\CanBus\CanSourceId.cs" />
+    <Compile Include="Core\Wireshark\Wireshark.cs" />
+    <Compile Include="Core\Wireshark\WiresharkPcap.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <EmbeddedResource Include="Forms\frmChannelProperties.resx">
