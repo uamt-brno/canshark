@@ -66,7 +66,7 @@ namespace Analysis
         {
             foreach (CanMessage msg in msgs)
             {
-                if (!msg.Source.IsSamePort(_Source))
+                if (!msg.Source.Equals(_Source))
                     continue;
 
                 if (!AutoDeleteEnable)
@@ -81,7 +81,7 @@ namespace Analysis
             if (AutoDeleteEnable)
                 return StatsAutoDelete.ToArray().ToDictionary(x => x.Key, x => x.Value.sum());
 
-            return StatsTotal.ToArray().ToDictionary((a) => a.Key, (a) => a.Value);
+            return new Dictionary<CanObjectId, int>(StatsTotal);
         }
 
         public void ChangeAutoDeleteMode(bool new_state, uint Delete_time, uint StepTime) //times in ms

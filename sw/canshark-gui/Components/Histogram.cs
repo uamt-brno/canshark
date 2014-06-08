@@ -9,84 +9,52 @@ using System.Threading.Tasks;
 using System.Windows.Forms;
 using System.Windows.Input;
 using Analysis;
+using System.Diagnostics;
 
 namespace canshark
 {
     public partial class Histogram : UserControl
     {
-
-
         #region Private
         public CanBusHistogram _Data; // TODO private !!
         private Bitmap bmp;
-        private Graphics gr;
-        private Dictionary<CanObjectId, int> LastHistogramData;
+        private Dictionary<CanObjectId, int> LastHistogramData = new Dictionary<CanObjectId,int>();
 
         private int _color_resolution = 8;
-        private Pen[] _pens;
-        private int[] _CompValues;
+        private Color[] _pens = new[] { 
+            Color.LightGray,
+            Color.LightYellow,
+            Color.Yellow,
+            Color.Orange,
+            Color.DarkOrange,
+            Color.OrangeRed,
+            Color.Red,
+            Color.DarkRed,
+        };
+
+        private int[] _CompValues = new[] {
+            0,
+            1,
+            10,
+            30,
+            50,
+            70,
+            100,
+            150,
+        };
 
         bool Resized = false;
 
-        private int _Rows = 41;
-        private int _Columns = 50; 
-        private int _Row_pixel_size = 10;
-        private int _Col_pixel_size = 10;
+        private int _Rows = 128;
+        private int _Columns = 16; 
+        private Size _CellSize = new Size(10, 10);
 
 
         private bool _AutoDeleteEnabled = false;
         private int _DeleteInterval = 5000;
         private int _AutoDeleteResolution = 100;
         
-        void ChangePointValue(int x, int y, Pen pen)
-        {
-            Point StartPoint = new Point(x * (_Col_pixel_size + 1), y * _Row_pixel_size + (_Row_pixel_size / 2) + y);
-            Point EndPoint =  new Point(StartPoint.X + _Col_pixel_size, StartPoint.Y);
-            gr.DrawLine(pen, StartPoint, EndPoint);
-        }
-
-
-        void ChangePointValue(CanObjectId ID, Pen pen)
-        {
-            int y = (int)ID.IdStd / _Columns;
-            int x = (int)ID.IdStd % _Columns;
-            ChangePointValue(x, y, pen);
-        }
-
-        void ReinitPenList()
-        {
-            if (_pens != null)
-            {
-                foreach (Pen p in _pens)
-                    p.Dispose();
-
-                _pens = null;
-            }
-            _pens = new Pen[_color_resolution];
-            _pens[0] = new Pen(Color.LightGray, _Row_pixel_size);
-            _pens[1] = new Pen(Color.LightYellow, _Row_pixel_size);
-            _pens[2] = new Pen(Color.Yellow, _Row_pixel_size);
-            _pens[3] = new Pen(Color.Orange, _Row_pixel_size);
-            _pens[4] = new Pen(Color.DarkOrange, _Row_pixel_size);
-            _pens[5] = new Pen(Color.OrangeRed, _Row_pixel_size);
-            _pens[6] = new Pen(Color.Red, _Row_pixel_size);
-            _pens[7] = new Pen(Color.DarkRed, _Row_pixel_size);            
-        }
-
-        void ReinitCompareValues()
-        {
-            _CompValues = new int[_color_resolution];
-            _CompValues[0] = 0;
-            _CompValues[1] = 1;
-            _CompValues[2] = 10;
-            _CompValues[3] = 30;
-            _CompValues[4] = 50;
-            _CompValues[5] = 70;
-            _CompValues[6] = 100;
-            _CompValues[7] = 150;
-        }
-
-        Pen GetPen(int Count)
+        Color GetPen(int Count)
         {
             for (int i = _color_resolution - 1; i >= 0; i--)
                 if (Count >= _CompValues[i])
@@ -122,7 +90,13 @@ namespace canshark
         public Histogram()
         {
             InitializeComponent();
-            ReinitCompareValues();
+
+            SetStyle(ControlStyles.OptimizedDoubleBuffer, true);
+            SetStyle(ControlStyles.AllPaintingInWmPaint, true);
+            SetStyle(ControlStyles.UserPaint, true);
+            SetStyle(ControlStyles.ResizeRedraw, true);
+            SetStyle(ControlStyles.SupportsTransparentBackColor, true);
+
         }
 
         public void SetHistogramDataSource(CanBusHistogram data)
@@ -132,30 +106,39 @@ namespace canshark
 
         public void InitializeGraphics()
         {
-            if (pictureBox1.Width > 0 && pictureBox1.Height > 0)
+            if (Width > 0 && Height > 0)
             {
-                _Col_pixel_size = (pictureBox1.Width - _Columns) / _Columns;
-                _Row_pixel_size = (pictureBox1.Height - _Rows) / _Rows;
-                ReinitPenList();
-                bmp = new Bitmap((_Col_pixel_size + 1) * Columns, (_Row_pixel_size + 1) * Rows);
-                pictureBox1.Image = bmp;
+                _CellSize = new Size(Width / _Columns, Height / _Rows);
 
-                gr = Graphics.FromImage(bmp);
+                bmp = new Bitmap(_CellSize.Width * Columns, _CellSize.Height * Rows);
 
                 ClearGraphics();
-                pictureBox1.Refresh();
+                Invalidate();
             }
+        }
+
+        protected override void OnPaint(PaintEventArgs e)
+        {
+           // base.OnPaint(e);
+            if (bmp != null)
+                e.Graphics.DrawImageUnscaled(bmp, 0, 0);
         }
 
         public void ClearGraphics()
         {
-            Pen myPen = _pens[0];
+            using (Graphics g = Graphics.FromImage(bmp))
+            using (Brush br = new SolidBrush(_pens[0]))
             for (int i = 0; i < _Rows; i++)
                 for (int j = 0; j < _Columns; j++)
-                    ChangePointValue(j, i, myPen);
+                    g.FillRectangle(
+                        br,
+                        j * _CellSize.Width,
+                        i * _CellSize.Height,
+                        _CellSize.Width - 1,
+                        _CellSize.Height - 1); 
         }
 
-        public void Refresh()
+        public void UpdateD()
         {
             if (Resized)
             {
@@ -164,33 +147,48 @@ namespace canshark
             }
 
             if (_Data != null)
-                ChangeGraphics(_Data.GetChanges());
+            {
+                Dictionary<CanObjectId, int> Changes = _Data.GetChanges();
 
+                using (Graphics g = Graphics.FromImage(bmp))
+                foreach (var pt in Changes)
+                {
+                    int val;
+                    if (LastHistogramData.TryGetValue(pt.Key, out val) && (val == pt.Value))
+                        continue;
+
+                    int std = (int)pt.Key.IdStd;
+                    int x = (int)(std % _Columns);
+                    int y = (int)(std / _Columns);
+
+                    using (Brush br = new SolidBrush(GetPen(pt.Value)))
+                        g.FillRectangle(
+                            br,
+                            x * _CellSize.Width,
+                            y * _CellSize.Height,
+                            _CellSize.Width - 1,
+                            _CellSize.Height - 1);
+                }
+
+                LastHistogramData = Changes;
+
+                Invalidate();
+            }
+
+            // TODO remove
             RecomputeMousePosition();
         }
-
-        public void ChangeGraphics(Dictionary<CanObjectId, int> PointsToChange)
-        {
-            LastHistogramData = PointsToChange;
-            foreach (var pt in PointsToChange)
-                ChangePointValue(pt.Key, GetPen(pt.Value));
-
-            pictureBox1.Refresh();
-        }
-
-
-
         #endregion
 
         #region Mouse Integration
 
         private void RecomputeMousePosition()
         {
-            Point p = pictureBox1.PointToClient(Cursor.Position);
-            int Col = p.X / (_Col_pixel_size + 1);
-            int Row = p.Y / (_Row_pixel_size + 1);
+            Point p = PointToClient(Cursor.Position);
+            int Col = p.X / _CellSize.Width;
+            int Row = p.Y / _CellSize.Height;
 
-            if (pictureBox1.ClientRectangle.Contains(p) && (Col < _Columns) && (Row < _Rows))
+            if (ClientRectangle.Contains(p) && (Col < _Columns) && (Row < _Rows))
             {
                 CanObjectId ID = CanObjectId.Std((uint)(Row * _Columns + Col));
 

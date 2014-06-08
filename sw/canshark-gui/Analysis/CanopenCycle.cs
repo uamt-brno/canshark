@@ -63,7 +63,7 @@ namespace Analysis
                 msg.count++;
                 msg.delay = TimeDiff(result.synctime, m.Time) / 1000.0f;
                 msg.length = m.GetMinFrameLength() / 1000.0f;
-                msg.IsTx = m.Source.IsTx;
+                msg.IsTx = m.Mailbox.IsTx;
             }
         }
 

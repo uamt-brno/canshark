@@ -72,7 +72,9 @@ namespace Boards
             Array.Resize(ref d, dlen);
 
             return new CanMessage(
-                CanSourceId.Full(board, (byte)((src & 7) | ((src << 4) & 0x80)), (byte)(src >> 4)), cob, d)
+                CanSourceId.Source(board, (byte)(src & 7)), 
+                CanMailboxId.Mailbox((src & 0x08) != 0, (byte)(src >> 4)),
+                cob, d)
                 {
                     Time = tim,
                     Sec =  (UInt32)(long)(t / (1000 * 1000)),

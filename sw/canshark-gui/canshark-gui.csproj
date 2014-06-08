@@ -53,6 +53,7 @@
     <Compile Include="Analysis\CanopenCycle.cs" />
     <Compile Include="Analysis\IAnalyzer.cs" />
     <Compile Include="Analysis\PortStatistics.cs" />
+    <Compile Include="Core\CanBus\CanMailboxId.cs" />
     <Compile Include="Core\CanSharkCore.cs" />
     <Compile Include="Components\Data\ViewCanopenCycle.cs">
       <SubType>Component</SubType>

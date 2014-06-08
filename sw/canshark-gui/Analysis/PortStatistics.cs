@@ -24,7 +24,7 @@ namespace Analysis
             {
                 Result result = Results.GetOrAdd(CanSourceId.Source(msg.Source.Board, msg.Source.Port), x => new Result());
 
-                if (msg.Source.IsTx)
+                if (msg.Mailbox.IsTx)
                     result.nTx++;
                 else
                     result.nRx++;

@@ -1,8 +1,9 @@
 ﻿using System;
 
-public class CanMessage 
+public sealed class CanMessage 
 {
     public CanSourceId Source;
+    public CanMailboxId Mailbox;
     public CanObjectId COB;
 
     public UInt32 Sec;
@@ -10,15 +11,17 @@ public class CanMessage
     public byte[] Data = new byte[0];
     public UInt16 Time;
 
-    public CanMessage(CanSourceId src, CanObjectId cob)
+    public CanMessage(CanSourceId src, CanMailboxId mbox, CanObjectId cob)
     {
         Source = src;
+        Mailbox = mbox;
         COB = cob;
     }
 
-    public CanMessage(CanSourceId src, CanObjectId cob, byte[] data)
+    public CanMessage(CanSourceId src, CanMailboxId mbox, CanObjectId cob, byte[] data)
     {
         Source = src;
+        Mailbox = mbox;
         COB = cob;
         Data = data;
     }

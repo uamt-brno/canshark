@@ -57,7 +57,6 @@
             this.CAN2_histogram.Rows = 16;
             this.CAN2_histogram.Size = new System.Drawing.Size(894, 127);
             this.CAN2_histogram.TabIndex = 2;
-            this.CAN2_histogram.Load += new System.EventHandler(this.CAN2_histogram_Load);
             // 
             // button1
             // 

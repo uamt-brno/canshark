@@ -20,18 +20,13 @@ namespace canshark.Frames
 
         internal void UpdateStatistics()
         {
-            CAN2_histogram.Refresh();
+            CAN2_histogram.UpdateD();
         }
 
         internal void SetSource(CanBusHistogram data)
         {
             CAN2_histogram.InitializeGraphics();
             CAN2_histogram.SetHistogramDataSource(data);
-        }
-
-        private void CAN2_histogram_Load(object sender, EventArgs e)
-        {
-
         }
 
         private void button1_Click(object sender, EventArgs e)

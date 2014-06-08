@@ -7,6 +7,7 @@ using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
+using System.Diagnostics;
 using System.Drawing;
 using System.Linq;
 using System.Text;
@@ -54,16 +55,33 @@ namespace canshark_gui
 
         private void timer1_Tick(object sender, EventArgs e)
         {
+            List<long> Benchmark = new List<long>();
+
+            Stopwatch sw = Stopwatch.StartNew();
+
             frameStatistics1.UpdateStatistics();
             frameStatistics2.UpdateStatistics();
+
+            Benchmark.Add(sw.ElapsedTicks);
 
             frameCanopenCycleLog1.UpdateStatistics();
             frameCanopenCycleLog2.UpdateStatistics();
 
+            Benchmark.Add(sw.ElapsedTicks);
+
             frameMessageMatrix1.UpdateStatistics();
             frameMessageMatrix2.UpdateStatistics();
 
+            Benchmark.Add(sw.ElapsedTicks);
+
             CanSharkCore.Analyze();
+
+            Benchmark.Add(sw.ElapsedTicks);
+
+            label1.Text = Benchmark[0].ToString();
+            label2.Text = (Benchmark[1] - Benchmark[0]).ToString();
+            label3.Text = (Benchmark[2] - Benchmark[1]).ToString();
+            label4.Text = (Benchmark[3] - Benchmark[2]).ToString();
         }
 
         
@@ -89,11 +107,22 @@ namespace canshark_gui
             CanSharkCore.InputQueue.Enqueue(
                 new CanMessage(
                     CanSourceId.Source(0, 0),
+                    CanMailboxId.Mailbox(true, 0x00),
                     CanObjectId.Std(0x80))
                     {
                         Time = 0,
                         Usec = 0
                     });
+
+            CanSharkCore.InputQueue.Enqueue(
+                new CanMessage(
+                    CanSourceId.Source(0, 1),
+                    CanMailboxId.Mailbox(true, 0x00),
+                    CanObjectId.Std(0x80))
+                {
+                    Time = 0,
+                    Usec = 0
+                });
 
             for (int i = 0; i < 10000; i++)
             {
@@ -103,12 +132,15 @@ namespace canshark_gui
 
                 CanSharkCore.InputQueue.Enqueue(
                     new CanMessage(
-                        CanSourceId.Source(0, (byte)r.Next(0,2)),
+                        CanSourceId.Source(0, (byte)(i % 2)),
+                        CanMailboxId.Mailbox(false, 0x00),
                         CanObjectId.Std(id))
                         {
                             Time = (ushort)i,
                             Usec = (ushort)i
                         });
+
+                
             }
         }
     }
