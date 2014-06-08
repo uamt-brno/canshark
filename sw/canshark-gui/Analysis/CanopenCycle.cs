@@ -18,28 +18,27 @@ namespace Analysis
         public bool IsTx;
     }
 
-    class CanopenCycle : IAnalyzer
+    public class CanopenCycle : IAnalyzer
     {
-        public ConcurrentDictionary<uint,CanopenMsg> CycleLog = new ConcurrentDictionary<uint,CanopenMsg>();
-
-        private CanSourceId _Source;
-        private UInt16 synctime = 0;
-        private UInt16 oldsynctime = 0;
-
-        public CanopenCycle(CanSourceId bus)
+        public class Result
         {
-            _Source = bus;
-        }        
+            public ConcurrentDictionary<uint, CanopenMsg> CycleLog = new ConcurrentDictionary<uint, CanopenMsg>();
 
-        public int TimeDiff(UInt16 old, UInt16 time1)
-        {
-            if (time1 >= old)
-                return time1 - old;
-            else
-                return time1 + 0x10000 - old;
+            public UInt16 synctime = 0;
+            public UInt16 oldsynctime = 0;
+
+            
+
+            public float SyncPeriod { get { return TimeDiff(oldsynctime, synctime) / 1000.0f; } }
         }
 
-        public float SyncPeriod { get { return TimeDiff(oldsynctime, synctime) / 1000.0f; } }
+
+        public ConcurrentDictionary<CanSourceId, Result> Results = new ConcurrentDictionary<CanSourceId, Result>();
+
+        
+        
+
+        
 
         public bool IsRunning { get { return false; } }
 
@@ -47,40 +46,34 @@ namespace Analysis
         {
             foreach (CanMessage m in msgs)
             {
-                if (!m.Source.IsSamePort(_Source))
-                    continue;
+                Result result = Results.GetOrAdd(CanSourceId.Source(m.Source.Board, m.Source.Port), x => new Result());
 
                 if (m.COB.IdStd == 0x80)        // std ID 0x80 = SYNC
                 {
-                    oldsynctime = synctime;
-                    synctime = m.Time;
+                    result.oldsynctime = result.synctime;
+                    result.synctime = m.Time;
                 }
                 else
-                    if (CycleLog.Count == 0)       // make the cycle entire from the beginning
+                    if (result.CycleLog.Count == 0)       // make the cycle entire from the beginning
                         return;
 
-                CycleLog.AddOrUpdate(m.COB,
-                    (id) => // add new
-                    {
-                        CanopenMsg msg = new CanopenMsg();
-                        msg.COB = id;
-                        msg.count = 1;
-                        msg.delay = TimeDiff(synctime, m.Time) / 1000.0f;
-                        msg.length = m.GetMinFrameLength() / 1000.0f;
-                        msg.IsTx = m.Source.IsTx;
-                        msg.data = BitConverter.ToString(m.Data);
-                        return msg;
-                    },
-                    (id, msg) => // update
-                    {
-                        msg.data = BitConverter.ToString(m.Data);
-                        msg.count++;
-                        msg.delay = TimeDiff(synctime, m.Time) / 1000.0f;
-                        msg.length = m.GetMinFrameLength() / 1000.0f;
-                        msg.IsTx = m.Source.IsTx;
-                        return msg;
-                    });
+                CanopenMsg msg = result.CycleLog.GetOrAdd(m.COB, x => new CanopenMsg() { COB = x, count = 0 });
+                
+                msg.data = BitConverter.ToString(m.Data);
+                msg.count++;
+                msg.delay = TimeDiff(result.synctime, m.Time) / 1000.0f;
+                msg.length = m.GetMinFrameLength() / 1000.0f;
+                msg.IsTx = m.Source.IsTx;
             }
+        }
+
+
+        public static int TimeDiff(UInt16 old, UInt16 time1)
+        {
+            if (time1 >= old)
+                return time1 - old;
+            else
+                return time1 + 0x10000 - old;
         }
     }
 }
