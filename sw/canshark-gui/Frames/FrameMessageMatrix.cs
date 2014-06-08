@@ -31,8 +31,6 @@ namespace canshark.Frames
 
         internal void SetSource(CanBusHistogram data, CanSourceId src)
         {
-            matrix.InitializeGraphics();
-
             _Stats = data;
             _Source = src;
         }

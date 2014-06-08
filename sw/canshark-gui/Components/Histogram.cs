@@ -30,9 +30,7 @@ namespace canshark
                 new Tuple<int,Color>(100,Color.Red),
                 new Tuple<int,Color>(150,Color.DarkRed),
             };
-
-        bool Resized = false;
-
+        
         private int _Rows = 128;
         private int _Columns = 16; 
         private Size _CellSize = new Size(10, 10);
@@ -83,27 +81,28 @@ namespace canshark
             SetStyle(ControlStyles.AllPaintingInWmPaint, true);
             SetStyle(ControlStyles.UserPaint, true);
             SetStyle(ControlStyles.ResizeRedraw, true);
-            SetStyle(ControlStyles.SupportsTransparentBackColor, true);
 
-        }
-
-        public void InitializeGraphics()
-        {
-            if (Width > 0 && Height > 0)
-            {
-                _CellSize = new Size(Width / _Columns, Height / _Rows);
-
-                bmp = new Bitmap(_CellSize.Width * Columns, _CellSize.Height * Rows);
-
-                ClearGraphics();
-                Invalidate();
-            }
         }
 
         protected override void OnPaint(PaintEventArgs e)
         {
             if (bmp != null)
                 e.Graphics.DrawImageUnscaled(bmp, 0, 0);
+        }
+
+        protected override void OnResize(EventArgs e)
+        {
+            base.OnResize(e);
+
+            _CellSize = new Size(Width / _Columns, Height / _Rows);
+            bmp = new Bitmap(_CellSize.Width * Columns, _CellSize.Height * Rows);
+            ClearGraphics();
+
+            Dictionary<CanObjectId, int> Changes = new Dictionary<CanObjectId, int>(LastHistogramData);
+            LastHistogramData.Clear();
+            UpdateChanges(Changes);
+            
+            Invalidate();
         }
 
         public void ClearGraphics()
@@ -122,12 +121,6 @@ namespace canshark
 
         public void UpdateChanges(Dictionary<CanObjectId, int> Changes)
         {
-            if (Resized)
-            {
-                Resized = false;
-                InitializeGraphics();
-            }
-
             using (Graphics g = Graphics.FromImage(bmp))
             {
                 // clear pixels, they are missing in the new changeset
@@ -200,11 +193,7 @@ namespace canshark
         public event EventHandler MouseHoveredOverId;
 
 
-        protected override void OnResize(EventArgs e)
-        {
-            base.OnResize(e);
-            Resized = true;
-        }
+        
 
 
 
