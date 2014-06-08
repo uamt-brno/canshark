@@ -16,32 +16,20 @@ namespace canshark
     public partial class Histogram : UserControl
     {
         #region Private
-        public CanBusHistogram _Data; // TODO private !!
         private Bitmap bmp;
         private Dictionary<CanObjectId, int> LastHistogramData = new Dictionary<CanObjectId,int>();
 
-        private int _color_resolution = 8;
-        private Color[] _pens = new[] { 
-            Color.LightGray,
-            Color.LightYellow,
-            Color.Yellow,
-            Color.Orange,
-            Color.DarkOrange,
-            Color.OrangeRed,
-            Color.Red,
-            Color.DarkRed,
-        };
-
-        private int[] _CompValues = new[] {
-            0,
-            1,
-            10,
-            30,
-            50,
-            70,
-            100,
-            150,
-        };
+        private Tuple<int,Color>[] _rainbow = new[]
+            {
+                new Tuple<int,Color>(0,  Color.LightGray),
+                new Tuple<int,Color>(1,  Color.LightYellow),
+                new Tuple<int,Color>(10, Color.Yellow),
+                new Tuple<int,Color>(30, Color.Orange),
+                new Tuple<int,Color>(50, Color.DarkOrange),
+                new Tuple<int,Color>(70, Color.OrangeRed),
+                new Tuple<int,Color>(100,Color.Red),
+                new Tuple<int,Color>(150,Color.DarkRed),
+            };
 
         bool Resized = false;
 
@@ -50,17 +38,17 @@ namespace canshark
         private Size _CellSize = new Size(10, 10);
 
 
-        private bool _AutoDeleteEnabled = false;
-        private int _DeleteInterval = 5000;
-        private int _AutoDeleteResolution = 100;
+       // private bool _AutoDeleteEnabled = false;
+       // private int _DeleteInterval = 5000;
+       // private int _AutoDeleteResolution = 100;
         
         Color GetPen(int Count)
         {
-            for (int i = _color_resolution - 1; i >= 0; i--)
-                if (Count >= _CompValues[i])
-                    return _pens[i];
+            for (int i =_rainbow.Length - 1; i >= 0; i--)
+                if (Count >= _rainbow[i].Item1)
+                    return _rainbow[i].Item2;
 
-            return _pens[0];
+            return _rainbow[0].Item2;
         }
 
         #endregion
@@ -86,7 +74,7 @@ namespace canshark
         }
 
         #endregion
-        #region Public Methods
+
         public Histogram()
         {
             InitializeComponent();
@@ -97,11 +85,6 @@ namespace canshark
             SetStyle(ControlStyles.ResizeRedraw, true);
             SetStyle(ControlStyles.SupportsTransparentBackColor, true);
 
-        }
-
-        public void SetHistogramDataSource(CanBusHistogram data)
-        {
-            this._Data = data;
         }
 
         public void InitializeGraphics()
@@ -119,7 +102,6 @@ namespace canshark
 
         protected override void OnPaint(PaintEventArgs e)
         {
-           // base.OnPaint(e);
             if (bmp != null)
                 e.Graphics.DrawImageUnscaled(bmp, 0, 0);
         }
@@ -127,7 +109,7 @@ namespace canshark
         public void ClearGraphics()
         {
             using (Graphics g = Graphics.FromImage(bmp))
-            using (Brush br = new SolidBrush(_pens[0]))
+            using (Brush br = new SolidBrush(_rainbow[0].Item2))
             for (int i = 0; i < _Rows; i++)
                 for (int j = 0; j < _Columns; j++)
                     g.FillRectangle(
@@ -138,7 +120,7 @@ namespace canshark
                         _CellSize.Height - 1); 
         }
 
-        public void UpdateD()
+        public void UpdateChanges(Dictionary<CanObjectId, int> Changes)
         {
             if (Resized)
             {
@@ -146,11 +128,23 @@ namespace canshark
                 InitializeGraphics();
             }
 
-            if (_Data != null)
+            using (Graphics g = Graphics.FromImage(bmp))
             {
-                Dictionary<CanObjectId, int> Changes = _Data.GetChanges();
+                // clear pixels, they are missing in the new changeset
+                using (Brush br = new SolidBrush(_rainbow[0].Item2))
+                foreach (var pt in LastHistogramData)
+                {
+                    if (Changes.ContainsKey(pt.Key))
+                        continue;
 
-                using (Graphics g = Graphics.FromImage(bmp))
+                    int std = (int)pt.Key.IdStd;
+                    int x = (int)(std % _Columns) * _CellSize.Width;
+                    int y = (int)(std / _Columns) * _CellSize.Height;
+
+                    g.FillRectangle(br, x, y, _CellSize.Width - 1, _CellSize.Height - 1);
+                }
+
+                // colorize pixels they have been new or changed in the new changeset
                 foreach (var pt in Changes)
                 {
                     int val;
@@ -158,93 +152,62 @@ namespace canshark
                         continue;
 
                     int std = (int)pt.Key.IdStd;
-                    int x = (int)(std % _Columns);
-                    int y = (int)(std / _Columns);
+                    int x = (int)(std % _Columns) * _CellSize.Width;
+                    int y = (int)(std / _Columns) * _CellSize.Height;
 
                     using (Brush br = new SolidBrush(GetPen(pt.Value)))
-                        g.FillRectangle(
-                            br,
-                            x * _CellSize.Width,
-                            y * _CellSize.Height,
-                            _CellSize.Width - 1,
-                            _CellSize.Height - 1);
+                        g.FillRectangle(br, x, y, _CellSize.Width - 1, _CellSize.Height - 1);
                 }
-
-                LastHistogramData = Changes;
-
-                Invalidate();
             }
 
-            // TODO remove
-            RecomputeMousePosition();
-        }
-        #endregion
+            LastHistogramData = Changes;
 
-        #region Mouse Integration
-
-        private void RecomputeMousePosition()
-        {
-            Point p = PointToClient(Cursor.Position);
-            int Col = p.X / _CellSize.Width;
-            int Row = p.Y / _CellSize.Height;
-
-            if (ClientRectangle.Contains(p) && (Col < _Columns) && (Row < _Rows))
-            {
-                CanObjectId ID = CanObjectId.Std((uint)(Row * _Columns + Col));
-
-                tstb_NodeID.Text = ID.ToString();
-
-                int val;
-                if (LastHistogramData.TryGetValue(ID, out val))
-                    tstb_counOfFrames.Text = val.ToString();
-                else
-                    tstb_counOfFrames.Text = "---";
-            }
-            else
-            {
-                tstb_NodeID.Text = string.Empty;
-                tstb_counOfFrames.Text = string.Empty;
-            }
+            Invalidate();
         }
 
-        #endregion 
 
-        private void pictureBox1_Resize(object sender, EventArgs e)
+        protected override void OnMouseMove(MouseEventArgs e)
         {
+            base.OnMouseMove(e);
+
+            int Col = e.X / _CellSize.Width;
+            int Row = e.Y / _CellSize.Height;
+
+            bool oldh = MouseHovered;
+            CanObjectId oldid = MouseHoveredId;
+
+            MouseHovered = (Col < _Columns) && (Row < _Rows);
+
+            if (MouseHovered)
+                MouseHoveredId = CanObjectId.Std((uint)(Row * _Columns + Col));
+
+            if (((oldid != MouseHoveredId) || (MouseHovered != oldh)) && (MouseHoveredOverId != null))
+                MouseHoveredOverId(this, EventArgs.Empty);
+        }
+
+        protected override void OnMouseLeave(EventArgs e)
+        {
+            base.OnMouseLeave(e);
+
+            bool oldh = MouseHovered;
+            MouseHovered = false;
+            if ((MouseHovered != oldh) && (MouseHoveredOverId != null))
+                MouseHoveredOverId(this, EventArgs.Empty);
+        }
+
+        public bool MouseHovered = false;
+        public CanObjectId MouseHoveredId;
+        public event EventHandler MouseHoveredOverId;
+
+
+        protected override void OnResize(EventArgs e)
+        {
+            base.OnResize(e);
             Resized = true;
         }
 
-        private void tstb_deleteTime_TextChanged(object sender, EventArgs e)
-        {
-            try
-            {
-                _DeleteInterval = Int32.Parse(tstb_deleteTime.Text) * 1000; //_DeleteInterval is in ms, text in s
-                if (_Data != null) 
-                    _Data.ChangeAutoDeleteMode(_AutoDeleteEnabled, (uint) _DeleteInterval, (uint)_AutoDeleteResolution);
-                InitializeGraphics();
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show(ex.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
-            }
-        }
-
-        private void tscb_enable_auto_delete_SelectedIndexChanged(object sender, EventArgs e)
-        {
-            tstb_deleteTime.ReadOnly = tscb_enable_auto_delete.SelectedIndex != 0;
-            _AutoDeleteEnabled = tscb_enable_auto_delete.SelectedIndex == 0;
-
-            if (_Data != null)
-                _Data.ChangeAutoDeleteMode(_AutoDeleteEnabled, (uint)_DeleteInterval, (uint)_AutoDeleteResolution);
-
-            if (tscb_enable_auto_delete.SelectedIndex == 0)
-                InitializeGraphics();
-        }
 
 
-        private void Histogram_Load(object sender, EventArgs e)
-        {
-            tscb_enable_auto_delete.SelectedItem = tscb_enable_auto_delete.Items[1];
-        }
+
     }
 }

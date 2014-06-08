@@ -18,7 +18,7 @@ namespace canshark_gui
     public partial class frmMain : Form
     {
         CanopenCycle Cycle = new CanopenCycle();
-        CanBusHistogram[] HistogramData = new CanBusHistogram[] { new CanBusHistogram(CanSourceId.Source(0, 0)), new CanBusHistogram(CanSourceId.Source(0, 1)) };
+        CanBusHistogram HistogramData = new CanBusHistogram();
         PortStatistics PortStats = new PortStatistics();
 
         public frmMain()
@@ -31,8 +31,7 @@ namespace canshark_gui
             CanSharkCore.Boards.Add(new EthBoard());
 
             CanSharkCore.Analyzers.Add(Cycle);
-            CanSharkCore.Analyzers.Add(HistogramData[0]);
-            CanSharkCore.Analyzers.Add(HistogramData[1]);
+            CanSharkCore.Analyzers.Add(HistogramData);
             CanSharkCore.Analyzers.Add(PortStats);
 
             frameStatistics1.SetSource(PortStats, CanSourceId.Source(0, 0));
@@ -41,8 +40,8 @@ namespace canshark_gui
             frameCanopenCycleLog1.SetSource(Cycle, CanSourceId.Source(0, 0));
             frameCanopenCycleLog2.SetSource(Cycle, CanSourceId.Source(0, 1));
 
-            frameMessageMatrix1.SetSource(HistogramData[0]);
-            frameMessageMatrix2.SetSource(HistogramData[1]);
+            frameMessageMatrix1.SetSource(HistogramData, CanSourceId.Source(0, 0));
+            frameMessageMatrix2.SetSource(HistogramData, CanSourceId.Source(0, 1));
         }
 
         private void frmMain_FormClosed(object sender, FormClosedEventArgs e)

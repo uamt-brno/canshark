@@ -10,7 +10,7 @@ namespace Analysis
 {
     public class CanBusHistogram : IAnalyzer
     {
-        private class OneCounter
+        public class OneCounter
         {
             public int Value = 1;
             public ConcurrentQueue<int> History = new ConcurrentQueue<int>();
@@ -36,27 +36,49 @@ namespace Analysis
             }
         }
 
+        public class Result
+        {
+            public bool AutoDeleteEnable = false;
+
+            public ConcurrentDictionary<CanObjectId, OneCounter> StatsAutoDelete = new ConcurrentDictionary<CanObjectId, OneCounter>();
+            public ConcurrentDictionary<CanObjectId, int> StatsTotal = new ConcurrentDictionary<CanObjectId, int>();
+
+            public Dictionary<CanObjectId, int> GetChanges()
+            {
+                if (!AutoDeleteEnable)
+                    return new Dictionary<CanObjectId, int>(StatsTotal);
+                else
+                    return StatsAutoDelete.ToArray().ToDictionary(x => x.Key, x => x.Value.sum());                
+            }
+
+            public void ResetCounters()
+            {
+                StatsTotal.Clear();
+                StatsAutoDelete.Clear();
+            }
+        }
+
+        public ConcurrentDictionary<CanSourceId, Result> Results = new ConcurrentDictionary<CanSourceId, Result>();
+
         #region Private properties
-        ConcurrentDictionary<CanObjectId, OneCounter> StatsAutoDelete = new ConcurrentDictionary<CanObjectId, OneCounter>();
-        ConcurrentDictionary<CanObjectId, int> StatsTotal = new ConcurrentDictionary<CanObjectId, int>();
+        
 
         uint TimeResolution = 100;
         uint AutoDeleteTime = 2000;
-        bool AutoDeleteEnable = false;
+        
         uint Diference = 10;
         Timer DeleteTimer = new Timer();
-        CanSourceId _Source;
         #endregion
         
         #region Public methods
-        public CanBusHistogram(CanSourceId bus)
+        public CanBusHistogram()
         {
             DeleteTimer.Elapsed += (e, a) =>
             {
-                foreach (var kvp in StatsAutoDelete)
+                foreach (var kvp2 in Results)
+                foreach (var kvp in kvp2.Value.StatsAutoDelete)
                     kvp.Value.Pack(Diference);
             };
-            _Source = bus;
         }
 
         
@@ -66,40 +88,32 @@ namespace Analysis
         {
             foreach (CanMessage msg in msgs)
             {
-                if (!msg.Source.Equals(_Source))
-                    continue;
+                Result result = Results.GetOrAdd(CanSourceId.Source(msg.Source.Board, msg.Source.Port), x => new Result());
 
-                if (!AutoDeleteEnable)
-                    StatsTotal.AddOrUpdate(msg.COB, 1, (qid, val) => val + 1);
+                if (!result.AutoDeleteEnable)
+                    result.StatsTotal.AddOrUpdate(msg.COB, 1, (qid, val) => val + 1);
                 else
-                    StatsAutoDelete.AddOrUpdate(msg.COB, new OneCounter(), (qid, val) => val.Count() ); 
+                    result.StatsAutoDelete.AddOrUpdate(msg.COB, new OneCounter(), (qid, val) => val.Count()); 
             }
         }
 
-        public Dictionary<CanObjectId, int> GetChanges()
-        {
-            if (AutoDeleteEnable)
-                return StatsAutoDelete.ToArray().ToDictionary(x => x.Key, x => x.Value.sum());
-
-            return new Dictionary<CanObjectId, int>(StatsTotal);
-        }
+        
 
         public void ChangeAutoDeleteMode(bool new_state, uint Delete_time, uint StepTime) //times in ms
         {
-            AutoDeleteEnable = new_state;
+            foreach (var kvp in Results)
+                kvp.Value.AutoDeleteEnable = new_state;
+
             AutoDeleteTime = Delete_time;
             TimeResolution = StepTime;
             Diference = AutoDeleteTime / TimeResolution;
             DeleteTimer.Interval = StepTime;
             DeleteTimer.Enabled = new_state;
-            ResetCounters();
+            foreach (var kvp in Results)
+                kvp.Value.ResetCounters();
         }
 
-        public void ResetCounters()
-        {
-            StatsTotal.Clear();
-            StatsAutoDelete.Clear();
-        }
+        
         #endregion        
     }
 

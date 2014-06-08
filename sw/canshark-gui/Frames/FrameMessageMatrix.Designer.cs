@@ -29,8 +29,9 @@
         private void InitializeComponent()
         {
             this.Caption = new System.Windows.Forms.Label();
-            this.CAN2_histogram = new canshark.Histogram();
             this.button1 = new System.Windows.Forms.Button();
+            this.label1 = new System.Windows.Forms.Label();
+            this.matrix = new canshark.Histogram();
             this.SuspendLayout();
             // 
             // Caption
@@ -46,22 +47,11 @@
             this.Caption.Text = "Message matrix";
             this.Caption.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             // 
-            // CAN2_histogram
-            // 
-            this.CAN2_histogram.AutoScroll = true;
-            this.CAN2_histogram.AutoSize = true;
-            this.CAN2_histogram.Columns = 128;
-            this.CAN2_histogram.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.CAN2_histogram.Location = new System.Drawing.Point(3, 23);
-            this.CAN2_histogram.Name = "CAN2_histogram";
-            this.CAN2_histogram.Rows = 16;
-            this.CAN2_histogram.Size = new System.Drawing.Size(894, 127);
-            this.CAN2_histogram.TabIndex = 2;
-            // 
             // button1
             // 
+            this.button1.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.button1.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
-            this.button1.Location = new System.Drawing.Point(497, 3);
+            this.button1.Location = new System.Drawing.Point(816, 3);
             this.button1.Margin = new System.Windows.Forms.Padding(0);
             this.button1.Name = "button1";
             this.button1.Size = new System.Drawing.Size(44, 20);
@@ -70,25 +60,48 @@
             this.button1.UseVisualStyleBackColor = true;
             this.button1.Click += new System.EventHandler(this.button1_Click);
             // 
+            // label1
+            // 
+            this.label1.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.label1.Location = new System.Drawing.Point(710, 7);
+            this.label1.Name = "label1";
+            this.label1.Size = new System.Drawing.Size(103, 13);
+            this.label1.TabIndex = 0;
+            this.label1.Text = "label1";
+            this.label1.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
+            this.label1.Visible = false;
+            // 
+            // matrix
+            // 
+            this.matrix.Columns = 128;
+            this.matrix.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.matrix.Location = new System.Drawing.Point(3, 23);
+            this.matrix.Name = "matrix";
+            this.matrix.Rows = 16;
+            this.matrix.Size = new System.Drawing.Size(894, 127);
+            this.matrix.TabIndex = 4;
+            this.matrix.MouseHoveredOverId += new System.EventHandler(this.matrix_MouseHoveredOverId);
+            // 
             // FrameMessageMatrix
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+            this.Controls.Add(this.matrix);
+            this.Controls.Add(this.label1);
             this.Controls.Add(this.button1);
-            this.Controls.Add(this.CAN2_histogram);
             this.Controls.Add(this.Caption);
             this.Name = "FrameMessageMatrix";
             this.Padding = new System.Windows.Forms.Padding(3, 3, 3, 0);
             this.Size = new System.Drawing.Size(900, 150);
             this.ResumeLayout(false);
-            this.PerformLayout();
 
         }
 
         #endregion
 
         private System.Windows.Forms.Label Caption;
-        public Histogram CAN2_histogram;
         private System.Windows.Forms.Button button1;
+        private System.Windows.Forms.Label label1;
+        private Histogram matrix;
     }
 }

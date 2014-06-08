@@ -13,6 +13,9 @@ namespace canshark.Frames
 {
     public partial class FrameMessageMatrix : UserControl
     {
+        CanSourceId _Source = null;
+        CanBusHistogram _Stats = null;
+
         public FrameMessageMatrix()
         {
             InitializeComponent();
@@ -20,19 +23,50 @@ namespace canshark.Frames
 
         internal void UpdateStatistics()
         {
-            CAN2_histogram.UpdateD();
+            CanBusHistogram.Result value;
+
+            if (_Stats.Results.TryGetValue(_Source, out value))
+                matrix.UpdateChanges(value.GetChanges());
         }
 
-        internal void SetSource(CanBusHistogram data)
+        internal void SetSource(CanBusHistogram data, CanSourceId src)
         {
-            CAN2_histogram.InitializeGraphics();
-            CAN2_histogram.SetHistogramDataSource(data);
+            matrix.InitializeGraphics();
+
+            _Stats = data;
+            _Source = src;
         }
 
         private void button1_Click(object sender, EventArgs e)
         {
-            CAN2_histogram._Data.ResetCounters();
-            CAN2_histogram.ClearGraphics();
+            CanBusHistogram.Result value;
+
+            if (_Stats.Results.TryGetValue(_Source, out value))
+                value.ResetCounters();
+        }
+
+        private void matrix_MouseHoveredOverId(object sender, EventArgs e)
+        {
+            label1.Visible = matrix.MouseHovered;
+
+            if (!matrix.MouseHovered)
+                return;
+
+            CanBusHistogram.Result value;
+            int v;
+
+            string str = "@" + matrix.MouseHoveredId.ToString() + "=";
+
+            if (!_Stats.Results.TryGetValue(_Source, out value))
+                str += "<no data>";
+            else if (value.StatsTotal.TryGetValue(matrix.MouseHoveredId, out v))
+                str += v.ToString();
+            else
+                str += "0";
+            
+            
+
+            label1.Text = str;
         }
     }
 }
