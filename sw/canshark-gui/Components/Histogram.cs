@@ -17,7 +17,7 @@ namespace canshark
 
 
         #region Private
-        private CanBusHistogram _Data;
+        public CanBusHistogram _Data; // TODO private !!
         private Bitmap bmp;
         private Graphics gr;
         private Dictionary<CanObjectId, int> LastHistogramData;
@@ -32,7 +32,6 @@ namespace canshark
         private int _Columns = 50; 
         private int _Row_pixel_size = 10;
         private int _Col_pixel_size = 10;
-        private bool _extID;
 
 
         private bool _AutoDeleteEnabled = false;
@@ -100,16 +99,6 @@ namespace canshark
 
         #region Public Properties
 
-        [PropertyTab("Name_text")]
-        [Browsable(true)]
-        [Description("Name of histogram")]
-        [Category("HistogramSettings")]
-        public string Name_text
-        {
-            set { tslbl_name.Text = value; }
-            get { return tslbl_name.Text; }
-        }
-
         [PropertyTab("StdRows")]
         [Browsable(true)]
         [Description("Count of rows in StdID mode"), Category("HistogramSettings")]
@@ -152,13 +141,18 @@ namespace canshark
                 pictureBox1.Image = bmp;
 
                 gr = Graphics.FromImage(bmp);
-                Pen myPen = _pens[0];
-                for (int i = 0; i < _Rows; i++)
-                    for (int j = 0; j < _Columns; j++)
-                        ChangePointValue(j, i, myPen);
 
+                ClearGraphics();
                 pictureBox1.Refresh();
             }
+        }
+
+        public void ClearGraphics()
+        {
+            Pen myPen = _pens[0];
+            for (int i = 0; i < _Rows; i++)
+                for (int j = 0; j < _Columns; j++)
+                    ChangePointValue(j, i, myPen);
         }
 
         public void Refresh()
@@ -179,8 +173,7 @@ namespace canshark
         {
             LastHistogramData = PointsToChange;
             foreach (var pt in PointsToChange)
-                if (_extID == pt.Key.IdIsExt)
-                    ChangePointValue(pt.Key, GetPen(pt.Value));
+                ChangePointValue(pt.Key, GetPen(pt.Value));
 
             pictureBox1.Refresh();
         }
@@ -223,14 +216,6 @@ namespace canshark
             Resized = true;
         }
 
-        private void tsbtn_reset_Click(object sender, EventArgs e)
-        {
-            _Data.ResetCounters();
-            InitializeGraphics();
-        }
-
-
-
         private void tstb_deleteTime_TextChanged(object sender, EventArgs e)
         {
             try
@@ -262,12 +247,6 @@ namespace canshark
         private void Histogram_Load(object sender, EventArgs e)
         {
             tscb_enable_auto_delete.SelectedItem = tscb_enable_auto_delete.Items[1];
-            tscb_ID_mode.SelectedIndex = _extID ? 1 : 0;
-        }
-
-        private void tscb_ID_mode_SelectedIndexChanged(object sender, EventArgs e)
-        {
-            _extID = tscb_ID_mode.SelectedIndex != 0; 
         }
     }
 }

@@ -81,6 +81,36 @@
     <Compile Include="Core\CanBus\CanSourceId.cs" />
     <Compile Include="Core\Wireshark\Wireshark.cs" />
     <Compile Include="Core\Wireshark\WiresharkPcap.cs" />
+    <Compile Include="Frames\FrameCanopenCycleLog.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Frames\FrameCanopenCycleLog.Designer.cs">
+      <DependentUpon>FrameCanopenCycleLog.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Frames\FrameMessageDetails.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Frames\FrameMessageDetails.Designer.cs">
+      <DependentUpon>FrameMessageDetails.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Frames\FrameMessageMatrix.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Frames\FrameMessageMatrix.Designer.cs">
+      <DependentUpon>FrameMessageMatrix.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Frames\FrameMessages.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Frames\FrameMessages.Designer.cs">
+      <DependentUpon>FrameMessages.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Frames\FrameStatistics.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Frames\FrameStatistics.Designer.cs">
+      <DependentUpon>FrameStatistics.cs</DependentUpon>
+    </Compile>
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <EmbeddedResource Include="Forms\frmChannelProperties.resx">
@@ -91,6 +121,21 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Components\Histogram.resx">
       <DependentUpon>Histogram.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Frames\FrameCanopenCycleLog.resx">
+      <DependentUpon>FrameCanopenCycleLog.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Frames\FrameMessageDetails.resx">
+      <DependentUpon>FrameMessageDetails.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Frames\FrameMessageMatrix.resx">
+      <DependentUpon>FrameMessageMatrix.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Frames\FrameMessages.resx">
+      <DependentUpon>FrameMessages.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Frames\FrameStatistics.resx">
+      <DependentUpon>FrameStatistics.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>

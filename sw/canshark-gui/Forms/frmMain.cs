@@ -27,9 +27,6 @@ namespace canshark_gui
 
         private void frmMain_Load(object sender, EventArgs e)
         {
-            dataGridView1.Rows.Insert(0, "CAN1", "0.00 %", "1000 kbps, 75%, 1-10-4", "0", "0", "0");
-            dataGridView1.Rows.Insert(1, "CAN2", "0.00 %", "1000 kbps, 75%, 1-10-4", "0", "0", "0");
-
             CanSharkCore.Boards.Add(new EthBoard());
 
             CanSharkCore.Analyzers.Add(Cycle[0]);
@@ -39,10 +36,8 @@ namespace canshark_gui
             CanSharkCore.Analyzers.Add(PortStats[0]);
             CanSharkCore.Analyzers.Add(PortStats[1]);
 
-            CAN1_histogram.InitializeGraphics();
-            CAN1_histogram.SetHistogramDataSource(HistogramData[0]);
-            CAN2_histogram.InitializeGraphics();
-            CAN2_histogram.SetHistogramDataSource(HistogramData[1]);
+            frameMessageMatrix1.SetSource(HistogramData[0]);
+            frameMessageMatrix2.SetSource(HistogramData[1]);
         }
 
         private void frmMain_FormClosed(object sender, FormClosedEventArgs e)
@@ -55,22 +50,14 @@ namespace canshark_gui
 
         private void timer1_Tick(object sender, EventArgs e)
         {
-            for (int i = 0; i < 2; i++)
-            {
-                dataGridView1[1, i].Value = "0.00 %";
-                dataGridView1[3, i].Value = PortStats[i].nTx.ToString();
-                dataGridView1[4, i].Value = PortStats[i].nRx.ToString();
-                dataGridView1[5, i].Value = PortStats[i].nErrs.ToString();
-            }
+            frameStatistics1.UpdateStatistics(PortStats[0]);
+            frameStatistics2.UpdateStatistics(PortStats[1]);
 
-            lperiod.Text = Cycle[0].SyncPeriod.ToString("F3") + " ms";
-            lperiod2.Text = Cycle[1].SyncPeriod.ToString("F3") + " ms";
+            frameCanopenCycleLog1.UpdateStatistics(Cycle[0]);
+            frameCanopenCycleLog2.UpdateStatistics(Cycle[1]);
 
-            viewCanopenCycle1.UpdateData(Cycle[0].CycleLog.Values.OrderBy((x) => x.delay).ToArray());
-            viewCanopenCycle2.UpdateData(Cycle[1].CycleLog.Values.OrderBy((x) => x.delay).ToArray());
-
-            this.CAN1_histogram.Refresh();
-            this.CAN2_histogram.Refresh();
+            frameMessageMatrix1.UpdateStatistics();
+            frameMessageMatrix2.UpdateStatistics();
 
             CanSharkCore.Analyze();
         }
