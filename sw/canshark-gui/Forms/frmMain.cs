@@ -18,7 +18,7 @@ namespace canshark_gui
     {
         CanopenCycle[] Cycle = new CanopenCycle[] { new CanopenCycle(CanSourceId.Source(0, 0)), new CanopenCycle(CanSourceId.Source(0, 1)) };
         CanBusHistogram[] HistogramData = new CanBusHistogram[] { new CanBusHistogram(CanSourceId.Source(0, 0)), new CanBusHistogram(CanSourceId.Source(0, 1)) };
-        PortStatistics[] PortStats = new PortStatistics[] { new PortStatistics(CanSourceId.Source(0, 0)), new PortStatistics(CanSourceId.Source(0, 1)) };
+        PortStatistics PortStats = new PortStatistics();
 
         public frmMain()
         {
@@ -33,8 +33,10 @@ namespace canshark_gui
             CanSharkCore.Analyzers.Add(Cycle[1]);
             CanSharkCore.Analyzers.Add(HistogramData[0]);
             CanSharkCore.Analyzers.Add(HistogramData[1]);
-            CanSharkCore.Analyzers.Add(PortStats[0]);
-            CanSharkCore.Analyzers.Add(PortStats[1]);
+            CanSharkCore.Analyzers.Add(PortStats);
+
+            frameStatistics1.SetSource(PortStats, CanSourceId.Source(0, 0));
+            frameStatistics2.SetSource(PortStats, CanSourceId.Source(0, 1));
 
             frameMessageMatrix1.SetSource(HistogramData[0]);
             frameMessageMatrix2.SetSource(HistogramData[1]);
@@ -50,8 +52,8 @@ namespace canshark_gui
 
         private void timer1_Tick(object sender, EventArgs e)
         {
-            frameStatistics1.UpdateStatistics(PortStats[0]);
-            frameStatistics2.UpdateStatistics(PortStats[1]);
+            frameStatistics1.UpdateStatistics();
+            frameStatistics2.UpdateStatistics();
 
             frameCanopenCycleLog1.UpdateStatistics(Cycle[0]);
             frameCanopenCycleLog2.UpdateStatistics(Cycle[1]);
