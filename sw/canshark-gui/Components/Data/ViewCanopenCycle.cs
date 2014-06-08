@@ -125,9 +125,7 @@ namespace Components.Data
                 return;
             }
 
-            CanopenMsg msg = _Data[e.RowIndex];
-
-            
+            CanopenMsg msg = _Data[e.RowIndex];            
 
             switch (e.ColumnIndex)
             {
@@ -145,7 +143,8 @@ namespace Components.Data
         {
             _Data = data;
             RowCount = _Data.Length;
-            Refresh();
+
+            Invalidate();
         }
 
     }
