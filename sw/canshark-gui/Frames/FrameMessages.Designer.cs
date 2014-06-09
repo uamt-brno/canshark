@@ -30,14 +30,8 @@
         {
             System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle1 = new System.Windows.Forms.DataGridViewCellStyle();
             this.Caption = new System.Windows.Forms.Label();
-            this.dataGridView1 = new System.Windows.Forms.DataGridView();
-            this.FrameNo = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.Time = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.Length = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.Dir = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.Cob = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.Data = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).BeginInit();
+            this.viewMessages1 = new Components.Data.ViewMessages();
+            ((System.ComponentModel.ISupportInitialize)(this.viewMessages1)).BeginInit();
             this.SuspendLayout();
             // 
             // Caption
@@ -53,85 +47,46 @@
             this.Caption.Text = "Messages";
             this.Caption.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             // 
-            // dataGridView1
+            // viewMessages1
             // 
-            this.dataGridView1.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.dataGridView1.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
-            this.FrameNo,
-            this.Time,
-            this.Length,
-            this.Dir,
-            this.Cob,
-            this.Data});
-            this.dataGridView1.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.dataGridView1.Location = new System.Drawing.Point(3, 23);
-            this.dataGridView1.MultiSelect = false;
-            this.dataGridView1.Name = "dataGridView1";
-            this.dataGridView1.RowHeadersVisible = false;
-            this.dataGridView1.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
-            this.dataGridView1.Size = new System.Drawing.Size(804, 494);
-            this.dataGridView1.TabIndex = 3;
-            this.dataGridView1.VirtualMode = true;
-            this.dataGridView1.CellContentClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dataGridView1_CellContentClick);
-            // 
-            // FrameNo
-            // 
-            this.FrameNo.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.None;
+            this.viewMessages1.AllowUserToAddRows = false;
+            this.viewMessages1.AllowUserToDeleteRows = false;
+            this.viewMessages1.AllowUserToOrderColumns = true;
+            this.viewMessages1.AllowUserToResizeRows = false;
+            this.viewMessages1.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.AllCells;
+            this.viewMessages1.AutoSizeRowsMode = System.Windows.Forms.DataGridViewAutoSizeRowsMode.DisplayedCells;
             dataGridViewCellStyle1.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
-            this.FrameNo.DefaultCellStyle = dataGridViewCellStyle1;
-            this.FrameNo.Frozen = true;
-            this.FrameNo.HeaderText = "Frame";
-            this.FrameNo.Name = "FrameNo";
-            this.FrameNo.ReadOnly = true;
-            this.FrameNo.Width = 80;
-            // 
-            // Time
-            // 
-            this.Time.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.None;
-            this.Time.HeaderText = "Time";
-            this.Time.Name = "Time";
-            this.Time.ReadOnly = true;
-            this.Time.Width = 80;
-            // 
-            // Length
-            // 
-            this.Length.HeaderText = "Length";
-            this.Length.Name = "Length";
-            this.Length.ReadOnly = true;
-            // 
-            // Dir
-            // 
-            this.Dir.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.None;
-            this.Dir.HeaderText = "Dir";
-            this.Dir.Name = "Dir";
-            this.Dir.ReadOnly = true;
-            this.Dir.Width = 40;
-            // 
-            // Cob
-            // 
-            this.Cob.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.None;
-            this.Cob.HeaderText = "COB";
-            this.Cob.Name = "Cob";
-            this.Cob.ReadOnly = true;
-            this.Cob.Width = 50;
-            // 
-            // Data
-            // 
-            this.Data.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
-            this.Data.HeaderText = "Data";
-            this.Data.Name = "Data";
-            this.Data.ReadOnly = true;
+            dataGridViewCellStyle1.BackColor = System.Drawing.SystemColors.Control;
+            dataGridViewCellStyle1.ForeColor = System.Drawing.SystemColors.WindowText;
+            dataGridViewCellStyle1.SelectionBackColor = System.Drawing.SystemColors.Highlight;
+            dataGridViewCellStyle1.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
+            dataGridViewCellStyle1.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
+            this.viewMessages1.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle1;
+            this.viewMessages1.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            this.viewMessages1.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.viewMessages1.Location = new System.Drawing.Point(3, 23);
+            this.viewMessages1.MultiSelect = false;
+            this.viewMessages1.Name = "viewMessages1";
+            this.viewMessages1.ReadOnly = true;
+            this.viewMessages1.RowHeadersVisible = false;
+            this.viewMessages1.RowHeadersWidthSizeMode = System.Windows.Forms.DataGridViewRowHeadersWidthSizeMode.DisableResizing;
+            this.viewMessages1.RowTemplate.Height = 18;
+            this.viewMessages1.ScrollBars = System.Windows.Forms.ScrollBars.Vertical;
+            this.viewMessages1.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
+            this.viewMessages1.Size = new System.Drawing.Size(804, 494);
+            this.viewMessages1.TabIndex = 3;
+            this.viewMessages1.VirtualMode = true;
             // 
             // FrameMessages
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.Controls.Add(this.dataGridView1);
+            this.Controls.Add(this.viewMessages1);
             this.Controls.Add(this.Caption);
             this.Name = "FrameMessages";
             this.Padding = new System.Windows.Forms.Padding(3, 3, 3, 0);
             this.Size = new System.Drawing.Size(810, 517);
-            ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.viewMessages1)).EndInit();
             this.ResumeLayout(false);
 
         }
@@ -139,12 +94,6 @@
         #endregion
 
         private System.Windows.Forms.Label Caption;
-        private System.Windows.Forms.DataGridView dataGridView1;
-        private System.Windows.Forms.DataGridViewTextBoxColumn FrameNo;
-        private System.Windows.Forms.DataGridViewTextBoxColumn Time;
-        private System.Windows.Forms.DataGridViewTextBoxColumn Length;
-        private System.Windows.Forms.DataGridViewTextBoxColumn Dir;
-        private System.Windows.Forms.DataGridViewTextBoxColumn Cob;
-        private System.Windows.Forms.DataGridViewTextBoxColumn Data;
+        private Components.Data.ViewMessages viewMessages1;
     }
 }

@@ -29,12 +29,12 @@
         private void InitializeComponent()
         {
             this.components = new System.ComponentModel.Container();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle1 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle2 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle3 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle4 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle5 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle6 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle7 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle8 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle9 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle10 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle11 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle12 = new System.Windows.Forms.DataGridViewCellStyle();
             this.timer1 = new System.Windows.Forms.Timer(this.components);
             this.trackBar1 = new System.Windows.Forms.TrackBar();
             this.button1 = new System.Windows.Forms.Button();
@@ -49,27 +49,27 @@
             this.tabControl2 = new System.Windows.Forms.TabControl();
             this.tpSource0 = new System.Windows.Forms.TabPage();
             this.splitter1 = new System.Windows.Forms.Splitter();
+            this.frameMessageDetails1 = new canshark.Frames.FrameMessageDetails();
             this.splitter4 = new System.Windows.Forms.Splitter();
+            this.frameMessages1 = new canshark.Frames.FrameMessages();
             this.panel3 = new System.Windows.Forms.Panel();
+            this.frameStatistics1 = new canshark.Frames.FrameStatistics();
+            this.frameCanopenCycleLog1 = new canshark.Frames.FrameCanopenCycleLog();
+            this.frameMessageMatrix1 = new canshark.Frames.FrameMessageMatrix();
+            this.tpSource1 = new System.Windows.Forms.TabPage();
+            this.splitter2 = new System.Windows.Forms.Splitter();
+            this.frameMessages2 = new canshark.Frames.FrameMessages();
+            this.frameMessageDetails2 = new canshark.Frames.FrameMessageDetails();
+            this.panel2 = new System.Windows.Forms.Panel();
+            this.frameStatistics2 = new canshark.Frames.FrameStatistics();
+            this.splitter3 = new System.Windows.Forms.Splitter();
+            this.frameCanopenCycleLog2 = new canshark.Frames.FrameCanopenCycleLog();
+            this.frameMessageMatrix2 = new canshark.Frames.FrameMessageMatrix();
             this.label4 = new System.Windows.Forms.Label();
             this.label3 = new System.Windows.Forms.Label();
             this.label2 = new System.Windows.Forms.Label();
             this.label1 = new System.Windows.Forms.Label();
-            this.tpSource1 = new System.Windows.Forms.TabPage();
-            this.splitter2 = new System.Windows.Forms.Splitter();
-            this.splitter3 = new System.Windows.Forms.Splitter();
-            this.panel2 = new System.Windows.Forms.Panel();
             this.panel1 = new System.Windows.Forms.Panel();
-            this.frameMessageDetails1 = new canshark.Frames.FrameMessageDetails();
-            this.frameMessages1 = new canshark.Frames.FrameMessages();
-            this.frameStatistics1 = new canshark.Frames.FrameStatistics();
-            this.frameCanopenCycleLog1 = new canshark.Frames.FrameCanopenCycleLog();
-            this.frameMessageMatrix1 = new canshark.Frames.FrameMessageMatrix();
-            this.frameStatistics2 = new canshark.Frames.FrameStatistics();
-            this.frameMessageDetails2 = new canshark.Frames.FrameMessageDetails();
-            this.frameMessages2 = new canshark.Frames.FrameMessages();
-            this.frameCanopenCycleLog2 = new canshark.Frames.FrameCanopenCycleLog();
-            this.frameMessageMatrix2 = new canshark.Frames.FrameMessageMatrix();
             ((System.ComponentModel.ISupportInitialize)(this.trackBar1)).BeginInit();
             this.tabControl2.SuspendLayout();
             this.tpSource0.SuspendLayout();
@@ -87,11 +87,11 @@
             // trackBar1
             // 
             this.trackBar1.LargeChange = 50;
-            this.trackBar1.Location = new System.Drawing.Point(3, 6);
+            this.trackBar1.Location = new System.Drawing.Point(4, 19);
             this.trackBar1.Maximum = 1000;
             this.trackBar1.Minimum = 10;
             this.trackBar1.Name = "trackBar1";
-            this.trackBar1.Size = new System.Drawing.Size(613, 42);
+            this.trackBar1.Size = new System.Drawing.Size(944, 42);
             this.trackBar1.SmallChange = 10;
             this.trackBar1.TabIndex = 6;
             this.trackBar1.TickFrequency = 20;
@@ -121,8 +121,8 @@
             // dataGridViewTextBoxColumn11
             // 
             this.dataGridViewTextBoxColumn11.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.None;
-            dataGridViewCellStyle1.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
-            this.dataGridViewTextBoxColumn11.DefaultCellStyle = dataGridViewCellStyle1;
+            dataGridViewCellStyle7.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
+            this.dataGridViewTextBoxColumn11.DefaultCellStyle = dataGridViewCellStyle7;
             this.dataGridViewTextBoxColumn11.HeaderText = "Dir";
             this.dataGridViewTextBoxColumn11.MinimumWidth = 20;
             this.dataGridViewTextBoxColumn11.Name = "dataGridViewTextBoxColumn11";
@@ -131,8 +131,8 @@
             // 
             // dataGridViewTextBoxColumn12
             // 
-            dataGridViewCellStyle2.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
-            this.dataGridViewTextBoxColumn12.DefaultCellStyle = dataGridViewCellStyle2;
+            dataGridViewCellStyle8.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
+            this.dataGridViewTextBoxColumn12.DefaultCellStyle = dataGridViewCellStyle8;
             this.dataGridViewTextBoxColumn12.HeaderText = "COB-ID";
             this.dataGridViewTextBoxColumn12.Name = "dataGridViewTextBoxColumn12";
             this.dataGridViewTextBoxColumn12.ReadOnly = true;
@@ -142,8 +142,8 @@
             // dataGridViewTextBoxColumn13
             // 
             this.dataGridViewTextBoxColumn13.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
-            dataGridViewCellStyle3.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
-            this.dataGridViewTextBoxColumn13.DefaultCellStyle = dataGridViewCellStyle3;
+            dataGridViewCellStyle9.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
+            this.dataGridViewTextBoxColumn13.DefaultCellStyle = dataGridViewCellStyle9;
             this.dataGridViewTextBoxColumn13.HeaderText = "Data";
             this.dataGridViewTextBoxColumn13.Name = "dataGridViewTextBoxColumn13";
             this.dataGridViewTextBoxColumn13.ReadOnly = true;
@@ -151,8 +151,8 @@
             // dataGridViewTextBoxColumn14
             // 
             this.dataGridViewTextBoxColumn14.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.None;
-            dataGridViewCellStyle4.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleRight;
-            this.dataGridViewTextBoxColumn14.DefaultCellStyle = dataGridViewCellStyle4;
+            dataGridViewCellStyle10.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleRight;
+            this.dataGridViewTextBoxColumn14.DefaultCellStyle = dataGridViewCellStyle10;
             this.dataGridViewTextBoxColumn14.HeaderText = "Delay";
             this.dataGridViewTextBoxColumn14.Name = "dataGridViewTextBoxColumn14";
             this.dataGridViewTextBoxColumn14.ReadOnly = true;
@@ -161,8 +161,8 @@
             // dataGridViewTextBoxColumn15
             // 
             this.dataGridViewTextBoxColumn15.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.None;
-            dataGridViewCellStyle5.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleRight;
-            this.dataGridViewTextBoxColumn15.DefaultCellStyle = dataGridViewCellStyle5;
+            dataGridViewCellStyle11.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleRight;
+            this.dataGridViewTextBoxColumn15.DefaultCellStyle = dataGridViewCellStyle11;
             this.dataGridViewTextBoxColumn15.HeaderText = "Length";
             this.dataGridViewTextBoxColumn15.Name = "dataGridViewTextBoxColumn15";
             this.dataGridViewTextBoxColumn15.ReadOnly = true;
@@ -170,8 +170,8 @@
             // 
             // dataGridViewTextBoxColumn16
             // 
-            dataGridViewCellStyle6.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleRight;
-            this.dataGridViewTextBoxColumn16.DefaultCellStyle = dataGridViewCellStyle6;
+            dataGridViewCellStyle12.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleRight;
+            this.dataGridViewTextBoxColumn16.DefaultCellStyle = dataGridViewCellStyle12;
             this.dataGridViewTextBoxColumn16.HeaderText = "Counter";
             this.dataGridViewTextBoxColumn16.Name = "dataGridViewTextBoxColumn16";
             this.dataGridViewTextBoxColumn16.ReadOnly = true;
@@ -179,7 +179,7 @@
             // 
             // button3
             // 
-            this.button3.Location = new System.Drawing.Point(677, 25);
+            this.button3.Location = new System.Drawing.Point(1169, 9);
             this.button3.Name = "button3";
             this.button3.Size = new System.Drawing.Size(102, 23);
             this.button3.TabIndex = 14;
@@ -192,10 +192,10 @@
             this.tabControl2.Controls.Add(this.tpSource0);
             this.tabControl2.Controls.Add(this.tpSource1);
             this.tabControl2.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.tabControl2.Location = new System.Drawing.Point(0, 80);
+            this.tabControl2.Location = new System.Drawing.Point(0, 74);
             this.tabControl2.Name = "tabControl2";
             this.tabControl2.SelectedIndex = 0;
-            this.tabControl2.Size = new System.Drawing.Size(1283, 565);
+            this.tabControl2.Size = new System.Drawing.Size(1283, 571);
             this.tabControl2.TabIndex = 15;
             // 
             // tpSource0
@@ -210,7 +210,7 @@
             this.tpSource0.Location = new System.Drawing.Point(4, 22);
             this.tpSource0.Name = "tpSource0";
             this.tpSource0.Padding = new System.Windows.Forms.Padding(3);
-            this.tpSource0.Size = new System.Drawing.Size(1275, 539);
+            this.tpSource0.Size = new System.Drawing.Size(1275, 545);
             this.tpSource0.TabIndex = 0;
             this.tpSource0.Text = "0.CAN0";
             this.tpSource0.UseVisualStyleBackColor = true;
@@ -218,19 +218,38 @@
             // splitter1
             // 
             this.splitter1.Dock = System.Windows.Forms.DockStyle.Bottom;
-            this.splitter1.Location = new System.Drawing.Point(456, 279);
+            this.splitter1.Location = new System.Drawing.Point(506, 285);
             this.splitter1.Name = "splitter1";
-            this.splitter1.Size = new System.Drawing.Size(666, 3);
+            this.splitter1.Size = new System.Drawing.Size(616, 3);
             this.splitter1.TabIndex = 17;
             this.splitter1.TabStop = false;
             // 
+            // frameMessageDetails1
+            // 
+            this.frameMessageDetails1.Dock = System.Windows.Forms.DockStyle.Bottom;
+            this.frameMessageDetails1.Location = new System.Drawing.Point(506, 288);
+            this.frameMessageDetails1.Name = "frameMessageDetails1";
+            this.frameMessageDetails1.Padding = new System.Windows.Forms.Padding(3, 3, 3, 0);
+            this.frameMessageDetails1.Size = new System.Drawing.Size(616, 104);
+            this.frameMessageDetails1.TabIndex = 18;
+            // 
             // splitter4
             // 
-            this.splitter4.Location = new System.Drawing.Point(453, 3);
+            this.splitter4.Location = new System.Drawing.Point(503, 3);
             this.splitter4.Name = "splitter4";
-            this.splitter4.Size = new System.Drawing.Size(3, 383);
+            this.splitter4.Size = new System.Drawing.Size(3, 389);
             this.splitter4.TabIndex = 19;
             this.splitter4.TabStop = false;
+            // 
+            // frameMessages1
+            // 
+            this.frameMessages1.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.frameMessages1.Location = new System.Drawing.Point(503, 3);
+            this.frameMessages1.Margin = new System.Windows.Forms.Padding(10);
+            this.frameMessages1.Name = "frameMessages1";
+            this.frameMessages1.Padding = new System.Windows.Forms.Padding(3);
+            this.frameMessages1.Size = new System.Drawing.Size(619, 389);
+            this.frameMessages1.TabIndex = 16;
             // 
             // panel3
             // 
@@ -239,8 +258,125 @@
             this.panel3.Dock = System.Windows.Forms.DockStyle.Right;
             this.panel3.Location = new System.Drawing.Point(1122, 3);
             this.panel3.Name = "panel3";
-            this.panel3.Size = new System.Drawing.Size(150, 383);
+            this.panel3.Size = new System.Drawing.Size(150, 389);
             this.panel3.TabIndex = 15;
+            // 
+            // frameStatistics1
+            // 
+            this.frameStatistics1.Dock = System.Windows.Forms.DockStyle.Top;
+            this.frameStatistics1.Location = new System.Drawing.Point(0, 0);
+            this.frameStatistics1.Name = "frameStatistics1";
+            this.frameStatistics1.Padding = new System.Windows.Forms.Padding(3, 3, 3, 0);
+            this.frameStatistics1.Size = new System.Drawing.Size(150, 89);
+            this.frameStatistics1.TabIndex = 13;
+            // 
+            // frameCanopenCycleLog1
+            // 
+            this.frameCanopenCycleLog1.Dock = System.Windows.Forms.DockStyle.Left;
+            this.frameCanopenCycleLog1.Location = new System.Drawing.Point(3, 3);
+            this.frameCanopenCycleLog1.Name = "frameCanopenCycleLog1";
+            this.frameCanopenCycleLog1.Padding = new System.Windows.Forms.Padding(3, 3, 3, 0);
+            this.frameCanopenCycleLog1.Size = new System.Drawing.Size(500, 389);
+            this.frameCanopenCycleLog1.TabIndex = 8;
+            // 
+            // frameMessageMatrix1
+            // 
+            this.frameMessageMatrix1.Dock = System.Windows.Forms.DockStyle.Bottom;
+            this.frameMessageMatrix1.Location = new System.Drawing.Point(3, 392);
+            this.frameMessageMatrix1.Name = "frameMessageMatrix1";
+            this.frameMessageMatrix1.Padding = new System.Windows.Forms.Padding(3, 3, 3, 0);
+            this.frameMessageMatrix1.Size = new System.Drawing.Size(1269, 150);
+            this.frameMessageMatrix1.TabIndex = 14;
+            // 
+            // tpSource1
+            // 
+            this.tpSource1.Controls.Add(this.splitter2);
+            this.tpSource1.Controls.Add(this.frameMessages2);
+            this.tpSource1.Controls.Add(this.frameMessageDetails2);
+            this.tpSource1.Controls.Add(this.panel2);
+            this.tpSource1.Controls.Add(this.splitter3);
+            this.tpSource1.Controls.Add(this.frameCanopenCycleLog2);
+            this.tpSource1.Controls.Add(this.frameMessageMatrix2);
+            this.tpSource1.Location = new System.Drawing.Point(4, 22);
+            this.tpSource1.Name = "tpSource1";
+            this.tpSource1.Padding = new System.Windows.Forms.Padding(3);
+            this.tpSource1.Size = new System.Drawing.Size(1275, 545);
+            this.tpSource1.TabIndex = 1;
+            this.tpSource1.Text = "0.CAN1";
+            this.tpSource1.UseVisualStyleBackColor = true;
+            // 
+            // splitter2
+            // 
+            this.splitter2.Dock = System.Windows.Forms.DockStyle.Bottom;
+            this.splitter2.Location = new System.Drawing.Point(506, 285);
+            this.splitter2.Name = "splitter2";
+            this.splitter2.Size = new System.Drawing.Size(616, 3);
+            this.splitter2.TabIndex = 21;
+            this.splitter2.TabStop = false;
+            // 
+            // frameMessages2
+            // 
+            this.frameMessages2.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.frameMessages2.Location = new System.Drawing.Point(506, 3);
+            this.frameMessages2.Margin = new System.Windows.Forms.Padding(10);
+            this.frameMessages2.Name = "frameMessages2";
+            this.frameMessages2.Padding = new System.Windows.Forms.Padding(3);
+            this.frameMessages2.Size = new System.Drawing.Size(616, 285);
+            this.frameMessages2.TabIndex = 19;
+            // 
+            // frameMessageDetails2
+            // 
+            this.frameMessageDetails2.Dock = System.Windows.Forms.DockStyle.Bottom;
+            this.frameMessageDetails2.Location = new System.Drawing.Point(506, 288);
+            this.frameMessageDetails2.Name = "frameMessageDetails2";
+            this.frameMessageDetails2.Padding = new System.Windows.Forms.Padding(3, 3, 3, 0);
+            this.frameMessageDetails2.Size = new System.Drawing.Size(616, 104);
+            this.frameMessageDetails2.TabIndex = 20;
+            // 
+            // panel2
+            // 
+            this.panel2.Controls.Add(this.frameStatistics2);
+            this.panel2.Controls.Add(this.button2);
+            this.panel2.Dock = System.Windows.Forms.DockStyle.Right;
+            this.panel2.Location = new System.Drawing.Point(1122, 3);
+            this.panel2.Name = "panel2";
+            this.panel2.Size = new System.Drawing.Size(150, 389);
+            this.panel2.TabIndex = 16;
+            // 
+            // frameStatistics2
+            // 
+            this.frameStatistics2.Dock = System.Windows.Forms.DockStyle.Top;
+            this.frameStatistics2.Location = new System.Drawing.Point(0, 0);
+            this.frameStatistics2.Name = "frameStatistics2";
+            this.frameStatistics2.Padding = new System.Windows.Forms.Padding(3, 3, 3, 0);
+            this.frameStatistics2.Size = new System.Drawing.Size(150, 89);
+            this.frameStatistics2.TabIndex = 14;
+            // 
+            // splitter3
+            // 
+            this.splitter3.Location = new System.Drawing.Point(503, 3);
+            this.splitter3.Name = "splitter3";
+            this.splitter3.Size = new System.Drawing.Size(3, 389);
+            this.splitter3.TabIndex = 22;
+            this.splitter3.TabStop = false;
+            // 
+            // frameCanopenCycleLog2
+            // 
+            this.frameCanopenCycleLog2.Dock = System.Windows.Forms.DockStyle.Left;
+            this.frameCanopenCycleLog2.Location = new System.Drawing.Point(3, 3);
+            this.frameCanopenCycleLog2.Name = "frameCanopenCycleLog2";
+            this.frameCanopenCycleLog2.Padding = new System.Windows.Forms.Padding(3, 3, 3, 0);
+            this.frameCanopenCycleLog2.Size = new System.Drawing.Size(500, 389);
+            this.frameCanopenCycleLog2.TabIndex = 2;
+            // 
+            // frameMessageMatrix2
+            // 
+            this.frameMessageMatrix2.Dock = System.Windows.Forms.DockStyle.Bottom;
+            this.frameMessageMatrix2.Location = new System.Drawing.Point(3, 392);
+            this.frameMessageMatrix2.Name = "frameMessageMatrix2";
+            this.frameMessageMatrix2.Padding = new System.Windows.Forms.Padding(3, 3, 3, 0);
+            this.frameMessageMatrix2.Size = new System.Drawing.Size(1269, 150);
+            this.frameMessageMatrix2.TabIndex = 15;
             // 
             // label4
             // 
@@ -278,50 +414,6 @@
             this.label1.TabIndex = 14;
             this.label1.Text = "label1";
             // 
-            // tpSource1
-            // 
-            this.tpSource1.Controls.Add(this.splitter2);
-            this.tpSource1.Controls.Add(this.splitter3);
-            this.tpSource1.Controls.Add(this.panel2);
-            this.tpSource1.Controls.Add(this.frameMessageDetails2);
-            this.tpSource1.Controls.Add(this.frameMessages2);
-            this.tpSource1.Controls.Add(this.frameCanopenCycleLog2);
-            this.tpSource1.Controls.Add(this.frameMessageMatrix2);
-            this.tpSource1.Location = new System.Drawing.Point(4, 22);
-            this.tpSource1.Name = "tpSource1";
-            this.tpSource1.Padding = new System.Windows.Forms.Padding(3);
-            this.tpSource1.Size = new System.Drawing.Size(1275, 539);
-            this.tpSource1.TabIndex = 1;
-            this.tpSource1.Text = "0.CAN1";
-            this.tpSource1.UseVisualStyleBackColor = true;
-            // 
-            // splitter2
-            // 
-            this.splitter2.Dock = System.Windows.Forms.DockStyle.Bottom;
-            this.splitter2.Location = new System.Drawing.Point(456, 279);
-            this.splitter2.Name = "splitter2";
-            this.splitter2.Size = new System.Drawing.Size(666, 3);
-            this.splitter2.TabIndex = 21;
-            this.splitter2.TabStop = false;
-            // 
-            // splitter3
-            // 
-            this.splitter3.Location = new System.Drawing.Point(453, 3);
-            this.splitter3.Name = "splitter3";
-            this.splitter3.Size = new System.Drawing.Size(3, 279);
-            this.splitter3.TabIndex = 22;
-            this.splitter3.TabStop = false;
-            // 
-            // panel2
-            // 
-            this.panel2.Controls.Add(this.frameStatistics2);
-            this.panel2.Controls.Add(this.button2);
-            this.panel2.Dock = System.Windows.Forms.DockStyle.Right;
-            this.panel2.Location = new System.Drawing.Point(1122, 3);
-            this.panel2.Name = "panel2";
-            this.panel2.Size = new System.Drawing.Size(150, 279);
-            this.panel2.TabIndex = 16;
-            // 
             // panel1
             // 
             this.panel1.Controls.Add(this.label4);
@@ -333,100 +425,8 @@
             this.panel1.Dock = System.Windows.Forms.DockStyle.Top;
             this.panel1.Location = new System.Drawing.Point(0, 0);
             this.panel1.Name = "panel1";
-            this.panel1.Size = new System.Drawing.Size(1283, 80);
+            this.panel1.Size = new System.Drawing.Size(1283, 74);
             this.panel1.TabIndex = 16;
-            // 
-            // frameMessageDetails1
-            // 
-            this.frameMessageDetails1.Dock = System.Windows.Forms.DockStyle.Bottom;
-            this.frameMessageDetails1.Location = new System.Drawing.Point(456, 282);
-            this.frameMessageDetails1.Name = "frameMessageDetails1";
-            this.frameMessageDetails1.Padding = new System.Windows.Forms.Padding(3, 3, 3, 0);
-            this.frameMessageDetails1.Size = new System.Drawing.Size(666, 104);
-            this.frameMessageDetails1.TabIndex = 18;
-            // 
-            // frameMessages1
-            // 
-            this.frameMessages1.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.frameMessages1.Location = new System.Drawing.Point(453, 3);
-            this.frameMessages1.Margin = new System.Windows.Forms.Padding(10);
-            this.frameMessages1.Name = "frameMessages1";
-            this.frameMessages1.Padding = new System.Windows.Forms.Padding(3);
-            this.frameMessages1.Size = new System.Drawing.Size(669, 383);
-            this.frameMessages1.TabIndex = 16;
-            // 
-            // frameStatistics1
-            // 
-            this.frameStatistics1.Dock = System.Windows.Forms.DockStyle.Top;
-            this.frameStatistics1.Location = new System.Drawing.Point(0, 0);
-            this.frameStatistics1.Name = "frameStatistics1";
-            this.frameStatistics1.Padding = new System.Windows.Forms.Padding(3, 3, 3, 0);
-            this.frameStatistics1.Size = new System.Drawing.Size(150, 89);
-            this.frameStatistics1.TabIndex = 13;
-            // 
-            // frameCanopenCycleLog1
-            // 
-            this.frameCanopenCycleLog1.Dock = System.Windows.Forms.DockStyle.Left;
-            this.frameCanopenCycleLog1.Location = new System.Drawing.Point(3, 3);
-            this.frameCanopenCycleLog1.Name = "frameCanopenCycleLog1";
-            this.frameCanopenCycleLog1.Padding = new System.Windows.Forms.Padding(3, 3, 3, 0);
-            this.frameCanopenCycleLog1.Size = new System.Drawing.Size(450, 383);
-            this.frameCanopenCycleLog1.TabIndex = 8;
-            // 
-            // frameMessageMatrix1
-            // 
-            this.frameMessageMatrix1.Dock = System.Windows.Forms.DockStyle.Bottom;
-            this.frameMessageMatrix1.Location = new System.Drawing.Point(3, 386);
-            this.frameMessageMatrix1.Name = "frameMessageMatrix1";
-            this.frameMessageMatrix1.Padding = new System.Windows.Forms.Padding(3, 3, 3, 0);
-            this.frameMessageMatrix1.Size = new System.Drawing.Size(1269, 150);
-            this.frameMessageMatrix1.TabIndex = 14;
-            // 
-            // frameStatistics2
-            // 
-            this.frameStatistics2.Dock = System.Windows.Forms.DockStyle.Top;
-            this.frameStatistics2.Location = new System.Drawing.Point(0, 0);
-            this.frameStatistics2.Name = "frameStatistics2";
-            this.frameStatistics2.Padding = new System.Windows.Forms.Padding(3, 3, 3, 0);
-            this.frameStatistics2.Size = new System.Drawing.Size(150, 89);
-            this.frameStatistics2.TabIndex = 14;
-            // 
-            // frameMessageDetails2
-            // 
-            this.frameMessageDetails2.Dock = System.Windows.Forms.DockStyle.Bottom;
-            this.frameMessageDetails2.Location = new System.Drawing.Point(453, 282);
-            this.frameMessageDetails2.Name = "frameMessageDetails2";
-            this.frameMessageDetails2.Padding = new System.Windows.Forms.Padding(3, 3, 3, 0);
-            this.frameMessageDetails2.Size = new System.Drawing.Size(819, 104);
-            this.frameMessageDetails2.TabIndex = 20;
-            // 
-            // frameMessages2
-            // 
-            this.frameMessages2.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.frameMessages2.Location = new System.Drawing.Point(453, 3);
-            this.frameMessages2.Margin = new System.Windows.Forms.Padding(10);
-            this.frameMessages2.Name = "frameMessages2";
-            this.frameMessages2.Padding = new System.Windows.Forms.Padding(3);
-            this.frameMessages2.Size = new System.Drawing.Size(819, 383);
-            this.frameMessages2.TabIndex = 19;
-            // 
-            // frameCanopenCycleLog2
-            // 
-            this.frameCanopenCycleLog2.Dock = System.Windows.Forms.DockStyle.Left;
-            this.frameCanopenCycleLog2.Location = new System.Drawing.Point(3, 3);
-            this.frameCanopenCycleLog2.Name = "frameCanopenCycleLog2";
-            this.frameCanopenCycleLog2.Padding = new System.Windows.Forms.Padding(3, 3, 3, 0);
-            this.frameCanopenCycleLog2.Size = new System.Drawing.Size(450, 383);
-            this.frameCanopenCycleLog2.TabIndex = 2;
-            // 
-            // frameMessageMatrix2
-            // 
-            this.frameMessageMatrix2.Dock = System.Windows.Forms.DockStyle.Bottom;
-            this.frameMessageMatrix2.Location = new System.Drawing.Point(3, 386);
-            this.frameMessageMatrix2.Name = "frameMessageMatrix2";
-            this.frameMessageMatrix2.Padding = new System.Windows.Forms.Padding(3, 3, 3, 0);
-            this.frameMessageMatrix2.Size = new System.Drawing.Size(1269, 150);
-            this.frameMessageMatrix2.TabIndex = 15;
             // 
             // frmMain
             // 

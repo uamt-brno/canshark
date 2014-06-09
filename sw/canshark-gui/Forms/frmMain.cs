@@ -20,6 +20,7 @@ namespace canshark_gui
         CanopenCycle Cycle = new CanopenCycle();
         CanBusHistogram HistogramData = new CanBusHistogram();
         PortStatistics PortStats = new PortStatistics();
+        AnalyseMessageLog MessageLog = new AnalyseMessageLog();
 
         public frmMain()
         {
@@ -33,6 +34,7 @@ namespace canshark_gui
             CanSharkCore.Analyzers.Add(Cycle);
             CanSharkCore.Analyzers.Add(HistogramData);
             CanSharkCore.Analyzers.Add(PortStats);
+            CanSharkCore.Analyzers.Add(MessageLog);
 
             frameStatistics1.SetSource(PortStats, CanSourceId.Source(0, 0));
             frameStatistics2.SetSource(PortStats, CanSourceId.Source(0, 1));
@@ -42,6 +44,9 @@ namespace canshark_gui
 
             frameMessageMatrix1.SetSource(HistogramData, CanSourceId.Source(0, 0));
             frameMessageMatrix2.SetSource(HistogramData, CanSourceId.Source(0, 1));
+
+            frameMessages1.SetSource(MessageLog, CanSourceId.Source(0, 0));
+            frameMessages2.SetSource(MessageLog, CanSourceId.Source(0, 1));
         }
 
         private void frmMain_FormClosed(object sender, FormClosedEventArgs e)
@@ -69,6 +74,11 @@ namespace canshark_gui
 
             frameMessageMatrix1.UpdateStatistics();
             frameMessageMatrix2.UpdateStatistics();
+
+            Benchmark.Add(sw.ElapsedTicks);
+
+            frameMessages1.UpdateStatistics();
+            frameMessages2.UpdateStatistics();
 
             Benchmark.Add(sw.ElapsedTicks);
 

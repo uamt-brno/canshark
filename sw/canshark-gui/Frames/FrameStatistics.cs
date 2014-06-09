@@ -34,7 +34,7 @@ namespace canshark.Frames
             {
                 lrxframes.Text = value.nRx.ToString();
                 ltxframes.Text = value.nTx.ToString();
-                lload.Text = (value.load * 100).ToString("F2") + " %";
+                lload.Text = (value.load * 100).ToString("F1") + " %";
             }
         }
     }

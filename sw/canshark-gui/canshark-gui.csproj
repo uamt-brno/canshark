@@ -49,10 +49,14 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Analysis\AnalyseMessageLog.cs" />
     <Compile Include="Analysis\CanBusHistogram.cs" />
     <Compile Include="Analysis\CanopenCycle.cs" />
     <Compile Include="Analysis\IAnalyzer.cs" />
     <Compile Include="Analysis\PortStatistics.cs" />
+    <Compile Include="Components\Data\ViewMessages.cs">
+      <SubType>Component</SubType>
+    </Compile>
     <Compile Include="Core\CanBus\BitArray.cs" />
     <Compile Include="Core\CanBus\CanMailboxId.cs" />
     <Compile Include="Core\CanSharkCore.cs" />
