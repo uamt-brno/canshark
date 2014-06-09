@@ -49,27 +49,27 @@
             this.tabControl2 = new System.Windows.Forms.TabControl();
             this.tpSource0 = new System.Windows.Forms.TabPage();
             this.splitter1 = new System.Windows.Forms.Splitter();
-            this.frameMessageDetails1 = new canshark.Frames.FrameMessageDetails();
             this.splitter4 = new System.Windows.Forms.Splitter();
-            this.frameMessages1 = new canshark.Frames.FrameMessages();
             this.panel3 = new System.Windows.Forms.Panel();
-            this.frameStatistics1 = new canshark.Frames.FrameStatistics();
-            this.frameCanopenCycleLog1 = new canshark.Frames.FrameCanopenCycleLog();
-            this.frameMessageMatrix1 = new canshark.Frames.FrameMessageMatrix();
+            this.label4 = new System.Windows.Forms.Label();
+            this.label3 = new System.Windows.Forms.Label();
+            this.label2 = new System.Windows.Forms.Label();
+            this.label1 = new System.Windows.Forms.Label();
             this.tpSource1 = new System.Windows.Forms.TabPage();
             this.splitter2 = new System.Windows.Forms.Splitter();
             this.splitter3 = new System.Windows.Forms.Splitter();
             this.panel2 = new System.Windows.Forms.Panel();
+            this.panel1 = new System.Windows.Forms.Panel();
+            this.frameMessageDetails1 = new canshark.Frames.FrameMessageDetails();
+            this.frameMessages1 = new canshark.Frames.FrameMessages();
+            this.frameStatistics1 = new canshark.Frames.FrameStatistics();
+            this.frameCanopenCycleLog1 = new canshark.Frames.FrameCanopenCycleLog();
+            this.frameMessageMatrix1 = new canshark.Frames.FrameMessageMatrix();
             this.frameStatistics2 = new canshark.Frames.FrameStatistics();
             this.frameMessageDetails2 = new canshark.Frames.FrameMessageDetails();
             this.frameMessages2 = new canshark.Frames.FrameMessages();
             this.frameCanopenCycleLog2 = new canshark.Frames.FrameCanopenCycleLog();
             this.frameMessageMatrix2 = new canshark.Frames.FrameMessageMatrix();
-            this.panel1 = new System.Windows.Forms.Panel();
-            this.label1 = new System.Windows.Forms.Label();
-            this.label2 = new System.Windows.Forms.Label();
-            this.label3 = new System.Windows.Forms.Label();
-            this.label4 = new System.Windows.Forms.Label();
             ((System.ComponentModel.ISupportInitialize)(this.trackBar1)).BeginInit();
             this.tabControl2.SuspendLayout();
             this.tpSource0.SuspendLayout();
@@ -224,15 +224,6 @@
             this.splitter1.TabIndex = 17;
             this.splitter1.TabStop = false;
             // 
-            // frameMessageDetails1
-            // 
-            this.frameMessageDetails1.Dock = System.Windows.Forms.DockStyle.Bottom;
-            this.frameMessageDetails1.Location = new System.Drawing.Point(456, 282);
-            this.frameMessageDetails1.Name = "frameMessageDetails1";
-            this.frameMessageDetails1.Padding = new System.Windows.Forms.Padding(3, 3, 3, 0);
-            this.frameMessageDetails1.Size = new System.Drawing.Size(666, 104);
-            this.frameMessageDetails1.TabIndex = 18;
-            // 
             // splitter4
             // 
             this.splitter4.Location = new System.Drawing.Point(453, 3);
@@ -241,22 +232,8 @@
             this.splitter4.TabIndex = 19;
             this.splitter4.TabStop = false;
             // 
-            // frameMessages1
-            // 
-            this.frameMessages1.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.frameMessages1.Location = new System.Drawing.Point(453, 3);
-            this.frameMessages1.Margin = new System.Windows.Forms.Padding(10);
-            this.frameMessages1.Name = "frameMessages1";
-            this.frameMessages1.Padding = new System.Windows.Forms.Padding(3);
-            this.frameMessages1.Size = new System.Drawing.Size(669, 383);
-            this.frameMessages1.TabIndex = 16;
-            // 
             // panel3
             // 
-            this.panel3.Controls.Add(this.label4);
-            this.panel3.Controls.Add(this.label3);
-            this.panel3.Controls.Add(this.label2);
-            this.panel3.Controls.Add(this.label1);
             this.panel3.Controls.Add(this.frameStatistics1);
             this.panel3.Controls.Add(this.button1);
             this.panel3.Dock = System.Windows.Forms.DockStyle.Right;
@@ -265,32 +242,41 @@
             this.panel3.Size = new System.Drawing.Size(150, 383);
             this.panel3.TabIndex = 15;
             // 
-            // frameStatistics1
+            // label4
             // 
-            this.frameStatistics1.Dock = System.Windows.Forms.DockStyle.Top;
-            this.frameStatistics1.Location = new System.Drawing.Point(0, 0);
-            this.frameStatistics1.Name = "frameStatistics1";
-            this.frameStatistics1.Padding = new System.Windows.Forms.Padding(3, 3, 3, 0);
-            this.frameStatistics1.Size = new System.Drawing.Size(150, 89);
-            this.frameStatistics1.TabIndex = 13;
+            this.label4.AutoSize = true;
+            this.label4.Location = new System.Drawing.Point(975, 48);
+            this.label4.Name = "label4";
+            this.label4.Size = new System.Drawing.Size(35, 13);
+            this.label4.TabIndex = 17;
+            this.label4.Text = "label4";
             // 
-            // frameCanopenCycleLog1
+            // label3
             // 
-            this.frameCanopenCycleLog1.Dock = System.Windows.Forms.DockStyle.Left;
-            this.frameCanopenCycleLog1.Location = new System.Drawing.Point(3, 3);
-            this.frameCanopenCycleLog1.Name = "frameCanopenCycleLog1";
-            this.frameCanopenCycleLog1.Padding = new System.Windows.Forms.Padding(3, 3, 3, 0);
-            this.frameCanopenCycleLog1.Size = new System.Drawing.Size(450, 383);
-            this.frameCanopenCycleLog1.TabIndex = 8;
+            this.label3.AutoSize = true;
+            this.label3.Location = new System.Drawing.Point(975, 35);
+            this.label3.Name = "label3";
+            this.label3.Size = new System.Drawing.Size(35, 13);
+            this.label3.TabIndex = 16;
+            this.label3.Text = "label3";
             // 
-            // frameMessageMatrix1
+            // label2
             // 
-            this.frameMessageMatrix1.Dock = System.Windows.Forms.DockStyle.Bottom;
-            this.frameMessageMatrix1.Location = new System.Drawing.Point(3, 386);
-            this.frameMessageMatrix1.Name = "frameMessageMatrix1";
-            this.frameMessageMatrix1.Padding = new System.Windows.Forms.Padding(3, 3, 3, 0);
-            this.frameMessageMatrix1.Size = new System.Drawing.Size(1269, 150);
-            this.frameMessageMatrix1.TabIndex = 14;
+            this.label2.AutoSize = true;
+            this.label2.Location = new System.Drawing.Point(975, 22);
+            this.label2.Name = "label2";
+            this.label2.Size = new System.Drawing.Size(35, 13);
+            this.label2.TabIndex = 15;
+            this.label2.Text = "label2";
+            // 
+            // label1
+            // 
+            this.label1.AutoSize = true;
+            this.label1.Location = new System.Drawing.Point(975, 9);
+            this.label1.Name = "label1";
+            this.label1.Size = new System.Drawing.Size(35, 13);
+            this.label1.TabIndex = 14;
+            this.label1.Text = "label1";
             // 
             // tpSource1
             // 
@@ -335,6 +321,66 @@
             this.panel2.Name = "panel2";
             this.panel2.Size = new System.Drawing.Size(150, 279);
             this.panel2.TabIndex = 16;
+            // 
+            // panel1
+            // 
+            this.panel1.Controls.Add(this.label4);
+            this.panel1.Controls.Add(this.trackBar1);
+            this.panel1.Controls.Add(this.label3);
+            this.panel1.Controls.Add(this.button3);
+            this.panel1.Controls.Add(this.label2);
+            this.panel1.Controls.Add(this.label1);
+            this.panel1.Dock = System.Windows.Forms.DockStyle.Top;
+            this.panel1.Location = new System.Drawing.Point(0, 0);
+            this.panel1.Name = "panel1";
+            this.panel1.Size = new System.Drawing.Size(1283, 80);
+            this.panel1.TabIndex = 16;
+            // 
+            // frameMessageDetails1
+            // 
+            this.frameMessageDetails1.Dock = System.Windows.Forms.DockStyle.Bottom;
+            this.frameMessageDetails1.Location = new System.Drawing.Point(456, 282);
+            this.frameMessageDetails1.Name = "frameMessageDetails1";
+            this.frameMessageDetails1.Padding = new System.Windows.Forms.Padding(3, 3, 3, 0);
+            this.frameMessageDetails1.Size = new System.Drawing.Size(666, 104);
+            this.frameMessageDetails1.TabIndex = 18;
+            // 
+            // frameMessages1
+            // 
+            this.frameMessages1.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.frameMessages1.Location = new System.Drawing.Point(453, 3);
+            this.frameMessages1.Margin = new System.Windows.Forms.Padding(10);
+            this.frameMessages1.Name = "frameMessages1";
+            this.frameMessages1.Padding = new System.Windows.Forms.Padding(3);
+            this.frameMessages1.Size = new System.Drawing.Size(669, 383);
+            this.frameMessages1.TabIndex = 16;
+            // 
+            // frameStatistics1
+            // 
+            this.frameStatistics1.Dock = System.Windows.Forms.DockStyle.Top;
+            this.frameStatistics1.Location = new System.Drawing.Point(0, 0);
+            this.frameStatistics1.Name = "frameStatistics1";
+            this.frameStatistics1.Padding = new System.Windows.Forms.Padding(3, 3, 3, 0);
+            this.frameStatistics1.Size = new System.Drawing.Size(150, 89);
+            this.frameStatistics1.TabIndex = 13;
+            // 
+            // frameCanopenCycleLog1
+            // 
+            this.frameCanopenCycleLog1.Dock = System.Windows.Forms.DockStyle.Left;
+            this.frameCanopenCycleLog1.Location = new System.Drawing.Point(3, 3);
+            this.frameCanopenCycleLog1.Name = "frameCanopenCycleLog1";
+            this.frameCanopenCycleLog1.Padding = new System.Windows.Forms.Padding(3, 3, 3, 0);
+            this.frameCanopenCycleLog1.Size = new System.Drawing.Size(450, 383);
+            this.frameCanopenCycleLog1.TabIndex = 8;
+            // 
+            // frameMessageMatrix1
+            // 
+            this.frameMessageMatrix1.Dock = System.Windows.Forms.DockStyle.Bottom;
+            this.frameMessageMatrix1.Location = new System.Drawing.Point(3, 386);
+            this.frameMessageMatrix1.Name = "frameMessageMatrix1";
+            this.frameMessageMatrix1.Padding = new System.Windows.Forms.Padding(3, 3, 3, 0);
+            this.frameMessageMatrix1.Size = new System.Drawing.Size(1269, 150);
+            this.frameMessageMatrix1.TabIndex = 14;
             // 
             // frameStatistics2
             // 
@@ -382,52 +428,6 @@
             this.frameMessageMatrix2.Size = new System.Drawing.Size(1269, 150);
             this.frameMessageMatrix2.TabIndex = 15;
             // 
-            // panel1
-            // 
-            this.panel1.Controls.Add(this.trackBar1);
-            this.panel1.Controls.Add(this.button3);
-            this.panel1.Dock = System.Windows.Forms.DockStyle.Top;
-            this.panel1.Location = new System.Drawing.Point(0, 0);
-            this.panel1.Name = "panel1";
-            this.panel1.Size = new System.Drawing.Size(1283, 80);
-            this.panel1.TabIndex = 16;
-            // 
-            // label1
-            // 
-            this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(30, 162);
-            this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(35, 13);
-            this.label1.TabIndex = 14;
-            this.label1.Text = "label1";
-            // 
-            // label2
-            // 
-            this.label2.AutoSize = true;
-            this.label2.Location = new System.Drawing.Point(30, 188);
-            this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(35, 13);
-            this.label2.TabIndex = 15;
-            this.label2.Text = "label2";
-            // 
-            // label3
-            // 
-            this.label3.AutoSize = true;
-            this.label3.Location = new System.Drawing.Point(30, 201);
-            this.label3.Name = "label3";
-            this.label3.Size = new System.Drawing.Size(35, 13);
-            this.label3.TabIndex = 16;
-            this.label3.Text = "label3";
-            // 
-            // label4
-            // 
-            this.label4.AutoSize = true;
-            this.label4.Location = new System.Drawing.Point(30, 214);
-            this.label4.Name = "label4";
-            this.label4.Size = new System.Drawing.Size(35, 13);
-            this.label4.TabIndex = 17;
-            this.label4.Text = "label4";
-            // 
             // frmMain
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -444,7 +444,6 @@
             this.tabControl2.ResumeLayout(false);
             this.tpSource0.ResumeLayout(false);
             this.panel3.ResumeLayout(false);
-            this.panel3.PerformLayout();
             this.tpSource1.ResumeLayout(false);
             this.panel2.ResumeLayout(false);
             this.panel1.ResumeLayout(false);

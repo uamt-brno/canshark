@@ -24,7 +24,7 @@ namespace Analysis
 
         public class Result
         {
-            public ConcurrentDictionary<uint, CanopenMsg> CycleLog = new ConcurrentDictionary<uint, CanopenMsg>();
+            public ConcurrentDictionary<CanObjectId, CanopenMsg> CycleLog = new ConcurrentDictionary<CanObjectId, CanopenMsg>();
 
             public UInt16 synctime = 0;
             public UInt16 oldsynctime = 0;

@@ -28,7 +28,7 @@ namespace canshark_gui
 
         private void frmMain_Load(object sender, EventArgs e)
         {
-            CanSharkCore.Boards.Add(new EthBoard());
+            CanSharkCore.DataSources.Add(new EthBoard());
 
             CanSharkCore.Analyzers.Add(Cycle);
             CanSharkCore.Analyzers.Add(HistogramData);
@@ -46,8 +46,7 @@ namespace canshark_gui
 
         private void frmMain_FormClosed(object sender, FormClosedEventArgs e)
         {
-            foreach (IDisposable board in CanSharkCore.Boards)
-                board.Dispose();
+            CanSharkCore.Dispose();
         }
 
         
@@ -101,19 +100,6 @@ namespace canshark_gui
 
         private void button3_Click(object sender, EventArgs e)
         {
-            CanMessage m = new CanMessage(
-                    CanSourceId.Source(0, 0),
-                    CanMailboxId.Mailbox(true, 0x00),
-                    CanObjectId.Std(0x00))
-                    {
-                        Time = 0,
-                        Usec = 0
-                    };
-
-            string A = m.GetBitsUnstuffed().ToString();
-            string B = m.GetBitsStuffed().ToString();
-
-
             Random r = new Random();
 
             CanSharkCore.InputQueue.Enqueue(
@@ -148,8 +134,9 @@ namespace canshark_gui
                         CanMailboxId.Mailbox(false, 0x00),
                         CanObjectId.Std(id))
                         {
-                            Time = (ushort)i,
-                            Usec = (ushort)i
+                            Time = (ushort)(i * 44),
+                            Usec = (ushort)((i * 44) % 1000000), 
+                            Sec = (ushort)((i * 44) / 1000000) 
                         });
 
                 
