@@ -33,6 +33,8 @@
             this.label2 = new System.Windows.Forms.Label();
             this.lrxframes = new System.Windows.Forms.Label();
             this.ltxframes = new System.Windows.Forms.Label();
+            this.label3 = new System.Windows.Forms.Label();
+            this.lload = new System.Windows.Forms.Label();
             this.SuspendLayout();
             // 
             // Caption
@@ -60,11 +62,11 @@
             // label2
             // 
             this.label2.AutoSize = true;
-            this.label2.Location = new System.Drawing.Point(6, 60);
+            this.label2.Location = new System.Drawing.Point(6, 51);
             this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(53, 13);
+            this.label2.Size = new System.Drawing.Size(56, 13);
             this.label2.TabIndex = 3;
-            this.label2.Text = "TxFrames";
+            this.label2.Text = "Tx Frames";
             // 
             // lrxframes
             // 
@@ -78,16 +80,36 @@
             // ltxframes
             // 
             this.ltxframes.AutoSize = true;
-            this.ltxframes.Location = new System.Drawing.Point(83, 60);
+            this.ltxframes.Location = new System.Drawing.Point(83, 51);
             this.ltxframes.Name = "ltxframes";
             this.ltxframes.Size = new System.Drawing.Size(13, 13);
             this.ltxframes.TabIndex = 5;
             this.ltxframes.Text = "0";
             // 
+            // label3
+            // 
+            this.label3.AutoSize = true;
+            this.label3.Location = new System.Drawing.Point(6, 73);
+            this.label3.Name = "label3";
+            this.label3.Size = new System.Drawing.Size(31, 13);
+            this.label3.TabIndex = 6;
+            this.label3.Text = "Load";
+            // 
+            // lload
+            // 
+            this.lload.AutoSize = true;
+            this.lload.Location = new System.Drawing.Point(83, 73);
+            this.lload.Name = "lload";
+            this.lload.Size = new System.Drawing.Size(13, 13);
+            this.lload.TabIndex = 7;
+            this.lload.Text = "0";
+            // 
             // FrameStatistics
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+            this.Controls.Add(this.lload);
+            this.Controls.Add(this.label3);
             this.Controls.Add(this.ltxframes);
             this.Controls.Add(this.lrxframes);
             this.Controls.Add(this.label2);
@@ -108,5 +130,7 @@
         private System.Windows.Forms.Label label2;
         public System.Windows.Forms.Label lrxframes;
         public System.Windows.Forms.Label ltxframes;
+        private System.Windows.Forms.Label label3;
+        public System.Windows.Forms.Label lload;
     }
 }

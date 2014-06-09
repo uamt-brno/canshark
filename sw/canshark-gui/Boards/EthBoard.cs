@@ -72,7 +72,7 @@ namespace Boards
             Array.Resize(ref d, dlen);
 
             return new CanMessage(
-                CanSourceId.Source(board, (byte)(src & 7)), 
+                CanSourceId.Source(board, (byte)((src & 7) - 1)), 
                 CanMailboxId.Mailbox((src & 0x08) != 0, (byte)(src >> 4)),
                 cob, d)
                 {

@@ -88,7 +88,7 @@ namespace Analysis
         {
             foreach (CanMessage msg in msgs)
             {
-                Result result = Results.GetOrAdd(CanSourceId.Source(msg.Source.Board, msg.Source.Port), x => new Result());
+                Result result = Results.GetOrAdd(msg.Source, x => new Result());
 
                 if (!result.AutoDeleteEnable)
                     result.StatsTotal.AddOrUpdate(msg.COB, 1, (qid, val) => val + 1);

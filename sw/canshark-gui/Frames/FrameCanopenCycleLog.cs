@@ -32,7 +32,7 @@ namespace canshark.Frames
             CanopenCycle.Result value;
             if (_Stats.Results.TryGetValue(_Source, out value))
             {
-                lperiod.Text = value.SyncPeriod.ToString("F3") + " ms";
+                lperiod.Text = (value.SyncPeriod * 1000).ToString("F3") + " ms";
                 viewCanopenCycle1.UpdateData(value.CycleLog.Values.OrderBy((x) => x.delay).ToArray());
             }
 

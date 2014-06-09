@@ -101,6 +101,19 @@ namespace canshark_gui
 
         private void button3_Click(object sender, EventArgs e)
         {
+            CanMessage m = new CanMessage(
+                    CanSourceId.Source(0, 0),
+                    CanMailboxId.Mailbox(true, 0x00),
+                    CanObjectId.Std(0x00))
+                    {
+                        Time = 0,
+                        Usec = 0
+                    };
+
+            string A = m.GetBitsUnstuffed().ToString();
+            string B = m.GetBitsStuffed().ToString();
+
+
             Random r = new Random();
 
             CanSharkCore.InputQueue.Enqueue(

@@ -13,13 +13,15 @@ namespace Analysis
         public CanObjectId COB;
         public string data;
         public UInt32 count;
-        public double delay;
-        public double length; 
+        public double delay;            // in secs
+        public double length;           // in secs
         public bool IsTx;
     }
 
     public class CanopenCycle : IAnalyzer
     {
+        const double BitRate = 1000000; // Hz
+
         public class Result
         {
             public ConcurrentDictionary<uint, CanopenMsg> CycleLog = new ConcurrentDictionary<uint, CanopenMsg>();
@@ -29,7 +31,7 @@ namespace Analysis
 
             
 
-            public float SyncPeriod { get { return TimeDiff(oldsynctime, synctime) / 1000.0f; } }
+            public double SyncPeriod { get { return TimeDiff(oldsynctime, synctime) / (2*BitRate); } }
         }
 
 
@@ -46,7 +48,7 @@ namespace Analysis
         {
             foreach (CanMessage m in msgs)
             {
-                Result result = Results.GetOrAdd(CanSourceId.Source(m.Source.Board, m.Source.Port), x => new Result());
+                Result result = Results.GetOrAdd(m.Source, x => new Result());
 
                 if (m.COB.IdStd == 0x80)        // std ID 0x80 = SYNC
                 {
@@ -57,12 +59,14 @@ namespace Analysis
                     if (result.CycleLog.Count == 0)       // make the cycle entire from the beginning
                         return;
 
+                
+
                 CanopenMsg msg = result.CycleLog.GetOrAdd(m.COB, x => new CanopenMsg() { COB = x, count = 0 });
                 
                 msg.data = BitConverter.ToString(m.Data);
                 msg.count++;
-                msg.delay = TimeDiff(result.synctime, m.Time) / 1000.0f;
-                msg.length = m.GetMinFrameLength() / 1000.0f;
+                msg.delay = TimeDiff(result.synctime, m.Time) / (2*BitRate);
+                msg.length = m.FrameLengthStuffed / BitRate;
                 msg.IsTx = m.Mailbox.IsTx;
             }
         }

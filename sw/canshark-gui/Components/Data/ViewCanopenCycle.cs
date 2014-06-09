@@ -132,8 +132,8 @@ namespace Components.Data
                 case 0: e.Value = msg.IsTx ? "TX" : "RX"; break;
                 case 1: e.Value = msg.COB.ToString(); break;
                 case 2: e.Value = msg.data; break;
-                case 3: e.Value = "+" + msg.delay.ToString("F3") + " ms"; break;
-                case 4: e.Value = "+" + msg.length.ToString("F3") + " ms"; break;
+                case 3: e.Value = "+" + (msg.delay*1000).ToString("F3") + " ms"; break;
+                case 4: e.Value = "+" + (msg.length*1000).ToString("F3") + " ms"; break;
                 case 5: e.Value = msg.count.ToString("D"); break;
                 default: e.Value = "ERROR"; break;
             }
