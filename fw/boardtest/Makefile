@@ -21,20 +21,26 @@ DEVICE = stm32f407vgt6
 
 OPENCM3_DIR	= lib/opencm3/
 INTERMEDIATE_DIR= tmp/
+SRC_DIR		= src/
 
-
-SRCS := main.c
-
-INCS += -Iinc
-
-HDRS := $(shell find inc -name '*.h')
-
-VPATH += src
-
+###############################################################################
 Q := @
 MAKEFLAGS += --no-print-directory
 
-OBJS   := $(addprefix $(INTERMEDIATE_DIR), main.o)
+INCS += -Iinc
+VPATH += src
+
+SRCS := $(patsubst $(SRC_DIR)%,%,	\
+	  $(wildcard $(SRC_DIR)*.c)	\
+	  $(wildcard $(SRC_DIR)*.cpp))
+
+HDRS := $(shell find inc -name '*.h')	\
+	$(shell find inc -name '*.hpp')
+
+OBJS	:= $(addprefix $(INTERMEDIATE_DIR),			\
+		$(patsubst %.c,%.o,$(filter %.c,$(SRCS)))	\
+		$(patsubst %.cpp,%.o,$(filter %.cpp,$(SRCS)))	\
+		$(OBJS))
 
 ###############################################################################
 ###############################################################################
@@ -45,40 +51,47 @@ include mk/genlink-config.mk
 include mk/stylecheck-config.mk
 include mk/libopencm3-config.mk
 
-
 ###############################################################################
 # C flags
 
-CFLAGS	+= -O0 -g
-CFLAGS	+= -Wextra -Wshadow -Wimplicit-function-declaration
-CFLAGS	+= -Wredundant-decls -Wmissing-prototypes -Wstrict-prototypes
-CFLAGS	+= -ffunction-sections -fdata-sections -ffast-math -fno-common
+CFLAGS		+= -O0 -g -std=gnu99
+CFLAGS		+= -Wextra -Wshadow -Wimplicit-function-declaration
+CFLAGS		+= -Wredundant-decls -Wmissing-prototypes -Wstrict-prototypes
+CFLAGS		+= -ffunction-sections -fdata-sections -ffast-math -fno-common
 #additional warnings
-CFLAGS	+= -Wmissing-declarations -Wmissing-include-dirs -Wunreachable-code
-CFLAGS  += -std=gnu99
+CFLAGS		+= -Wmissing-declarations -Wmissing-include-dirs 
+CFLAGS		+= -Wunreachable-code
+
+###############################################################################
+# C++ flags
+
+CXXFLAGS	+= -Og -g -std=gnu++11
+CXXFLAGS	+= -Wextra -Wshadow -Wredundant-decls
+CXXFLAGS	+= -fno-common -ffunction-sections -fdata-sections
+CXXFLAGS	+= -fno-exceptions -fno-unwind-tables
 
 ###############################################################################
 # C & C++ preprocessor common flags
 
-CPPFLAGS+= -MD -MP -MF $(INTERMEDIATE_DIR)$(*F).d
-CPPFLAGS+= -Wall -Wundef
-CPPFLAGS+= $(INCS)
-CPPFLAGS+= $(DEFS)
+CPPFLAGS	+= -MD -MP -MF $(INTERMEDIATE_DIR)$(*F).d
+CPPFLAGS	+= -Wall -Wundef
+CPPFLAGS	+= $(INCS)
+CPPFLAGS	+= $(DEFS)
 #additional warnings
-CPPFLAGS+= -Winline -Winit-self -Wuninitialized -Wfloat-equal -Wcast-qual
-CPPFLAGS+= -Wswitch-enum -Wswitch-default -Wformat=2 -Wcast-align
+CPPFLAGS	+= -Winline -Winit-self -Wuninitialized -Wfloat-equal -Wcast-qual
+CPPFLAGS	+= -Wswitch-enum -Wswitch-default -Wformat=2 -Wcast-align
 
 ###############################################################################
 # Linker flags
 
-LDFLAGS	+= --static -nostartfiles
-LDFLAGS	+= -Wl,--gc-sections
-LDFLAGS += --specs=nano.specs
+LDFLAGS		+= --static -nostartfiles
+LDFLAGS		+= -Wl,--gc-sections
+LDFLAGS		+= --specs=nano.specs
 
 ###############################################################################
 # Linker libraries to be built with
 
-LDLIBS	+= -Wl,--start-group -lc -lgcc -lnosys -Wl,--end-group
+LDLIBS		+= -Wl,--start-group -lc -lgcc -lnosys -Wl,--end-group
 
 ###############################################################################
 # RULES

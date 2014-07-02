@@ -1,1 +1,6 @@
 /*.ld
+/bin/*.hex
+/bin/*.elf
+/bin/*.map
+/tmp/*
+/*.layout
