@@ -15,10 +15,10 @@
  * along with this library.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include <libopencm3/cm3/nvic.h>
 #include <libopencm3/stm32/rcc.h>
-#include <libopencm3/stm32/gpio.h>
 #include <libopencm3/stm32/flash.h>
+
+#include "clock.h"
 
 /* 168MHz */
 const clock_scale_t clock_168m_25m = {

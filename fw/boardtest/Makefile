@@ -56,8 +56,9 @@ CFLAGS		+= -O0 -g -std=gnu99
 CFLAGS		+= -Wextra -Wshadow -Wimplicit-function-declaration
 CFLAGS		+= -Wredundant-decls -Wmissing-prototypes -Wstrict-prototypes
 CFLAGS		+= -ffunction-sections -fdata-sections -ffast-math -fno-common
+CFLAGS		+= -flto
 #additional warnings
-CFLAGS		+= -Wmissing-declarations -Wmissing-include-dirs 
+CFLAGS		+= -Wmissing-declarations -Wmissing-include-dirs
 CFLAGS		+= -Wunreachable-code
 
 ###############################################################################
@@ -66,7 +67,7 @@ CFLAGS		+= -Wunreachable-code
 CXXFLAGS	+= -Og -g -std=gnu++11
 CXXFLAGS	+= -Wextra -Wshadow -Wredundant-decls
 CXXFLAGS	+= -fno-common -ffunction-sections -fdata-sections
-CXXFLAGS	+= -fno-exceptions -fno-unwind-tables
+CXXFLAGS	+= -fno-exceptions -fno-unwind-tables -flto
 
 ###############################################################################
 # C & C++ preprocessor common flags
@@ -79,12 +80,14 @@ CPPFLAGS	+= $(DEFS)
 CPPFLAGS	+= -Winline -Winit-self -Wuninitialized -Wfloat-equal -Wcast-qual
 CPPFLAGS	+= -Wswitch-enum -Wswitch-default -Wformat=2 -Wcast-align
 
+
 ###############################################################################
 # Linker flags
 
 LDFLAGS		+= --static -nostartfiles
 LDFLAGS		+= -Wl,--gc-sections
 LDFLAGS		+= --specs=nano.specs
+LDFLAGS		+= -flto
 
 ###############################################################################
 # Linker libraries to be built with
@@ -117,7 +120,7 @@ include mk/genlink-rules.mk
 include mk/stylecheck-rules.mk
 include mk/libopencm3-rules.mk
 
-%.images: %.elf %.size %.hex
+%.images: %.elf %.size %.hex %.list
 	@# empty rule
 
 -include $(OBJS:.o=.d)
