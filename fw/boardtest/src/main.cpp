@@ -20,92 +20,16 @@
 #include <libopencm3/stm32/gpio.h>
 
 #include "clock.h"
+#include "io.h"
+#include "board.h"
 
-/*
- * PINS:
- *
- * PA0  - AF11 - ETH_CRS
- * PA1  - AF11 - ETH_RXCLK
- * PA2  - AF11 - ETH_MDIO
- * PA3  - AF11 - ETH_COL
- * PA4  -
- * PA5  -
- * PA6  -
- * PA7  - AF11 - ETH_RXDV
- * PA8  - OZ  - CAN1_MODE
- * PA9  -
- * PA10 -
- * PA11 - AF9 - CAN1_RX
- * PA12 - AF9 - CAN1_TX
- * PA13 - x (swdio)
- * PA14 - x (swclk)
- * PA15 -
- *
- * PB0  - AF11 - ETH_RXD2
- * PB1  - AF11 - ETH_RXD3
- * PB2  - x (boot1)
- * PB3  - x (swo)
- * PB4  -
- * PB5  - AF11 - CAN2_RX
- * PB6  - AF11 - CAN2_TX
- * PB7  -
- * PB8  -
- * PB9  - OZ  - CAN2_MODE
- * PB10 - AF11 - ETH_RXER
- * PB11 - AF11 - ETH_TXEN
- * PB12 - AF11 - ETH_TXD0
- * PB13 - AF11 - ETH_TXD1
- * PB14 -
- * PB15 - Iirql - ETH_INTR
- *
- * PC0  -
- * PC1  - AF11 - ETH_MDC
- * PC2  - AF11 - ETH_TXD2
- * PC3  - AF11 - ETH_TXCLK
- * PC4  - AF11 - ETH_RXD0
- * PC5  - AF11 - ETH_RXD1
- * PC6  -
- * PC7  -
- * PC8  -
- * PC9  -
- * PC10 - AF7 - USART3_TX
- * PC11 - AF7 - USART3_RX
- * PC12 -
- *
- * PD0  -
- * PD1  -
- * PD2  - OH - LED_CAN1
- * PD3  -
- * PD4  - OH - LED_CAN2
- * PD5  -
- * PD6  -
- * PD7  -
- * PD8  - OH - ETH_RST
- * PD9  -
- * PD10 - OH - LED_GLOBAL
- * PD11 -
- * PD12 -
- * PD13 -
- * PD14 -
- * PD15 -
- *
- * PE0  -
- * PE1  -
- * PE2  - AF11 - ETH_TXD3
- * PE3  -
- * PE4  -
- * PE5  -
- * PE6  -
- * PE7  -
- * PE8  - OH   - TRIG2OE
- * PE9  - OH   - TRIG2D
- * PE10 - Iirq - TRIG2I
- * PE11 - OH   - TRIG1D
- * PE12 - Iirq - TRIG1I
- * PE13 - OH   - TRIG1OE
- * PE14 -
- * PE15 -
- */
+extern "C"
+{
+	bool ksz8051_nandtree_check();
+}
+
+
+#define CHECK(fn) if (fn) { } else { } // print OK/FAILED
 
 int main(void)
 {
@@ -142,6 +66,7 @@ int main(void)
 	gpio_set_af(GPIOE, GPIO_AF11, GPIO2);
 
 	/* Initialize used peripherals */
+	rcc_periph_clock_enable(RCC_USART3);
 	rcc_periph_clock_enable(RCC_CAN1);
 	rcc_periph_clock_enable(RCC_CAN2);
 	rcc_periph_clock_enable(RCC_ETHMAC);
@@ -151,13 +76,14 @@ int main(void)
 
 	/* Test LED's */
 
-	/* Test Serial link connections*/
-	/* Test CAN link connections */
-	/* Test PHY connections */
+	/* Initialize serial link */
 
+	// print "Checking PHY connections ..."
+	//CHECK(can_nandtree_check())
 
+	// print "Checking PHY connections ..."
+	CHECK(ksz8051_nandtree_check())
 
-	/* Test serial link */
 	/* Test CAN link */
 	/* Test MAC broadcast storm */
 	while (1);
