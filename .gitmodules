@@ -2,3 +2,7 @@
 	path = fw/canshark/lib/opencm3
 	url = https://github.com/BuFran/libopencm3.git
 	branch = work
+[submodule "fw/boardtest/lib/opencm3"]
+	path = fw/boardtest/lib/opencm3
+	url = https://github.com/BuFran/libopencm3.git
+	branch = work
