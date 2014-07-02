@@ -1776,7 +1776,7 @@ sub process {
 		}
 
 # check we are in a valid source file if not then ignore this hunk
-		next if ($realfile !~ /\.(h|c|s|S|pl|sh)$/);
+		next if ($realfile !~ /\.(h|hpp|c|cpp|s|S|pl|sh)$/);
 
 #line length limit
 		if ($line =~ /^\+/ && $prevrawline !~ /\/\*\*/ &&
@@ -1831,7 +1831,7 @@ sub process {
 		}
 
 # check we are in a valid source file C or perl if not then ignore this hunk
-		next if ($realfile !~ /\.(h|c|pl)$/);
+		next if ($realfile !~ /\.(h|hpp|c|cpp|pl)$/);
 
 # at the beginning of a line any tabs must come first and anything
 # more than 8 must use tabs.
@@ -1914,7 +1914,7 @@ sub process {
 		}
 
 # check we are in a valid C source file if not then ignore this hunk
-		next if ($realfile !~ /\.(h|c)$/);
+		next if ($realfile !~ /\.(h|c|hpp|cpp)$/);
 
 # discourage the addition of CONFIG_EXPERIMENTAL in #if(def).
 		if ($line =~ /^\+\s*\#\s*if.*\bCONFIG_EXPERIMENTAL\b/) {
@@ -2609,7 +2609,7 @@ sub process {
 				#   ->
 				#   :   when part of a bitfield
 				} elsif ($op eq '->' || $opv eq ':B') {
-					if ($ctx =~ /Wx.|.xW/) {
+					if ($ctx =~ /Wx.|.xW/ && !($opv eq ':B' && $line =~ /class/)) {
 						ERROR("SPACING",
 						      "spaces prohibited around that '$op' $at\n" . $hereptr);
 					}
@@ -2631,7 +2631,10 @@ sub process {
 				} elsif ($op eq '!' || $op eq '~' ||
 					 $opv eq '*U' || $opv eq '-U' ||
 					 $opv eq '&U' || $opv eq '&&U') {
-					if ($ctx !~ /[WEBC]x./ && $ca !~ /(?:\)|!|~|\*|-|\&|\||\+\+|\-\-|\{)$/) {
+					if ($op eq '~' && $ca =~ /::$/ && $realfile =~ /(\.cpp|\.h)$/) {
+						# '~' used as a name of Destructor
+					}
+					elsif ($ctx !~ /[WEBC]x./ && $ca !~ /(?:\)|!|~|\*|-|\&|\||\+\+|\-\-|\{)$/) {
 						ERROR("SPACING",
 						      "space required before that '$op' $at\n" . $hereptr);
 					}
@@ -2675,8 +2678,9 @@ sub process {
 
 				# A colon needs no spaces before when it is
 				# terminating a case value or a label.
+				# Ignored if it is used in class declaration in C++.
 				} elsif ($opv eq ':C' || $opv eq ':L') {
-					if ($ctx =~ /Wx./) {
+					if ($ctx =~ /Wx./  && $line !~ /class/) {
 						ERROR("SPACING",
 						      "space prohibited before that '$op' $at\n" . $hereptr);
 					}
@@ -2684,6 +2688,18 @@ sub process {
 				# All the others need spaces both sides.
 				} elsif ($ctx !~ /[EWC]x[CWE]/) {
 					my $ok = 0;
+
+					if ($realfile =~ /\.cpp|\.hpp$/) {
+						# Ignore template arguments <...> in C++
+						if (($op eq '<' || $op eq '>') && $line =~ /<.*>/) {
+							$ok = 1;
+						}
+
+						# Ignore :: in C++
+						if ($op eq '::') {
+							$ok = 1;
+						}
+					}
 
 					# Ignore email addresses <foo@bar>
 					if (($op eq '<' &&
