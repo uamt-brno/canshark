@@ -21,8 +21,8 @@
 #include <libopencm3/stm32/flash.h>
 
 /* 168MHz */
-const clock_scale_t myclock168 = {
-	.pllm = 25,  // for 8MHz xtal =8
+const clock_scale_t clock_168m_25m = {
+	.pllm = 25,
 	.plln = 336,
 	.pllp = 2,
 	.pllq = 7,
@@ -33,14 +33,5 @@ const clock_scale_t myclock168 = {
 	.apb1_frequency = 42000000,
 	.apb2_frequency = 84000000,
 };
-
-int main(void)
-{
-	rcc_clock_setup_hse_3v3(&myclock168);
-
-	while (1);
-
-	return 0;
-}
 
 

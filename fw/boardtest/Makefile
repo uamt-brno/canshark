@@ -22,6 +22,7 @@ DEVICE = stm32f407vgt6
 OPENCM3_DIR	= lib/opencm3/
 INTERMEDIATE_DIR= tmp/
 SRC_DIR		= src/
+INC_DIR		= inc/
 
 ###############################################################################
 Q := @
@@ -33,9 +34,6 @@ VPATH += src
 SRCS := $(patsubst $(SRC_DIR)%,%,	\
 	  $(wildcard $(SRC_DIR)*.c)	\
 	  $(wildcard $(SRC_DIR)*.cpp))
-
-HDRS := $(shell find inc -name '*.h')	\
-	$(shell find inc -name '*.hpp')
 
 OBJS	:= $(addprefix $(INTERMEDIATE_DIR),			\
 		$(patsubst %.c,%.o,$(filter %.c,$(SRCS)))	\

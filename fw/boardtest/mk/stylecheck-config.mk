@@ -19,4 +19,7 @@ STYLECHECK	:= scripts/checkpatch.pl
 
 STYLECHECKFLAGS = --no-tree -f --terse --mailback
 STYLECHECKFLAGS += --max-line-length=200
-STYLECHECKFILES := $(SRCS) $(HDRS)
+STYLECHECKFILES := $(wildcard $(SRC_DIR)*.c)		\
+		   $(wildcard $(SRC_DIR)*.cpp)		\
+		   $(wildcard $(INC_DIR)*.h)		\
+		   $(wildcard $(INC_DIR)*.hpp)

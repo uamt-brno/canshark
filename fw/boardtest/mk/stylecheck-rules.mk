@@ -31,17 +31,17 @@ stylecheck: $(STYLECHECKFILES:=.stylecheck)
 styleclean: $(STYLECHECKFILES:=.styleclean)
 	@# empty rule
 
-%.stylecheck:
-	$(Q)$(STYLECHECK) $(STYLECHECKFLAGS) src/$* > $(INTERMEDIATE_DIR)$*.stylecheck; \
-	if [ -s $(INTERMEDIATE_DIR)$*.stylecheck ]; then \
-		cat $(INTERMEDIATE_DIR)$*.stylecheck; \
+%.stylecheck: %
+	$(Q)$(STYLECHECK) $(STYLECHECKFLAGS) $* > $*.stylecheck; \
+	if [ -s $@ ]; then \
+		cat $@; \
 	else \
-		rm -f $(INTERMEDIATE_DIR)$*.stylecheck; \
+		rm -f $@; \
 	fi; \
 
 
 %.styleclean:
-	$(Q)rm -f $(INTERMEDIATE_DIR)$*.stylecheck;
+	$(Q)rm -f $*.stylecheck;
 
 .PHONY: clean
 clean: clean-stylecheck
@@ -49,5 +49,5 @@ clean: clean-stylecheck
 .PHONY: clean-stylecheck
 clean-stylecheck:
 	@$(PRINTF) "  CLEAN   $@\n"
-	-$(Q)$(RM) -rf $(INTERMEDIATE_DIR)*.stylecheck
+	-$(Q)$(RM) -rf *.stylecheck
 
