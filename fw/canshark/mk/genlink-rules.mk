@@ -1,5 +1,7 @@
 ##
-## This file is part of the canshark project.
+## This file is part of the libopencm3 project.
+##
+## Copyright (C) 2014 Frantisek Burian <BuFran@seznam.cz>
 ##
 ## This library is free software: you can redistribute it and/or modify
 ## it under the terms of the GNU Lesser General Public License as published by
@@ -15,6 +17,22 @@
 ## along with this library.  If not, see <http://www.gnu.org/licenses/>.
 ##
 
-$(OPENCM3_LIBDEP):
-	@$(PRINTF) "  MAKE    $@"
-	$(Q)$(MAKE) -C $(OPENCM3_DIR)
+$(LDSCRIPT):$(OPENCM3_DIR)ld/linker.ld.S $(INTERMEDIATE_DEP)
+ifeq ($(GENLINK_DEFS),)
+	$(error unknown device $(DEVICE) for the linker. Cannot generate ldscript)
+endif
+	@$(PRINTF) "  GENLNK  $@\n"
+	$(Q)$(CPP) $(GENLINK_DEFS) -P -E $< > $@
+
+%.size: %.elf
+	@$(PRINTF) "  SIZE    $<\n"
+	$(Q)readelf $< -l | awk $(GENLINK_SIZE) -f $(OPENCM3_DIR)scripts/arm-size.awk
+
+.PHONY: clean
+clean: clean-genlink
+
+.PHONY: clean-genlink
+clean-genlink:
+	@$(PRINTF) "  CLEAN   $@\n"
+	$(Q)$(RM) -f $(LDSCRIPT)
+

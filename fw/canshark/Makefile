@@ -43,14 +43,12 @@ OBJS   := $(addprefix $(INTERMEDIATE_DIR), 			\
 ###############################################################################
 # GENERAL CONFIG
 
-include $(OPENCM3_DIR)mk/gcc-config.mk
-include $(OPENCM3_DIR)mk/genlink-config.mk
-include $(OPENCM3_DIR)mk/stylecheck-config.mk
+include mk/gcc-config.mk
+include mk/genlink-config.mk
+include mk/stylecheck-config.mk
+include mk/libopencm3-config.mk
+include mk/liblwip141-config.mk
 
-# this must be included after genlink !
-include libopencm3-config.mk
-include liblwip141-config.mk
-include stylecheck-config.mk
 
 ###############################################################################
 # C flags
@@ -103,21 +101,16 @@ clean:
 	@$(PRINTF) "  CLEAN   $(BINARY)\n"
 	$(Q)$(RM) -rf bin
 
-.PHONY: cleanall
-cleanall: clean
-	@$(PRINTF) "  CLEAN   all\n"
-	$(Q)$(MAKE) -C $(OPENCM3_DIR) clean
-
 $(INTERMEDIATE_DEP) bin:
 	@$(PRINTF) "  DIR     $@\n"
 	-@mkdir -p $@
 
-include $(OPENCM3_DIR)mk/gcc-rules.mk
-include $(OPENCM3_DIR)mk/genlink-rules.mk
-include $(OPENCM3_DIR)mk/stylecheck-rules.mk
+include mk/gcc-rules.mk
+include mk/genlink-rules.mk
+include mk/stylecheck-rules.mk
 
-include libopencm3-rules.mk
-include liblwip141-rules.mk
+include mk/libopencm3-rules.mk
+include mk/liblwip141-rules.mk
 
 %.images: %.elf %.size %.hex
 	@# empty rule

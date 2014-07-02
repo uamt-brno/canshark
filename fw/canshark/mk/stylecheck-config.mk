@@ -15,6 +15,8 @@
 ## along with this library.  If not, see <http://www.gnu.org/licenses/>.
 ##
 
-STYLECHECKFLAGS += --max-line-length=200
 STYLECHECK	:= scripts/checkpatch.pl
+
+STYLECHECKFLAGS = --no-tree -f --terse --mailback
+STYLECHECKFLAGS += --max-line-length=200
 STYLECHECKFILES := $(SRCS) $(HDRS)
