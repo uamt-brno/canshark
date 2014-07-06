@@ -25,7 +25,8 @@
 
 extern "C"
 {
-	bool ksz8051_nandtree_check();
+	bool ksz8051_nandtree_check(void);
+	bool bxcan_nandtree_check(void);
 }
 
 
@@ -42,31 +43,27 @@ int main(void)
 	rcc_periph_clock_enable(RCC_GPIOD);
 	rcc_periph_clock_enable(RCC_GPIOE);
 
-	gpio_set(GPIOA, GPIO8);
-	gpio_set(GPIOB, GPIO9);
-	gpio_set(GPIOC, 0);
-	gpio_set(GPIOD, GPIO2 | GPIO4 | GPIO8 | GPIO10);
-	gpio_set(GPIOE, GPIO8 | GPIO9 | GPIO11 | GPIO13);
-
-	gpio_mode_setup(GPIOA, GPIO_MODE_AF, GPIO_PUPD_NONE, GPIO0 | GPIO1 | GPIO2 | GPIO3 | GPIO7 | GPIO11 | GPIO12);
-	gpio_mode_setup(GPIOA, GPIO_MODE_OUTPUT, GPIO_PUPD_NONE, GPIO8);
-	gpio_mode_setup(GPIOB, GPIO_MODE_AF, GPIO_PUPD_NONE, GPIO0 | GPIO1 | GPIO5 | GPIO6 | GPIO10 | GPIO11 | GPIO12 | GPIO13);
-	gpio_mode_setup(GPIOB, GPIO_MODE_OUTPUT, GPIO_PUPD_NONE, GPIO9);
-	gpio_mode_setup(GPIOC, GPIO_MODE_AF, GPIO_PUPD_NONE, GPIO1 | GPIO2 | GPIO3 | GPIO4 | GPIO5 | GPIO10 | GPIO11);
-	gpio_mode_setup(GPIOD, GPIO_MODE_OUTPUT, GPIO_PUPD_NONE, GPIO2 | GPIO4 | GPIO8 | GPIO10);
-	gpio_mode_setup(GPIOE, GPIO_MODE_AF, GPIO_PUPD_NONE, GPIO2);
-	gpio_mode_setup(GPIOE, GPIO_MODE_OUTPUT, GPIO_PUPD_NONE, GPIO8 | GPIO9 | GPIO11 | GPIO13);
-	gpio_mode_setup(GPIOE, GPIO_MODE_INPUT, GPIO_PUPD_PULLDOWN, GPIO10 | GPIO12);
-
-	gpio_set_af(GPIOA, GPIO_AF11, GPIO0 | GPIO1 | GPIO2 | GPIO3 |GPIO7);
-	gpio_set_af(GPIOA, GPIO_AF9, GPIO11 | GPIO12);
-	gpio_set_af(GPIOB, GPIO_AF11, GPIO0 | GPIO1 | GPIO5 | GPIO6 | GPIO10 | GPIO11 | GPIO12 | GPIO13);
-	gpio_set_af(GPIOC, GPIO_AF11, GPIO1 | GPIO2 | GPIO3 | GPIO4 | GPIO5);
-	gpio_set_af(GPIOC, GPIO_AF7, GPIO10 | GPIO11);
-	gpio_set_af(GPIOE, GPIO_AF11, GPIO2);
+	io_output_high(LED_CAN1);
+	io_output_high(LED_CAN2);
+	io_output_high(LED_GLOBAL);
 
 	/* Initialize used peripherals */
 	rcc_periph_clock_enable(RCC_USART3);
+
+	io_af(SER_TX, GPIO_AF7);
+	io_af(SER_RX, GPIO_AF7);
+
+
+	/* Test LED's */
+
+	/* Initialize serial link */
+
+	// print "Checking CAN connections ..."
+	CHECK(bxcan_nandtree_check())
+
+	// print "Checking PHY connections ..."
+	CHECK(ksz8051_nandtree_check())
+
 	rcc_periph_clock_enable(RCC_CAN1);
 	rcc_periph_clock_enable(RCC_CAN2);
 	rcc_periph_clock_enable(RCC_ETHMAC);
@@ -74,17 +71,6 @@ int main(void)
 	rcc_periph_clock_enable(RCC_ETHMACRX);
 	rcc_periph_clock_enable(RCC_ETHMACTX);
 
-	/* Test LED's */
-
-	/* Initialize serial link */
-
-	// print "Checking PHY connections ..."
-	//CHECK(can_nandtree_check())
-
-	// print "Checking PHY connections ..."
-	CHECK(ksz8051_nandtree_check())
-
-	/* Test CAN link */
 	/* Test MAC broadcast storm */
 	while (1);
 
