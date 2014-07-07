@@ -102,9 +102,7 @@
 			<Add option="-mfloat-abi=$(MFLOAT_ABI)" />
 			<Add option="-mfpu=$(MFPU)" />
 		</Linker>
-		<Unit filename="./src/bxcan.c">
-			<Option compilerVar="CC" />
-		</Unit>
+		<Unit filename="./inc/bxcan.h" />
 		<Unit filename="Makefile">
 			<Option target="Debug" />
 			<Option target="Release" />
@@ -113,6 +111,8 @@
 		<Unit filename="inc/board.h" />
 		<Unit filename="inc/clock.h" />
 		<Unit filename="inc/io.h" />
+		<Unit filename="inc/serial.h" />
+		<Unit filename="inc/systick.h" />
 		<Unit filename="lib/opencm3/.gitignore" />
 		<Unit filename="lib/opencm3/COPYING.GPL3" />
 		<Unit filename="lib/opencm3/COPYING.LGPL3" />
@@ -583,6 +583,9 @@
 		<Unit filename="mk/stylecheck-config.mk" />
 		<Unit filename="mk/stylecheck-rules.mk" />
 		<Unit filename="scripts/checkpatch.pl" />
+		<Unit filename="src/bxcan.c">
+			<Option compilerVar="CC" />
+		</Unit>
 		<Unit filename="src/clock.c">
 			<Option compilerVar="CC" />
 		</Unit>
@@ -590,6 +593,12 @@
 			<Option compilerVar="CC" />
 		</Unit>
 		<Unit filename="src/main.cpp" />
+		<Unit filename="src/serial.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="src/systick.c">
+			<Option compilerVar="CC" />
+		</Unit>
 		<Extensions>
 			<code_completion />
 			<envvars />

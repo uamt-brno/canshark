@@ -24,15 +24,16 @@ void serial_init(void)
 }
 
 
-void serial_print(const char* str)
+void serial_print(const char *str)
 {
-	for (; *str != 0; str++ )
+	for (; *str != 0; str++) {
 		usart_send_blocking(SER_PORT, *str);
+	}
 }
 
 static char serial_buffer[256];
 
-void serial_printf(const char* fmt, ...)
+void serial_printf(const char *fmt, ...)
 {
 	va_list args;
 	va_start(args, fmt);

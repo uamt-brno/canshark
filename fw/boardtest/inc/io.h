@@ -107,7 +107,7 @@ uint32_t io_pin(uint32_t pin)
 INLINE
 uint32_t io_pinno(uint32_t pin)
 {
-	return (pin & 15);
+	return pin & 15;
 }
 
 INLINE
@@ -168,10 +168,11 @@ void io_input_pulldown(uint32_t pin)
 INLINE
 void io_af(uint32_t pin, uint8_t afnum)
 {
-	if (io_pinno(pin) < 8)
+	if (io_pinno(pin) < 8) {
 		GPIO_AFRL(io_port(pin)) = (GPIO_AFRL(io_port(pin)) & ~GPIO_AFR_MASK(io_pinno(pin))) | GPIO_AFR(io_pinno(pin), afnum);
-	else
+	} else {
 		GPIO_AFRH(io_port(pin)) = (GPIO_AFRH(io_port(pin)) & ~GPIO_AFR_MASK(io_pinno(pin) - 8)) | GPIO_AFR(io_pinno(pin) - 8, afnum);
+	}
 
 	GPIO_MODER(io_port(pin)) = (GPIO_MODER(io_port(pin)) & ~GPIO_MODE_MASK(io_pinno(pin))) |
 		GPIO_MODE(io_pinno(pin), GPIO_MODE_AF);

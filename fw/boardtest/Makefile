@@ -52,7 +52,7 @@ include mk/libopencm3-config.mk
 ###############################################################################
 # C flags
 
-CFLAGS		+= -O0 -g -std=gnu99
+CFLAGS		+= -Og -g -std=gnu99
 CFLAGS		+= -Wextra -Wshadow -Wimplicit-function-declaration
 CFLAGS		+= -Wredundant-decls -Wmissing-prototypes -Wstrict-prototypes
 CFLAGS		+= -ffunction-sections -fdata-sections -ffast-math -fno-common

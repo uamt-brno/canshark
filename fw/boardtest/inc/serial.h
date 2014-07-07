@@ -7,8 +7,8 @@ extern "C"
 #endif
 
 void serial_init(void);
-void serial_print(const char* str);
-void serial_printf(const char* fmt, ...);
+void serial_print(const char *str);
+void serial_printf(const char *fmt, ...);
 
 #ifdef __cplusplus
 }

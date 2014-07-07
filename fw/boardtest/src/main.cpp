@@ -16,16 +16,18 @@
  */
 
 #include <libopencm3/stm32/rcc.h>
+#include <libopencm3/cm3/systick.h>
 
 #include "clock.h"
 #include "io.h"
 #include "board.h"
 #include "serial.h"
+#include "systick.h"
+#include "bxcan.h"
 
 extern "C"
 {
 	bool ksz8051_nandtree_check(void);
-	bool bxcan_nandtree_check(void);
 }
 
 
@@ -63,12 +65,6 @@ static void phy_init()
 	rcc_periph_clock_enable(RCC_ETHMACTX);
 }
 
-static void can_init()
-{
-	rcc_periph_clock_enable(RCC_CAN1);
-	rcc_periph_clock_enable(RCC_CAN2);
-}
-
 int main(void)
 {
 	rcc_clock_setup_hse_3v3(&clock_168m_25m);
@@ -81,26 +77,35 @@ int main(void)
 	rcc_periph_clock_enable(RCC_GPIOE);
 
 	/* Initialize used peripherals */
+	systick_init();
 	led_init();
 	serial_init();
 
-	serial_print("CanShark v2.0 Board test. \n");
+	serial_print("CanShark v2.0 Board test.\n");
+
 	CHECK(led_check(), "Checking LEDs ...");
 	CHECK(bxcan_nandtree_check(), "Checking CAN connections ...");
 	CHECK(ksz8051_nandtree_check(), "Checking PHY connections ...");
 
-	serial_print("Measuring CAN driver delays: CAN1\n");
-	serial_printf("Mode=x: Thl=%dns Tlh=%dns\n", 10, 20);
-	serial_printf("Mode=H: Thl=%dns Tlh=%dns\n", 10, 20);
-	serial_printf("Mode=L: Thl=%dns Tlh=%dns\n", 10, 20);
+	serial_print("Measuring CAN driver delays: Fast mode ...\n");
 
-	serial_print("Measuring CAN driver delays: CAN2\n");
-	serial_printf("Mode=x: Thl=%dns Tlh=%dns\n", 10, 20);
-	serial_printf("Mode=H: Thl=%dns Tlh=%dns\n", 10, 20);
-	serial_printf("Mode=L: Thl=%dns Tlh=%dns\n", 10, 20);
+	io_low(PCAN1_PIN_MODE);
+	io_low(PCAN2_PIN_MODE);
+	bxcan_measure_delays();
+
+	serial_printf("CAN1: Thl=%ldns Tlh=%ldns\n", bxcan1_delay.thl, bxcan1_delay.tlh);
+	serial_printf("CAN2: Thl=%ldns Tlh=%ldns\n", bxcan2_delay.thl, bxcan2_delay.tlh);
+
+	serial_print("Measuring CAN driver delays: Slow mode ...\n");
+	io_input_pulldown(PCAN1_PIN_MODE);
+	io_input_pulldown(PCAN2_PIN_MODE);
+	bxcan_measure_delays();
+
+	serial_printf("CAN1: Thl=%ldns Tlh=%ldns\n", bxcan1_delay.thl, bxcan1_delay.tlh);
+	serial_printf("CAN2: Thl=%ldns Tlh=%ldns\n", bxcan2_delay.thl, bxcan2_delay.tlh);
 
 	phy_init();
-	can_init();
+	bxcan_init();
 
 	/* Test MAC broadcast storm */
 	while (1);
