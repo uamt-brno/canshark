@@ -15,13 +15,12 @@
  * along with this library.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include <libopencm3/cm3/nvic.h>
 #include <libopencm3/stm32/rcc.h>
-#include <libopencm3/stm32/gpio.h>
 
 #include "clock.h"
 #include "io.h"
 #include "board.h"
+#include "serial.h"
 
 extern "C"
 {
@@ -30,7 +29,45 @@ extern "C"
 }
 
 
-#define CHECK(fn) if (fn) { } else { } // print OK/FAILED
+#define CHECK(fn, str)	do {					\
+		serial_print(str);				\
+		serial_print((fn) ? "OK\n" : "FAILED\n");	\
+	} while (0)
+
+static void led_init(void)
+{
+	io_output_high(LED_PIN_CAN1);
+	io_output_high(LED_PIN_CAN2);
+	io_output_high(LED_PIN_GLOBAL);
+}
+
+static bool led_check(void)
+{
+	io_low(LED_PIN_CAN1);
+	//delay 1sec
+	io_high(LED_PIN_CAN1);
+	io_low(LED_PIN_CAN2);
+	//delay 1sec
+	io_high(LED_PIN_CAN2);
+	io_low(LED_PIN_GLOBAL);
+	//delay 1sec
+	io_high(LED_PIN_GLOBAL);
+	return true;
+}
+
+static void phy_init()
+{
+	rcc_periph_clock_enable(RCC_ETHMAC);
+	rcc_periph_clock_enable(RCC_ETHMACPTP);
+	rcc_periph_clock_enable(RCC_ETHMACRX);
+	rcc_periph_clock_enable(RCC_ETHMACTX);
+}
+
+static void can_init()
+{
+	rcc_periph_clock_enable(RCC_CAN1);
+	rcc_periph_clock_enable(RCC_CAN2);
+}
 
 int main(void)
 {
@@ -43,33 +80,27 @@ int main(void)
 	rcc_periph_clock_enable(RCC_GPIOD);
 	rcc_periph_clock_enable(RCC_GPIOE);
 
-	io_output_high(LED_CAN1);
-	io_output_high(LED_CAN2);
-	io_output_high(LED_GLOBAL);
-
 	/* Initialize used peripherals */
-	rcc_periph_clock_enable(RCC_USART3);
+	led_init();
+	serial_init();
 
-	io_af(SER_TX, GPIO_AF7);
-	io_af(SER_RX, GPIO_AF7);
+	serial_print("CanShark v2.0 Board test. \n");
+	CHECK(led_check(), "Checking LEDs ...");
+	CHECK(bxcan_nandtree_check(), "Checking CAN connections ...");
+	CHECK(ksz8051_nandtree_check(), "Checking PHY connections ...");
 
+	serial_print("Measuring CAN driver delays: CAN1\n");
+	serial_printf("Mode=x: Thl=%dns Tlh=%dns\n", 10, 20);
+	serial_printf("Mode=H: Thl=%dns Tlh=%dns\n", 10, 20);
+	serial_printf("Mode=L: Thl=%dns Tlh=%dns\n", 10, 20);
 
-	/* Test LED's */
+	serial_print("Measuring CAN driver delays: CAN2\n");
+	serial_printf("Mode=x: Thl=%dns Tlh=%dns\n", 10, 20);
+	serial_printf("Mode=H: Thl=%dns Tlh=%dns\n", 10, 20);
+	serial_printf("Mode=L: Thl=%dns Tlh=%dns\n", 10, 20);
 
-	/* Initialize serial link */
-
-	// print "Checking CAN connections ..."
-	CHECK(bxcan_nandtree_check())
-
-	// print "Checking PHY connections ..."
-	CHECK(ksz8051_nandtree_check())
-
-	rcc_periph_clock_enable(RCC_CAN1);
-	rcc_periph_clock_enable(RCC_CAN2);
-	rcc_periph_clock_enable(RCC_ETHMAC);
-	rcc_periph_clock_enable(RCC_ETHMACPTP);
-	rcc_periph_clock_enable(RCC_ETHMACRX);
-	rcc_periph_clock_enable(RCC_ETHMACTX);
+	phy_init();
+	can_init();
 
 	/* Test MAC broadcast storm */
 	while (1);

@@ -87,7 +87,7 @@ CPPFLAGS	+= -Wswitch-enum -Wswitch-default -Wformat=2 -Wcast-align
 LDFLAGS		+= --static -nostartfiles
 LDFLAGS		+= -Wl,--gc-sections
 LDFLAGS		+= --specs=nano.specs
-LDFLAGS		+= -flto
+LDFLAGS		+= -flto -u _printf_float
 
 ###############################################################################
 # Linker libraries to be built with
